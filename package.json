@@ -1,0 +1,16 @@
+{
+  "name": "nsm-e2e",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.1",
+    "@types/node": "^20.10.5"
+  },
+  "scripts": {
+    "e2e-test": "playwright test",
+    "e2e-test:ui": "playwright test --ui",
+    "e2e-test-record:caseworker": "playwright codegen https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/",
+    "e2e-test-record:provider": "playwright codegen https://crm7dev.apps.live.cloud-platform.service.justice.gov.uk/"
+  }
+}
