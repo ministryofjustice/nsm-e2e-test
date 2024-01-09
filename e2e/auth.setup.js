@@ -1,10 +1,12 @@
 import { test as setup, expect } from '@playwright/test';
+require('dotenv').config();
 
+const caseworkerAppUrl = process.env.NSM_ASSESS_DEV_URL;
 const supervisorFile = 'playwright/.auth/supervisor.json';
 
 setup('authenticate as supervisor', async ({ page }) => {
     // Perform authentication steps. Replace these actions with your own.
-    await page.goto('https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/');
+    await page.goto(caseworkerAppUrl);
     await expect(page.getByRole('button', { name: 'Start now' })).toBeVisible();
     await page.getByRole('button', { name: 'Start now' }).click();
     await page.getByLabel('Pick an account:').selectOption('super.visor@test.com');
@@ -22,7 +24,7 @@ const caseworkerFile = 'playwright/.auth/caseworker.json';
 
 setup('authenticate as caseworker', async ({ page }) => {
     // Perform authentication steps. Replace these actions with your own.
-    await page.goto('https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/');
+    await page.goto(caseworkerAppUrl);
     await expect(page.getByRole('button', { name: 'Start now' })).toBeVisible();
     await page.getByRole('button', { name: 'Start now' }).click();
     await page.getByLabel('Pick an account:').selectOption('case.worker@test.com');

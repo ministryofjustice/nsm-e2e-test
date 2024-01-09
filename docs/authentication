@@ -1,0 +1,25 @@
+# Multiple signed in roles
+
+The `auth.setup.js` file contains two test fixtures for authenticating as a supervisor and a caseworker. These fixtures perform the necessary steps to authenticate as each user type and save the authentication state to a file.
+
+The authentication state can be loaded in subsequent tests to simulate a logged-in user.
+
+AppURL is set in the environment variable as `NSM_ASSESS_DEV_URL`
+
+## Usage
+
+To use a page as an authenticated user role, i.e. supervisor,
+
+You need to import the helper function `getSupervisorFile` in your test.
+
+``` js
+import { getSupervisorFile } from '../../../helpers/index.js';
+```
+
+In your test case,
+
+``` js
+ test.use({ storageState: getSupervisorFile() })
+```
+
+Now you can write test as authenticated supervisor role.

@@ -3,3 +3,6 @@ export function getSupervisorFile() {
     return 'playwright/.auth/supervisor.json';
 }
 
+export function getCaseworkerFile() {
+    return 'playwright/.auth/caseworker.json';
+}
