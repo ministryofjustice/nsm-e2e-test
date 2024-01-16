@@ -1,7 +1,6 @@
 import { test, expect } from '../fixtures/caseworker';
-import { runTestAs } from '../../../helpers/index';
+import { runTestAs } from '../../../helpers';
 
-test.describe.configure({ mode: 'serial' });
 test.describe('As a supervisor I want to see the correct risk level', () => {
 
     // Authenticate as Supervisor
