@@ -8,18 +8,20 @@ AppURL is set in the environment variable as `NSM_ASSESS_DEV_URL`
 
 ## Usage
 
+The helper function exposes two roles `getAuthenticatedSupervisor` and `getAuthenticatedCaseworker` as authenticated user.
+
 To use a page as an authenticated user role, i.e. supervisor,
 
-You need to import the helper function `getSupervisorFile` in your test.
+Import the function
 
 ``` js
-import { getSupervisorFile } from '../../../helpers/index.js';
+import { getAuthenticatedSupervisor } from '../../../helpers/index.js';
 ```
 
 In your test case,
 
 ``` js
- test.use({ storageState: getSupervisorFile() })
+ test.use({ storageState: getAuthenticatedSupervisor() })
 ```
 
 Now you can write test as authenticated supervisor role.
