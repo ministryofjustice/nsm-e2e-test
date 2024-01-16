@@ -7,7 +7,7 @@ Here's a short description of how to use this Page Object:
 1. **Import the Page Object**: At the top of your fixture file, import the `AllClaimsPage` class:
 
    ```javascript
-   import { AllClaimsPage } from './path/to/all-claims-page';
+   import { AllClaimsPage } from "./path/to/all-claims-page";
    ```
 
 2. **Instantiate the Page Object**: Create a new instance of the `AllClaimsPage` class, passing the `page` object to the constructor:
