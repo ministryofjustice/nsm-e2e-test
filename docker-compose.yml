@@ -1,0 +1,11 @@
+version: "3.9"
+services:
+  nsm-e2e-tests:
+    build: .
+    container_name: nsm-e2e-tests
+    environment:
+      - NSM_ASSESS_DEV_URL=https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/
+      - NSM_CLAIMS_DEV_URL=https://crm7dev.apps.live.cloud-platform.service.justice.gov.uk/
+    volumes:
+      - .:/behave_local
+      - ./data:/data

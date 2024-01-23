@@ -21,6 +21,7 @@ Then, navigate to the project directory and install the dependencies:
 
 ```bash
 cd nsm-e2e
+npx playwright install
 npm install
 ```
 
