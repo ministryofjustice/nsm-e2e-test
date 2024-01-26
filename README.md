@@ -21,6 +21,7 @@ Then, navigate to the project directory and install the dependencies:
 
 ```bash
 cd nsm-e2e
+npx playwright install
 npm install
 ```
 
@@ -40,7 +41,7 @@ npm run e2e-test:ui
 
 ## Record the test
 
-To record a new test for a *caseworker*, use:
+To record a new test for a _caseworker_, use:
 
 ```bash
 npm run e2e-test-record:caseworker
@@ -48,7 +49,7 @@ npm run e2e-test-record:caseworker
 
 This will open the dev env for caseworker app and you will able to record a test.
 
-To record a new test for a *provider*, use:
+To record a new test for a _provider_, use:
 
 ```bash
 npm run e2e-test-record:provider
