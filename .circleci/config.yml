@@ -1,0 +1,41 @@
+version: 2.1
+
+# ------------------
+# ORBS
+# ------------------
+orbs:
+  aws-cli: circleci/aws-cli@4.1.2
+
+jobs:
+  run-e2e-tests:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.41.1-jammy
+    steps:
+      - checkout
+      - setup_remote_docker
+
+#       Pull public image
+      - aws-cli/setup:
+          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION
+      - run:
+          ./.circleci/pull_images nsm-crm7-claim
+
+      # Add other images (i.e. assess, appstore and claim) to pull
+      - run:
+          name: Build / Check services are up
+          command: |
+            cd /home/circleci/project
+            docker-compose build
+            docker-compose run start_applications
+
+      - run:
+          name: Run end to end tests
+          command: |
+            cd /home/circleci/project
+            docker-compose run --name nsm-e2e-tests nsm-e2e-tests
+
+workflows:
+  build:
+    jobs:
+      - run-e2e-tests
