@@ -9,7 +9,7 @@ orbs:
 jobs:
   run-e2e-tests:
     docker:
-      - image: mcr.microsoft.com/playwright:v1.41.1-jammy
+      - image: ministryofjustice/cloud-platform-tools
     steps:
       - checkout
       - setup_remote_docker
