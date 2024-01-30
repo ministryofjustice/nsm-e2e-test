@@ -18,7 +18,7 @@ COPY package*.json ./
 RUN apt-get update && apt-get -y install libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev libasound-dev libatspi2.0-0 libxshmfence-dev
 
 # Get the necessary tools to run the AWS-CLI
-RUN apt-get install zip
+RUN apt-get install unzip
 # Install the application dependencies
 RUN npm install
 
