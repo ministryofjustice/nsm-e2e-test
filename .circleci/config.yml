@@ -37,4 +37,5 @@ jobs:
 workflows:
   build:
     jobs:
-      - run-e2e-tests
+      - run-e2e-tests:
+          context: nsm-e2e-test-production
