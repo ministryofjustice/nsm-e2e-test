@@ -1,5 +1,20 @@
+# This Docker Compose file defines two services: start_applications and nsm-e2e-tests.
+# The start_applications service uses the jwilder/dockerize image and waits for a
+# TCP connection to nsm-crm7-claim on port 3000 to be available.
+# The nsm-e2e-tests service builds an image using the Dockerfile in the current directory,
+# sets some environment variables, and mounts two volumes.
+
 version: "3.9"
 services:
+  start_applications:
+    image: jwilder/dockerize
+    command: >
+      -wait tcp://nsm-crm7-claim:3000
+      -wait-retry-interval 10s
+      -timeout 180s
+    depends_on:
+      - nsm-crm7-claim
+
   nsm-e2e-tests:
     build: .
     container_name: nsm-e2e-tests
@@ -9,3 +24,12 @@ services:
     volumes:
       - .:/behave_local
       - ./data:/data
+
+  nsm-crm7-claim:
+    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-claim-non-standard-magistrate-fee-backend:main}
+    ports:
+      - "3000:3000"
+    environment:
+      - SECRET_KEY_BASE=needed_for_assets_precompile
+      - RAILS_ENV=production
+      - ENV=production
