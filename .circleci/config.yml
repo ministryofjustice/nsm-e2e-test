@@ -18,7 +18,7 @@ jobs:
       - aws-cli/setup:
           role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION
-      - run: ./.circleci/pull_images nsm-crm7-claim
+      - run: ./.circleci/pull_image nsm-crm7-claim
 
       # Add other images (i.e. assess, appstore and claim) to pull
       - run:
