@@ -14,9 +14,9 @@ jobs:
       - checkout
       - setup_remote_docker
 
-      #       Pull public image
+      # Pull nsm claim image
       - aws-cli/setup:
-          role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
+          role_arn: $CLAIM_ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION
       - run: |
           chmod +x ./.circleci/pull_image
