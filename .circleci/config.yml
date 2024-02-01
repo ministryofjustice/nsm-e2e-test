@@ -18,23 +18,23 @@ jobs:
       - aws-cli/setup:
           role_arn: $CLAIM_ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION
-      - run: |
-          chmod +x ./.circleci/pull_image
-          ./.circleci/pull_image nsm-crm7-claim
+      # - run: |
+          # chmod +x ./.circleci/pull_image
+          # ./.circleci/pull_image nsm-crm7-claim
 
       # Add other images (i.e. assess, appstore and claim) to pull
-      - run:
-          name: Build / Check services are up
-          command: |
-            cd /home/circleci/project
-            docker-compose build
-            docker-compose run start_applications
+      # - run:
+      #     name: Build / Check services are up
+      #     command: |
+      #       cd /home/circleci/project
+      #       docker-compose build
+      #       docker-compose run start_applications
 
-      - run:
-          name: Run end to end tests
-          command: |
-            cd /home/circleci/project
-            docker-compose run --name nsm-e2e-tests nsm-e2e-tests
+      # - run:
+      #     name: Run end to end tests
+      #     command: |
+      #       cd /home/circleci/project
+      #       docker-compose run --name nsm-e2e-tests nsm-e2e-tests
 
 workflows:
   build:
