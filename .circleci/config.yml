@@ -26,8 +26,8 @@ jobs:
             curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
-            cd  /usr/local/bin/docker-compose
-            ls -l
+            ls -l /usr/local/bin/docker-compose
+            cat /usr/local/bin/docker-compose
       - run: |
           ./.circleci/pull_image nsm-crm7-claim
 
