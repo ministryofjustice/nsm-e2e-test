@@ -12,7 +12,6 @@ jobs:
       - image: ministryofjustice/cloud-platform-tools
     steps:
       - checkout
-      - setup_remote_docker
 
       # Pull nsm claim image
       - aws-cli/setup:
@@ -26,6 +25,7 @@ jobs:
             curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
             chmod +x ~/docker-compose
             mv ~/docker-compose /usr/local/bin/docker-compose
+      - setup_remote_docker
       - run: |
           ./.circleci/pull_image nsm-crm7-claim
 
