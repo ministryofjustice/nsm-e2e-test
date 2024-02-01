@@ -19,9 +19,6 @@ jobs:
           role_arn: $ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION
       - run:
-          name: Create project directory
-          command: mkdir -p /home/circleci/project
-      - run:
           name: Install Docker Compose
           environment:
             COMPOSE_VERSION: "1.29.2"
