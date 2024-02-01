@@ -21,6 +21,12 @@ jobs:
       - run:
           name: Create project directory
           command: mkdir -p /home/circleci/project
+      - run:
+          name: Install Docker Compose
+          command: |
+            set -x
+            curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
       - run: |
           # chmod +x ./.circleci/pull_image
           ./.circleci/pull_image nsm-crm7-claim
