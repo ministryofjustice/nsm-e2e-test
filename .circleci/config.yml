@@ -31,7 +31,7 @@ jobs:
               echo "Failed to download Docker Compose"
               exit 1
             fi
-            chmod +x /usr/local/bin/docker-compose
+            chmod +x /usr/bin/docker-compose
       - run: |
           ./.circleci/pull_image nsm-crm7-claim
 
