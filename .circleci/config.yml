@@ -22,10 +22,11 @@ jobs:
           environment:
             COMPOSE_VERSION: "1.29.2"
           command: |
-            curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
-            chmod +x ~/docker-compose
-            mv ~/docker-compose /usr/local/bin/docker-compose
-            ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
+            # curl -L "https://github.com/docker/compose/releases/download/${COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o ~/docker-compose
+            # chmod +x ~/docker-compose
+            # mv ~/docker-compose /usr/local/bin/docker-compose
+            # ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
+            pip3 install --upgrade --force-reinstall --no-cache-dir docker-compose && ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
       - setup_remote_docker
       - run: |
           ./.circleci/pull_image nsm-crm7-claim
