@@ -35,7 +35,7 @@ services:
       - ENV=test
       - SIDEKIQ_WEB_UI_USERNAME=sidekiq
       - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
-      - DATABASE_URL=postgres@host.docker.internal:5432/laa-claim-non-standard-magistrate-fee-test
+      - DATABASE_URL=postgresql://postgres:postgres@nsm-crm7-claim-db:5432/laa-claim-non-standard-magistrate-fee-test
       - LAA_PORTAL_IDP_METADATA_FILE=config/laa_portal/metadata/samlmock.xml
       - OMNIAUTH_TEST_MODE=true
     depends_on:
