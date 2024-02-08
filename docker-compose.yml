@@ -26,7 +26,7 @@ services:
       - ./data:/data
 
   nsm-crm7-claim:
-    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-claim-non-standard-magistrate-fee-backend:5996442cc161d38bf8289d14451856624f1e1605}
+    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-assess-non-standard-magistrate-fee-dev:5996442cc161d38bf8289d14451856624f1e1605}
     ports:
       - "3000:3000"
     environment:
