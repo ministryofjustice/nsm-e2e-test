@@ -31,6 +31,10 @@ services:
       - "3000:3000"
     environment:
       - SECRET_KEY_BASE=needed_for_assets_precompile
-      - RAILS_ENV=production
-      - ENV=production
-    command: ["./run.sh"]
+      - RAILS_ENV=development
+      - ENV=development
+      - SIDEKIQ_WEB_UI_USERNAME=sidekiq
+      - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
+      - DATABASE_URL=postgresql://postgres@localhost/laa-claim-non-standard-magistrate-fee-dev
+      - LAA_PORTAL_IDP_METADATA_FILE=config/laa_portal/metadata/samlmock.xml
+      - OMNIAUTH_TEST_MODE=true
