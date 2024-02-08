@@ -33,3 +33,4 @@ services:
       - SECRET_KEY_BASE=needed_for_assets_precompile
       - RAILS_ENV=production
       - ENV=production
+    command: ["./run.sh"]
