@@ -22,19 +22,32 @@ services:
       - NSM_ASSESS_DEV_URL=https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/
       - NSM_CLAIMS_DEV_URL=https://crm7dev.apps.live.cloud-platform.service.justice.gov.uk/
     volumes:
-      - .:/behave_local
+      - .:/e2e
       - ./data:/data
 
   nsm-crm7-claim:
     image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/ministryofjustice/laa-claim-non-standard-magistrate-fee-dev-ecr:5996442cc161d38bf8289d14451856624f1e1605}
     ports:
-      - "3000:3000"
+      - 3000:3000
     environment:
       - SECRET_KEY_BASE=needed_for_assets_precompile
-      - RAILS_ENV=development
-      - ENV=development
+      - RAILS_ENV=test
+      - ENV=test
       - SIDEKIQ_WEB_UI_USERNAME=sidekiq
       - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
-      - DATABASE_URL=postgresql://postgres@localhost/laa-claim-non-standard-magistrate-fee-dev
+      - DATABASE_URL=postgres@host.docker.internal:5432/laa-claim-non-standard-magistrate-fee-test
       - LAA_PORTAL_IDP_METADATA_FILE=config/laa_portal/metadata/samlmock.xml
       - OMNIAUTH_TEST_MODE=true
+    depends_on:
+      - nsm-crm7-claim-db
+
+  nsm-crm7-claim-db:
+    image: postgres:bullseye
+    volumes:
+      - ./tmp/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: laa-claim-non-standard-magistrate-fee-test
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"

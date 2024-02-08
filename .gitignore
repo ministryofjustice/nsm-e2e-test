@@ -7,4 +7,5 @@ node_modules/
 playwright/.auth
 .DS_Store
 .vscode/
+tmp/
 ```
