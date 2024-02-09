@@ -25,7 +25,6 @@ jobs:
       # Pull nsm assess image
       - aws-cli/setup:
           profile_name: nsm-e2e-test-production
-          role_arn: $ASSESS_ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION
       - aws-cli/role_arn_setup:
           profile_name: nsm-assess
