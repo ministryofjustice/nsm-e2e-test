@@ -14,23 +14,22 @@ jobs:
       - checkout
       - setup_remote_docker
 
-      # # Pull nsm claim image
-      # - aws-cli/setup:
-      #     role_arn: $CLAIM_ECR_ROLE_TO_ASSUME # this will use the env var
-      #     region: $ECR_REGION
-      # - run:
-      #     name: Pull NSM claim image
-      #     command: |
-      #       ./.circleci/pull_image nsm-crm7-claim
-      # # Pull nsm assess image
-      # - aws-cli/setup:
-      #     role_arn: $ASSESS_ECR_ROLE_TO_ASSUME
-      #     region: $ECR_REGION
-
-      # - run:
-      #     name: Pull NSM assess image
-      #     command: |
-      #       ./.circleci/pull_image nsm-crm7-assess
+      # Pull nsm claim image
+      - aws-cli/setup:
+          role_arn: $CLAIM_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION
+      - run:
+          name: Pull NSM claim image
+          command: |
+            ./.circleci/pull_image nsm-crm7-claim
+      # Pull nsm assess image
+      - aws-cli/setup:
+          role_arn: $ASSESS_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run:
+          name: Pull NSM assess image
+          command: |
+            ./.circleci/pull_image nsm-crm7-assess
       # Pull nsm appstore image
       - aws-cli/setup:
           role_arn: $APPSTORE_ECR_ROLE_TO_ASSUME
