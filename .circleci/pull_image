@@ -3,6 +3,5 @@ DOCKER_COMPOSE_SERVICE_NAME=$1
 cd /home/circleci/project
 echo "Pulling image for $DOCKER_COMPOSE_SERVICE_NAME"
 echo "Logging into ECR"
-echo "ECR_REGION: $ECR_REGION"
 aws ecr get-login-password --region $ECR_REGION | docker login --username AWS --password-stdin ${AWS_ECR_REGISTRY_ID}.dkr.ecr.${ECR_REGION}.amazonaws.com
 docker-compose pull $DOCKER_COMPOSE_SERVICE_NAME

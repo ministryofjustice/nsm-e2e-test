@@ -29,6 +29,10 @@ jobs:
           role_arn: $ASSESS_ECR_ROLE_TO_ASSUME
           region: $ECR_REGION
       - run:
+          name: Display ECR_REGION
+          command: |
+            echo "ECR_REGION: $ECR_REGION"
+      - run:
           name: Pull NSM assess image
           command: |
             echo "Pulling nsm-crm7-assess image"
