@@ -4,7 +4,7 @@ version: 2.1
 # ORBS
 # ------------------
 orbs:
-  aws-cli: circleci/aws-cli@4.0.0
+  aws-cli: circleci/aws-cli@4.1.2
 
 jobs:
   run-e2e-tests:
