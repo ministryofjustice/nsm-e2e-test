@@ -24,8 +24,13 @@ jobs:
             ./.circleci/pull_image nsm-crm7-claim
       # Pull nsm assess image
       - aws-cli/setup:
+          profile_name: nsm-e2e-test-production
           role_arn: $ASSESS_ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION
+      - aws-cli/role_arn_setup:
+          profile_name: nsm-assess
+          role_arn: $ASSESS_ECR_ROLE_TO_ASSUME
+          source_profile: nsm-e2e-test-production
       - run:
           name: Check AWS CLI version and configuration
           command: |
