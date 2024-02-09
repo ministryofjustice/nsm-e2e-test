@@ -16,12 +16,10 @@ jobs:
 
       # Pull nsm claim image
       - aws-cli/setup:
-          profile_name: nsm_claim_profile
           region: $ECR_REGION
       - aws-cli/role_arn_setup:
           profile_name: nsm-claim
           role_arn: $CLAIM_ECR_ROLE_TO_ASSUME
-          source_profile: nsm_claim_profile
       - run:
           name: Check AWS CLI version and configuration
           command: |
