@@ -15,18 +15,18 @@ jobs:
       - setup_remote_docker
 
       # Pull nsm claim image
-      - aws-cli/setup:
-          role_arn: $CLAIM_ECR_ROLE_TO_ASSUME # this will use the env var
-          region: $ECR_REGION
-      - run:
-          name: Check AWS CLI version and configuration
-          command: |
-            aws --version
-            aws configure list
-      - run:
-          name: Pull NSM claim image
-          command: |
-            ./.circleci/pull_image nsm-crm7-claim
+      # - aws-cli/setup:
+      #     role_arn: $CLAIM_ECR_ROLE_TO_ASSUME # this will use the env var
+      #     region: $ECR_REGION
+      # - run:
+      #     name: Check AWS CLI version and configuration
+      #     command: |
+      #       aws --version
+      #       aws configure list
+      # - run:
+      #     name: Pull NSM claim image
+      #     command: |
+      #       ./.circleci/pull_image nsm-crm7-claim
       # Pull nsm assess image
       - aws-cli/setup:
           profile_name: nsm-e2e-test-production
