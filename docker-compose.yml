@@ -59,7 +59,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - 5432:5432
   # NSM Assess service
   nsm-crm7-assess:
     image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-assess-non-standard-magistrate-fee-dev:1a1e3d5233d359bf2bb18882958b32c28faeab7b}
@@ -98,4 +98,9 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     ports:
-      - "5432:5432"
+      - 5432:5432
+  # NSM Application Store service
+  nsm-crm7-appstore:
+    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-crime-application-store-dev:1ce881606ef4bc3d9198962ff6eec73efc760e34}
+    ports:
+      - 3000:3000
