@@ -26,7 +26,7 @@ services:
     volumes:
       - .:/e2e
       - ./data:/data
-
+  # NSM Claim service
   nsm-crm7-claim:
     image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/ministryofjustice/laa-claim-non-standard-magistrate-fee-dev-ecr:5996442cc161d38bf8289d14451856624f1e1605}
     ports:
@@ -37,7 +37,7 @@ services:
       - ENV=development
       - SIDEKIQ_WEB_UI_USERNAME=sidekiq
       - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
-      - DATABASE_URL=postgresql://postgres:postgres@nsm-crm7-claim-db:5432/laa-claim-non-standard-magistrate-fee-test
+      - DATABASE_URL=postgresql://postgres:postgres@nsm-crm7-claim-db:5432/laa-claim-non-standard-magistrate-fee-dev
       - LAA_PORTAL_IDP_METADATA_FILE=config/laa_portal/metadata/samlmock.xml
       - OMNIAUTH_TEST_MODE=true
     depends_on:
@@ -51,6 +51,45 @@ services:
       bin/rails db:prepare
 
   nsm-crm7-claim-db:
+    image: postgres:bullseye
+    volumes:
+      - ./tmp/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: laa-claim-non-standard-magistrate-fee-dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+  # NSM Assess service
+  nsm-crm7-assess:
+    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-assess-non-standard-magistrate-fee-dev:1a1e3d5233d359bf2bb18882958b32c28faeab7b}
+    ports:
+      - 3000:3000
+    environment:
+      - SECRET_KEY_BASE=needed_for_assets_precompile
+      - RAILS_ENV=development
+      - ENV=development
+      - SIDEKIQ_WEB_UI_USERNAME=sidekiq
+      - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
+      - DATABASE_URL=postgresql://postgres:postgres@nsm-crm7-assess-db:5432/laa_assess_non_standard_magistrate_fee_dev
+      - OMNIAUTH_TEST_MODE=true
+      - OMNIAUTH_AZURE_CLIENT_ID=''
+      - OMNIAUTH_AZURE_CLIENT_SECRET=''
+      - OMNIAUTH_AZURE_REDIRECT_URI=''
+      - OMNIAUTH_AZURE_TENANT_ID=''
+      - APP_STORE_URL=''
+      - DEV_AUTH_ENABLED=true
+    depends_on:
+      - nsm-crm7-assess-db
+    command: -wait tcp://nsm-crm7-assess-db:5432
+      -wait-retry-interval 10s
+      -timeout 180s
+      - bash
+      - -c
+      - |
+      bin/rails db:prepare
+
+  nsm-crm7-assess-db:
     image: postgres:bullseye
     volumes:
       - ./tmp/pgdata:/var/lib/postgresql/data
