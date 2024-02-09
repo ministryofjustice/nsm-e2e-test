@@ -19,8 +19,9 @@ services:
     build: .
     container_name: nsm-e2e-tests
     environment:
-      - NSM_ASSESS_DEV_URL=https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/
+      - NSM_ASSESS_DEV_URL=http://nsm-crm7-claim:3000
       - NSM_CLAIMS_DEV_URL=https://crm7dev.apps.live.cloud-platform.service.justice.gov.uk/
+      - NSM_ASSESS_DEV_URL_LOCAL=https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/
     volumes:
       - .:/e2e
       - ./data:/data
@@ -40,6 +41,11 @@ services:
       - OMNIAUTH_TEST_MODE=true
     depends_on:
       - nsm-crm7-claim-db
+    command:
+      - bash
+      - -c
+      - |
+        bin/rails db:prepare
 
   nsm-crm7-claim-db:
     image: postgres:bullseye
