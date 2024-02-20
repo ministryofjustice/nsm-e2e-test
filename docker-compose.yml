@@ -1,11 +1,106 @@
+# This Docker Compose file defines two services: start_applications and nsm-e2e-tests.
+# The start_applications service uses the jwilder/dockerize image and waits for a
+# TCP connection to nsm-crm7-claim on port 3000 to be available.
+# The nsm-e2e-tests service builds an image using the Dockerfile in the current directory,
+# sets some environment variables, and mounts two volumes.
+
 version: "3.9"
 services:
+  start_applications:
+    image: jwilder/dockerize
+    command: >
+      -wait tcp://nsm-crm7-claim:3000
+      -wait-retry-interval 10s
+      -timeout 180s
+    depends_on:
+      - nsm-crm7-claim
+
   nsm-e2e-tests:
     build: .
     container_name: nsm-e2e-tests
     environment:
       - NSM_ASSESS_DEV_URL=https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/
+      - NSM_CLAIMS_DEV_URL_LOCAL=http://nsm-crm7-claim:3000
       - NSM_CLAIMS_DEV_URL=https://crm7dev.apps.live.cloud-platform.service.justice.gov.uk/
+      - NSM_ASSESS_DEV_URL_LOCAL=https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/
     volumes:
-      - .:/behave_local
+      - .:/e2e
       - ./data:/data
+  # NSM Claim service
+  nsm-crm7-claim:
+    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/ministryofjustice/laa-claim-non-standard-magistrate-fee-dev-ecr:5996442cc161d38bf8289d14451856624f1e1605}
+    ports:
+      - 3000:3000
+    environment:
+      - SECRET_KEY_BASE=needed_for_assets_precompile
+      - RAILS_ENV=development
+      - ENV=development
+      - SIDEKIQ_WEB_UI_USERNAME=sidekiq
+      - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
+      - DATABASE_URL=postgresql://postgres:postgres@nsm-crm7-claim-db:5432/laa-claim-non-standard-magistrate-fee-dev
+      - LAA_PORTAL_IDP_METADATA_FILE=config/laa_portal/metadata/samlmock.xml
+      - OMNIAUTH_TEST_MODE=true
+    depends_on:
+      - nsm-crm7-claim-db
+    command: -wait tcp://nsm-crm7-claim-db:5432
+      -wait-retry-interval 10s
+      -timeout 180s
+      - bash
+      - -c
+      - |
+      bin/rails db:prepare
+
+  nsm-crm7-claim-db:
+    image: postgres:bullseye
+    volumes:
+      - ./tmp/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: laa-claim-non-standard-magistrate-fee-dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+  # NSM Assess service
+  nsm-crm7-assess:
+    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-assess-non-standard-magistrate-fee-dev:1a1e3d5233d359bf2bb18882958b32c28faeab7b}
+    ports:
+      - 3000:3000
+    environment:
+      - SECRET_KEY_BASE=needed_for_assets_precompile
+      - RAILS_ENV=development
+      - ENV=development
+      - SIDEKIQ_WEB_UI_USERNAME=sidekiq
+      - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
+      - DATABASE_URL=postgresql://postgres:postgres@nsm-crm7-assess-db:5432/laa_assess_non_standard_magistrate_fee_dev
+      - OMNIAUTH_TEST_MODE=true
+      - OMNIAUTH_AZURE_CLIENT_ID=''
+      - OMNIAUTH_AZURE_CLIENT_SECRET=''
+      - OMNIAUTH_AZURE_REDIRECT_URI=''
+      - OMNIAUTH_AZURE_TENANT_ID=''
+      - APP_STORE_URL=''
+      - DEV_AUTH_ENABLED=true
+    depends_on:
+      - nsm-crm7-assess-db
+    command: -wait tcp://nsm-crm7-assess-db:5432
+      -wait-retry-interval 10s
+      -timeout 180s
+      - bash
+      - -c
+      - |
+      bin/rails db:prepare
+
+  nsm-crm7-assess-db:
+    image: postgres:bullseye
+    volumes:
+      - ./tmp/pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: laa-claim-non-standard-magistrate-fee-dev
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - 5432:5432
+  # NSM Application Store service
+  nsm-crm7-appstore:
+    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-crime-application-store-dev:1ce881606ef4bc3d9198962ff6eec73efc760e34}
+    ports:
+      - 3000:3000

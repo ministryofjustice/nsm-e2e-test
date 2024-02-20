@@ -1,0 +1,71 @@
+version: 2.1
+
+# ------------------
+# ORBS
+# ------------------
+orbs:
+  aws-cli: circleci/aws-cli@4.1.2
+  aws-ecr: circleci/aws-ecr@8.2.1
+
+jobs:
+  run-e2e-tests:
+    docker:
+      - image: cimg/node:21.6.1
+    steps:
+      - checkout
+      - setup_remote_docker
+
+      # Pull nsm claim image
+      - aws-cli/setup:
+          role_arn: $CLAIM_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION
+      - run:
+          name: Pull NSM claim image
+          command: |
+            echo "Pulling nsm-crm7-claim image"
+            echo "ARN: $CLAIM_ECR_ROLE_TO_ASSUME"
+            ./.circleci/pull_image nsm-crm7-claim
+      # Pull nsm assess image
+      - aws-cli/setup:
+          role_arn: $ASSESS_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run:
+          name: Display ECR_REGION
+          command: |
+            echo "ECR_REGION: $ECR_REGION"
+      - run:
+          name: Pull NSM assess image
+          command: |
+            echo "Pulling nsm-crm7-assess image"
+            echo "ARN: $ASSESS_ECR_ROLE_TO_ASSUME"
+            ./.circleci/pull_image nsm-crm7-assess
+      # Pull nsm appstore image
+      - aws-cli/setup:
+          role_arn: $APPSTORE_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run:
+          name: Pull NSM appstore image
+          command: |
+            echo "Pulling nsm-crm7-appstore image"
+            echo "ARN: $APPSTORE_ECR_ROLE_TO_ASSUME"
+            ./.circleci/pull_image nsm-crm7-appstore
+
+      # Add other images (i.e. assess, appstore and claim) to pull
+      - run:
+          name: Build / Check services are up
+          command: |
+            cd /home/circleci/project
+            docker-compose build
+            docker-compose run start_applications
+
+      - run:
+          name: Run end to end tests
+          command: |
+            cd /home/circleci/project
+            docker-compose run --name nsm-e2e-tests nsm-e2e-tests
+
+workflows:
+  build:
+    jobs:
+      - run-e2e-tests:
+          context: nsm-e2e-test-production

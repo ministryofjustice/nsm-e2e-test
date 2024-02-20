@@ -10,5 +10,9 @@ export function runTestAs(role) {
 }
 
 export function caseworkerAppUrl() {
-    return process.env.NSM_ASSESS_DEV_URL;
+    if (process.env.CIRCLECI) {
+        return process.env.NSM_ASSESS_DEV_URL_LOCAL;
+    } else {
+        return process.env.NSM_ASSESS_DEV_URL;
+    }
 }
