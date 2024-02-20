@@ -10,3 +10,5 @@ services:
     build: https://github.com/ministryofjustice/laa-claim-non-standard-magistrate-fee-backend.git#main
   nsm-crm7-assess:
     build: https://github.com/ministryofjustice/laa-assess-non-standard-magistrate-fee.git#main
+  nsm-crm7-appstore:
+    build: https://github.com/ministryofjustice/laa-crime-application-store.git#main

@@ -23,21 +23,15 @@ jobs:
           name: Pull NSM claim image
           command: |
             echo "Pulling nsm-crm7-claim image"
-            echo "ARN: $CLAIM_ECR_ROLE_TO_ASSUME"
             ./.circleci/pull_image nsm-crm7-claim
       # Pull nsm assess image
       - aws-cli/setup:
           role_arn: $ASSESS_ECR_ROLE_TO_ASSUME
           region: $ECR_REGION
       - run:
-          name: Display ECR_REGION
-          command: |
-            echo "ECR_REGION: $ECR_REGION"
-      - run:
           name: Pull NSM assess image
           command: |
             echo "Pulling nsm-crm7-assess image"
-            echo "ARN: $ASSESS_ECR_ROLE_TO_ASSUME"
             ./.circleci/pull_image nsm-crm7-assess
       # Pull nsm appstore image
       - aws-cli/setup:
@@ -47,7 +41,6 @@ jobs:
           name: Pull NSM appstore image
           command: |
             echo "Pulling nsm-crm7-appstore image"
-            echo "ARN: $APPSTORE_ECR_ROLE_TO_ASSUME"
             ./.circleci/pull_image nsm-crm7-appstore
 
       # Add other images (i.e. assess, appstore and claim) to pull

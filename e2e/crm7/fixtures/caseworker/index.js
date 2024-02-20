@@ -6,7 +6,7 @@ export const test = baseTest.extend({
     allClaimsPage: async ({ page, laaRef }, use) => {
         const allClaimsPage = new AllClaimsPage(page);
         await allClaimsPage.goto();
-        await allClaimsPage.changeRisk(laaRef);
+        // await allClaimsPage.changeRisk(laaRef);
         await use(allClaimsPage);
     },
 });
