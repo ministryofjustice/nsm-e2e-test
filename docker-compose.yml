@@ -133,9 +133,6 @@ services:
   nsm-crm7-appstore:
     image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-crime-application-store-dev:1ce881606ef4bc3d9198962ff6eec73efc760e34}
     environment:
-      - APP_CLIENT_ID=9da94846-a054-4713-8b2e-e44f47541db5
-      - TENANT_ID=c6874728-71e6-41fe-a9e1-2e8c36776ad8
-      - APP_CLIENT_SECRET=DE~8Q~mOz~9saY0VKMTyRudISl7f7gi-dzf8Ubie
       - POSTGRES_USERNAME=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_HOSTNAME=localhost
