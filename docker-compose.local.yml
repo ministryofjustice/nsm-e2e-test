@@ -1,7 +1,7 @@
 version: "3.4"
 
 services:
-  nsm-e2e-tests:
+  laa-crime-forms-end-to-end-tests:
     volumes:
       - .:/e2e
     stdin_open: true # docker run -i
