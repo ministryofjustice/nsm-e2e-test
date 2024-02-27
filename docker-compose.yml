@@ -1,8 +1,10 @@
-# This Docker Compose file defines two services: start_applications and nsm-e2e-tests.
-# The start_applications service uses the jwilder/dockerize image and waits for a
-# TCP connection to nsm-crm7-claim on port 3000 to be available.
-# The nsm-e2e-tests service builds an image using the Dockerfile in the current directory,
-# sets some environment variables, and mounts two volumes.
+# This Docker Compose file sets up multiple services for a web application stack.
+# The services include a database service (nsm-db-services), two application services (nsm-crm7-claim, nsm-crm7-assess), and an application store service (nsm-crm7-appstore).
+# Each service is assigned a static IP address on the 'app_net' network, which is defined with a subnet of 172.20.0.0/16.
+# The 'start_applications' service uses the 'dockerize' tool to wait for the other services to be available before starting.
+# The 'laa-crime-forms-end-to-end-tests' service runs end-to-end tests for the application.
+# Environment variables are used to configure the services, and volumes are used for data persistence and sharing files between the host and containers.
+# This configuration allows for a full-stack application to be run and tested in an isolated environment with consistent IP addresses for inter-service communication.
 
 version: "3.9"
 networks:
