@@ -20,14 +20,12 @@ services:
       -wait tcp://nsm-db-services:5432
       -wait tcp://nsm-crm7-claim:3000
       -wait tcp://nsm-crm7-assess:3000
-      -wait tcp://nsm-crm7-appstore:8000
       -wait-retry-interval 10s
       -timeout 180s
     depends_on:
       - nsm-db-services
       - nsm-crm7-claim
       - nsm-crm7-assess
-      - nsm-crm7-appstore
 
   laa-crime-forms-end-to-end-tests:
     container_name: laa-crime-forms-end-to-end-tests
