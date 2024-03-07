@@ -63,7 +63,7 @@ services:
 
   nsm-crm7-claim:
     container_name: nsm-crm7-claim
-    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/ministryofjustice/laa-claim-non-standard-magistrate-fee-dev-ecr:5996442cc161d38bf8289d14451856624f1e1605}
+    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-submit-crime-forms-dev-ecr:latest}
     ports:
       - 3001:3000
     environment:
