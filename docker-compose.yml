@@ -1,5 +1,5 @@
 # This Docker Compose file sets up multiple services for a web application stack.
-# The services include a database service (nsm-db-services), two application services (nsm-crm7-claim, nsm-crm7-assess), and an application store service (nsm-crm7-appstore).
+# The services include a database service (nscc-db-services), two application services (nscc-provider, nscc-caseworker), and an application store service (nscc-appstore).
 # Each service is assigned a static IP address on the 'app_net' network, which is defined with a subnet of 172.20.0.0/16.
 # The 'start_applications' service uses the 'dockerize' tool to wait for the other services to be available before starting.
 # The 'laa-crime-forms-end-to-end-tests' service runs end-to-end tests for the application.
@@ -17,35 +17,37 @@ services:
     container_name: start_applications
     image: jwilder/dockerize
     command: >
-      -wait tcp://nsm-db-services:5432
-      -wait tcp://nsm-crm7-claim:3000
-      -wait tcp://nsm-crm7-assess:3000
+      -wait tcp://nscc-db-services:5432
+      -wait tcp://nscc-provider:3000
+      -wait tcp://nscc-caseworker:3000
+      -wait tcp://nscc-appstore:8000
       -wait-retry-interval 10s
       -timeout 180s
     depends_on:
-      - nsm-db-services
-      - nsm-crm7-claim
-      - nsm-crm7-assess
+      - nscc-db-services
+      - nscc-provider
+      - nscc-caseworker
+      - nscc-appstore
 
   laa-crime-forms-end-to-end-tests:
     container_name: laa-crime-forms-end-to-end-tests
     build: .
     environment:
-      - NSM_ASSESS_DEV_URL=${NSM_ASSESS_DEV_URL}
-      - NSM_CLAIMS_DEV_URL=${NSM_CLAIMS_DEV_URL}
+      - NSCC_CASEWORKER_URL=http://nscc-caseworker:3000
+      - NSCC_PROVIDER_URL=http://nscc-provider:3000
     volumes:
       - .:/e2e
       - ./data:/data
     depends_on:
-      - nsm-db-services
-      - nsm-crm7-assess
+      - nscc-db-services
+      - nscc-caseworker
     networks:
       - app_net
 
-  # NSM Database services
+  # NSCC DATABASE services
 
-  nsm-db-services:
-    container_name: nsm-db-services
+  nscc-db-services:
+    container_name: nscc-db-services
     image: postgres:bullseye
     volumes:
       - ./tmp/pgdata:/var/lib/data
@@ -59,36 +61,36 @@ services:
       app_net:
         ipv4_address: 172.20.1.10
 
-  # NSM Claim service
+  # NSCC PROVIDER service
 
-  nsm-crm7-claim:
-    container_name: nsm-crm7-claim
-    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-submit-crime-forms-dev-ecr:latest}
+  nscc-provider:
+    container_name: nscc-provider
+    image: ${NSCC_PROVIDER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-submit-crime-forms-dev-ecr:main}
     ports:
       - 3001:3000
     environment:
       - SECRET_KEY_BASE=needed_for_assets_precompile
       - RAILS_ENV=development
       - ENV=development
-      - APP_STORE_URL=http://nsm-crm7-appstore:8000
+      - APP_STORE_URL=http://nscc-appstore:8000
       - SIDEKIQ_WEB_UI_USERNAME=sidekiq
       - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
-      - DATABASE_URL=postgresql://postgres:postgres@nsm-db-services:5432/laa-claim-non-standard-magistrate-fee-dev
+      - DATABASE_URL=postgresql://postgres:postgres@nscc-db-services:5432/laa-claim-non-standard-magistrate-fee-dev
       - LAA_PORTAL_IDP_METADATA_FILE=config/laa_portal/metadata/samlmock.xml
       - OMNIAUTH_TEST_MODE=true
     depends_on:
-      - nsm-db-services
+      - nscc-db-services
     command: |
       bin/rails db:prepare
     networks:
       app_net:
         ipv4_address: 172.20.1.1
 
-  # NSM Assess service
+  # NSCC CASEWORKER service
 
-  nsm-crm7-assess:
-    container_name: nsm-crm7-assess
-    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-assess-non-standard-magistrate-fee-dev:latest}
+  nscc-caseworker:
+    container_name: nscc-caseworker
+    image: ${NSCC_CASEWORKER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-assess-crime-forms-dev-ecr:main}
     ports:
       - 3002:3000
     environment:
@@ -97,38 +99,35 @@ services:
       - ENV=development
       - SIDEKIQ_WEB_UI_USERNAME=sidekiq
       - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
-      - DATABASE_URL=postgresql://postgres:postgres@nsm-db-services:5432/laa_assess_non_standard_magistrate_fee_dev
+      - DATABASE_URL=postgresql://postgres:postgres@nscc-db-services:5432/laa_assess_non_standard_magistrate_fee_dev
       - OMNIAUTH_TEST_MODE=true
       - OMNIAUTH_AZURE_CLIENT_ID=''
       - OMNIAUTH_AZURE_CLIENT_SECRET=''
       - OMNIAUTH_AZURE_REDIRECT_URI=''
       - OMNIAUTH_AZURE_TENANT_ID=''
-      - APP_STORE_URL=http://nsm-crm7-appstore:8000
-      - APP_STORE_CLIENT_ID=
-      - APP_STORE_TENANT_ID=
-      - APP_STORE_CLIENT_SECRET=
+      - APP_STORE_URL=http://nscc-appstore:8000
       - DEV_AUTH_ENABLED=true
     depends_on:
-      - nsm-db-services
+      - nscc-db-services
     command: |
       bin/rails db:prepare
     networks:
       app_net:
         ipv4_address: 172.20.1.2
 
-  # NSM Application Store service
+  # NSCC Application Store service
 
-  nsm-crm7-appstore:
-    container_name: nsm-crm7-appstore
-    image: ${LAA_CLAIM_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-crime-application-store-dev:1ce881606ef4bc3d9198962ff6eec73efc760e34}
+  nscc-appstore:
+    container_name: nscc-appstore
+    image: ${NSCC_APPSTORE_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-crime-application-store-dev:main}
     environment:
+      - AUTHENTICATION_REQUIRED=False
       - POSTGRES_USERNAME=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOSTNAME=localhost
+      - POSTGRES_HOSTNAME=nscc-db-services
       - POSTGRES_NAME=laa_crime_application_store
-      - DATABASE_URL=postgresql://postgres:postgres@nsm-db-services:5432/laa_crime_application_store
     depends_on:
-      - nsm-db-services
+      - nscc-db-services
     ports:
       - 8000:8000
     networks:

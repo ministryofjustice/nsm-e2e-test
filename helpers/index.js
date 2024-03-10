@@ -10,5 +10,5 @@ export function runTestAs(role) {
 }
 
 export function caseworkerAppUrl() {
-    return process.env.NSM_ASSESS_DEV_URL;
+    return process.env.NSCC_CASEWORKER_URL;
 }

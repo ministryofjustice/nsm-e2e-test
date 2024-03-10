@@ -4,7 +4,7 @@ The `auth.setup.js` file contains two test fixtures for authenticating as a supe
 
 The authentication state can be loaded in subsequent tests to simulate a logged-in user.
 
-AppURL is set in the environment variable as `NSM_ASSESS_DEV_URL`
+AppURL is set in the environment variable as `NSCC_CASEWORKER_URL`
 
 ## Usage
 

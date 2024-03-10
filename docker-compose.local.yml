@@ -6,9 +6,9 @@ services:
       - .:/e2e
     stdin_open: true # docker run -i
     tty: true # docker run -t
-  nsm-crm7-claim:
-    build: https://github.com/ministryofjustice/laa-claim-non-standard-magistrate-fee-backend.git#main
-  nsm-crm7-assess:
-    build: https://github.com/ministryofjustice/laa-assess-non-standard-magistrate-fee.git#main
-  nsm-crm7-appstore:
+  nscc-provider:
+    build: https://github.com/ministryofjustice/laa-submit-crime-forms.git#main
+  nscc-caseworker:
+    build: https://github.com/ministryofjustice/laa-assess-crime-forms.git#main
+  nscc-appstore:
     build: https://github.com/ministryofjustice/laa-crime-application-store.git#main
