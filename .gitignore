@@ -9,4 +9,5 @@ playwright/.auth
 .vscode/
 tmp/
 .env.local
+.idea/
 ```
