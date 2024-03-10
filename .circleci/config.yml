@@ -17,22 +17,13 @@ jobs:
 
       # Pull nscc provider image
       - aws-cli/setup:
-          role_arn: $CLAIM_ECR_ROLE_TO_ASSUME # this will use the env var
+          role_arn: $PROVIDER_ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION
       - run:
           name: Pull NSCC provider image
           command: |
             echo "Pulling NSCC provider image"
             ./.circleci/pull_image nscc-provider
-      # Pull nscc caseworker image
-      - aws-cli/setup:
-          role_arn: $ASSESS_ECR_ROLE_TO_ASSUME
-          region: $ECR_REGION
-      - run:
-          name: Pull NSCC caseworker image
-          command: |
-            echo "Pulling NSCC caseworker image"
-            ./.circleci/pull_image nscc-caseworker
       # Pull nscc appstore image
       - aws-cli/setup:
           role_arn: $APPSTORE_ECR_ROLE_TO_ASSUME
@@ -42,6 +33,15 @@ jobs:
           command: |
             echo "Pulling NSCC-appstore image"
             ./.circleci/pull_image nscc-appstore
+      # Pull nscc caseworker image
+      - aws-cli/setup:
+          role_arn: $CASEWORKER_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run:
+          name: Pull NSCC caseworker image
+          command: |
+            echo "Pulling NSCC caseworker image"
+            ./.circleci/pull_image nscc-caseworker
 
       # Add other images (i.e. assess, appstore and claim) to pull
       - run:
