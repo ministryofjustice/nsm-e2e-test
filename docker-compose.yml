@@ -65,7 +65,7 @@ services:
 
   nscc-provider:
     container_name: nscc-provider
-    image: ${NSCC_PROVIDER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-submit-crime-forms-dev-ecr:main}
+    image: ${NSCC_PROVIDER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-submit-crime-forms-dev-ecr:latest}
     ports:
       - 3001:3000
     environment:
@@ -90,7 +90,7 @@ services:
 
   nscc-caseworker:
     container_name: nscc-caseworker
-    image: ${NSCC_CASEWORKER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-assess-crime-forms-dev-ecr:main}
+    image: ${NSCC_CASEWORKER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-assess-crime-forms-dev-ecr:latest}
     ports:
       - 3002:3000
     environment:
@@ -119,7 +119,7 @@ services:
 
   nscc-appstore:
     container_name: nscc-appstore
-    image: ${NSCC_APPSTORE_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-crime-application-store-dev:main}
+    image: ${NSCC_APPSTORE_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-crime-application-store-dev:latest}
     environment:
       - AUTHENTICATION_REQUIRED=False
       - POSTGRES_USERNAME=postgres
