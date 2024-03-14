@@ -48,7 +48,6 @@ jobs:
             cd /home/circleci/project
             docker-compose build
             docker-compose run start_applications
-            docker-compose up --build laa-crime-forms-end-to-end-tests
       - run:
           name: "Failure: output container logs to console"
           command: |
@@ -58,7 +57,7 @@ jobs:
           name: Run end to end tests
           command: |
             cd /home/circleci/project
-            docker-compose run --name nsm-e2e-tests nsm-e2e-tests
+            docker-compose run laa-crime-forms-end-to-end-tests
 
 workflows:
   build:
