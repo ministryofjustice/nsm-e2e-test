@@ -40,7 +40,7 @@ services:
 
   nscc-db-services:
     container_name: nscc-db-services
-    image: postgis/postgis:16-3.4-alpine
+    image: postgis/postgis:16-3.4
     volumes:
       - ./tmp/pgdata:/var/lib/data
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
@@ -52,7 +52,7 @@ services:
       interval: 5s
       timeout: 40s
       retries: 5
-      start_period: 40s
+      start_period: 60s
     ports:
       - 5432:5432
 
