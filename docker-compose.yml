@@ -33,14 +33,16 @@ services:
     container_name: laa-crime-forms-end-to-end-tests
     build: .
     environment:
-      - NSCC_CASEWORKER_URL=${NSCC_CASEWORKER_URL}
-      - NSCC_PROVIDER_URL=${NSCC_PROVIDER_URL}
+      - NSCC_CASEWORKER_URL=${NSCC_CASEWORKER_URL:-http://nscc-caseworker:3000}
+      - NSCC_PROVIDER_URL=${NSCC_PROVIDER_URL:-nscc-provider:3000}
     volumes:
       - .:/e2e
       - ./data:/data
     depends_on:
       - nscc-db-services
+      - nscc-provider
       - nscc-caseworker
+      - nscc-appstore
     networks:
       - app_net
 
@@ -62,7 +64,6 @@ services:
         ipv4_address: 172.20.1.10
 
   # NSCC PROVIDER service
-
   nscc-provider:
     container_name: nscc-provider
     image: ${NSCC_PROVIDER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-submit-crime-forms-dev-ecr:latest}
@@ -90,7 +91,7 @@ services:
 
   nscc-caseworker:
     container_name: nscc-caseworker
-    image: ${NSCC_CASEWORKER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-assess-non-standard-magistrate-fee-dev:latest}
+    image: ${NSCC_CASEWORKER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-assess-crime-forms-dev:latest}
     ports:
       - 3002:3000
     environment:
@@ -119,7 +120,7 @@ services:
 
   nscc-appstore:
     container_name: nscc-appstore
-    image: ${NSCC_APPSTORE_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/crm7team/laa-crime-application-store-dev:latest}
+    image: ${NSCC_APPSTORE_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-crime-application-store-dev:latest}
     environment:
       - AUTHENTICATION_REQUIRED=False
       - POSTGRES_USERNAME=postgres
