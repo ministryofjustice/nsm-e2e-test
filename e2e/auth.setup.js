@@ -1,8 +1,22 @@
 import { test as setup, expect } from '@playwright/test';
-import { caseworkerAppUrl } from '../helpers/index';
+import { caseworkerAppUrl, providerAppUrl } from '../helpers/index';
 
 const supervisorFile = 'playwright/.auth/supervisor.json';
 const caseworkerFile = 'playwright/.auth/caseworker.json';
+const providerFile = 'playwright/.auth/provider.json';
+
+setup('authenticate as provider', async ({ page }) => {
+    // Perform authentication steps. Replace these actions with your own.
+    await page.goto(providerAppUrl());
+    await page.getByRole('button', { name: 'Login to Warden (Single' }).click();
+    // Wait until the page reaches a state where all cookies are set.
+    await expect(page.getByText('single@office.com')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Your claims' })).toBeVisible();
+
+    // End of authentication steps.
+
+    await page.context().storageState({ path: providerFile });
+});
 
 setup('authenticate as supervisor', async ({ page }) => {
     // Perform authentication steps. Replace these actions with your own.
