@@ -23,7 +23,6 @@ services:
       - nscc-provider
       - nscc-caseworker
       - nscc-appstore
-      - laa-crime-forms-end-to-end-tests
 
   laa-crime-forms-end-to-end-tests:
     container_name: laa-crime-forms-end-to-end-tests
