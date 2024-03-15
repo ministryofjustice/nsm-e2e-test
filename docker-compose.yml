@@ -35,7 +35,6 @@ services:
       - .:/e2e
       - ./data:/data
 
-
   # NSCC DATABASE services
 
   nscc-db-services:
@@ -48,7 +47,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: laa_crime_application_store
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready"]
+      test: ["CMD-SHELL", "pg_isready"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -56,14 +55,13 @@ services:
     ports:
       - 5432:5432
 
- #nscc redis service
+  #nscc redis service
   nscc-redis:
     container_name: nscc-redis
-    image: 'redis:7.2.4-alpine3.19'
+    image: "redis:7.2.4-alpine3.19"
     command: redis-server
     ports:
-      - '6379:6379'
-
+      - "6379:6379"
 
   # NSCC PROVIDER service
   nscc-provider:
@@ -91,10 +89,9 @@ services:
       nscc-redis:
         condition: service_started
       nscc-db-services:
-          condition: service_healthy
+        condition: service_healthy
     command: |
       bin/rails db:prepare
-
 
   # NSCC CASEWORKER service
 
