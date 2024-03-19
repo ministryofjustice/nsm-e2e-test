@@ -1,3 +1,0 @@
-CREATE DATABASE laa_claim_non_standard_magistrate_fee_dev;
-CREATE DATABASE laa_assess_non_standard_magistrate_fee_dev;
-CREATE DATABASE laa_crime_application_store;

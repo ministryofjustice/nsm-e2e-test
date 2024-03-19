@@ -7,8 +7,11 @@ services:
     stdin_open: true # docker run -i
     tty: true # docker run -t
   nscc-provider:
+    platform: ${LOCAL_PLATFORM}
     build: https://github.com/ministryofjustice/laa-submit-crime-forms.git#main
   nscc-caseworker:
+    platform: ${LOCAL_PLATFORM}
     build: https://github.com/ministryofjustice/laa-assess-crime-forms.git#main
   nscc-appstore:
+    platform: ${LOCAL_PLATFORM}
     build: https://github.com/ministryofjustice/laa-crime-application-store.git#main
