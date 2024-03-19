@@ -1,58 +1,71 @@
 import { test, expect } from '@playwright/test';
-import { YourClaimsPage } from '../pages/provider/your-claims';
-import { runTestAs, fillDate } from '../../../helpers';
+import { fillDate } from '../../../helpers';
+import {
+    YourClaimsPage,
+    WhatAreYouClaimingPage,
+    YouClaimProgressPage,
+    YourDetailsPage,
+    DefendantDetailsPage,
+} from '../pages/provider';
+import { runTestAs } from '../../../helpers';
+export default function createTests() {
+    let page;
+    test.describe.configure({ mode: 'serial' });
 
-test.describe('As a provider I want to submit my claim', () => {
-
+    test.beforeAll(async ({ browser }) => {
+        page = await browser.newPage();
+    });
+    test.afterAll(async () => {
+        await page.close();
+    });
     // Authenticate as provider
     test.use({ storageState: runTestAs('provider') })
-    // Checking current risk level
-    test(' Start a new claim with No Disbursements and no uploads', async ({ page }) => {
-        const yourClaimsPage = new YourClaimsPage(page);
-        // Actions
-        await yourClaimsPage.goto();
-        // Expectations
-        await expect(page.getByRole('button', { name: 'Start a new claim' })).toBeVisible();
-        await page.getByRole('button', { name: 'Start a new claim' }).click();
 
+    // Checking current risk level
+    test(' Start a new claim with No Disbursements and no uploads', async () => {
+        await test.step('Starting a new claim', async () => {
+            const yourClaimsPage = new YourClaimsPage(page);
+            // Actions
+            await yourClaimsPage.goto();
+            // Expectations
+            await expect(page.getByRole('button', { name: 'Start a new claim' })).toBeVisible();
+            await page.getByRole('button', { name: 'Start a new claim' }).click();
+        });
+    });
+
+    test('Filling up why claiming', async () => {
+        const whatAreYouClaimingPage = new WhatAreYouClaimingPage(page);
         // What you are claiming for
         await expect(page.getByRole('heading', { name: 'What you are claiming for' })).toBeVisible();
-        await page.getByLabel('What is your unique file').fill('120223/001');
-        await page.getByText('Non-standard magistrates\' court payment', { exact: true }).click();
-        // await page.getByRole('textbox', { name: 'Day' }).fill('27');
-        // await page.getByRole('textbox', { name: 'Month' }).fill('3');
-        // await page.getByRole('textbox', { name: 'Year' }).fill('2021');
-        await fillDate(page, 27, 3, 2021);
-        await page.getByRole('button', { name: 'Save and continue' }).click();
-
+        await whatAreYouClaimingPage.fillClaimForm();
         // Your claim progress
         await expect(page.getByRole('heading', { name: 'Your claim progress' })).toBeVisible();
-        await page.getByRole('link', { name: 'Your details' }).click();
+    });
 
+    test('Go to details and select Your details', async () => {
+        const yourClaimProgressPage = new YouClaimProgressPage(page);
+        await yourClaimProgressPage.clickOnYourDetails();
         // Your details
         await expect(page.getByRole('heading', { name: 'Your details' })).toBeVisible();
-        await page.getByLabel('Firm name').fill('Test Automate');
-        await page.getByLabel('Firm account number').fill('12345678');
-        await page.getByLabel('Address line 1').fill('102 Petty France');
-        await page.getByLabel('Town or city').fill('London');
-        await page.getByLabel('Postcode').fill('SW1H 9AJ');
-        // is your firm registered for VAT
-        await page.getByRole('group', { name: 'Is your firm VAT registered?' }).getByLabel('Yes').check();
-        await page.getByLabel('Solicitor full name').fill('Any Testname');
-        await page.getByLabel('Solicitor reference number').fill('2P341B');
-        await page.getByRole('group', { name: 'Do you want to add' }).getByLabel('No').check();
-        await page.getByRole('button', { name: 'Save and continue' }).click();
+    });
 
+    test('Filling up Your details', async () => {
+        const yourDetails = new YourDetailsPage(page);
+        yourDetails.fillYourDetails();
         // Defendant details
         await expect(page.getByRole('heading', { name: 'Defendant details' })).toBeVisible();
-        await page.getByLabel('First name').fill('Lex');
-        await page.getByLabel('Last name').fill('Luthor');
-        await page.getByLabel('MAAT ID').fill('1234');
-        await page.getByRole('button', { name: 'Save and continue' }).click();
+    });
 
-        // Defendant lists
+    test('Filling up Defendant details', async () => {
+        const defendantDetails = new DefendantDetailsPage(page);
+        defendantDetails.addDefendant();
         await expect(page.getByRole('heading', { name: 'You added 1 defendant' })).toBeVisible();
         await expect(page.getByRole('cell', { name: 'Lex Luthor' })).toBeVisible();
+    });
+
+    test('Submit claim', async () => {
+        // Defendant lists
+
         await page.getByRole('group', { name: 'Do you want to add another defendant?' }).getByLabel('No').check();
         await page.getByRole('button', { name: 'Save and continue' }).click();
 
@@ -164,6 +177,7 @@ test.describe('As a provider I want to submit my claim', () => {
         await page.getByLabel('Full name').fill('Test Automate');
         await page.getByRole('button', { name: 'Save and submit' }).click();
 
-
     });
-});
+
+
+}

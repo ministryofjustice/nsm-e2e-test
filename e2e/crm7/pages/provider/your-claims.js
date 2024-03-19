@@ -1,5 +1,5 @@
 import { providerAppUrl } from '../../../../helpers/index'
-export class YourClaimsPage {
+export default class YourClaimsPage {
 
     constructor(page) {
         this.page = page;
