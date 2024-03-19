@@ -60,3 +60,25 @@ This will open the dev env for provider app and you will able to record a test.
 ## License
 
 This project is licensed under the MIT License.
+
+## Running in docker containers
+It is not possible to pull from the ecr repos if working locally, you must build the images from source
+If you have difficulties on a mac M1 then you can set the platform being used before building the applications.
+```bash
+export LOCAL_PLATFORM=linux/amd64
+```
+
+To build the images: 
+```bash
+docker-compose -p="laa-crime-forms-end-to-end-test-applications" -f docker-compose.yml -f docker-compose.local.yml up -d --build
+```
+
+To create the containers start the applications:
+```bash
+docker-compose -p="laa-crime-forms-end-to-end-test-applications" run start_applications
+```
+
+To run the tests:
+```bash
+docker-compose -p="laa-crime-forms-end-to-end-test-applications" run laa-crime-forms-end-to-end-tests
+```
