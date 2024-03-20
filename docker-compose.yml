@@ -103,7 +103,6 @@ services:
       <<: *providerenvironment
       RAILS_DEVELOPMENT_HOSTS: nscc-provider-worker
 
-
   # NSCC CASEWORKER service
 
   nscc-caseworker: &caseworker
@@ -123,10 +122,10 @@ services:
       SIDEKIQ_WEB_UI_PASSWORD: sidekiq
       DATABASE_URL: postgresql://postgres:postgres@nscc-db-services:5432/laa_assess_non_standard_magistrate_fee_dev
       OMNIAUTH_TEST_MODE: true
-      OMNIAUTH_AZURE_CLIENT_ID: ''
-      OMNIAUTH_AZURE_CLIENT_SECRET: ''
-      OMNIAUTH_AZURE_REDIRECT_URI: ''
-      OMNIAUTH_AZURE_TENANT_ID: ''
+      OMNIAUTH_AZURE_CLIENT_ID: ""
+      OMNIAUTH_AZURE_CLIENT_SECRET: ""
+      OMNIAUTH_AZURE_REDIRECT_URI: ""
+      OMNIAUTH_AZURE_TENANT_ID: ""
       APP_STORE_URL: http://nscc-appstore:8000
       DEV_AUTH_ENABLED: true
       GOVUK_NOTIFY_API_KEY: 12345
