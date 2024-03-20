@@ -22,6 +22,8 @@ services:
       - nscc-db-services
       - nscc-provider
       - nscc-caseworker
+      - nscc-provider-worker
+      - nscc-caseworker-worker
       - nscc-appstore
       - nscc-redis
 
@@ -64,68 +66,85 @@ services:
       - "6379:6379"
 
   # NSCC PROVIDER service
-  nscc-provider:
+  nscc-provider: &provider
     container_name: nscc-provider
     image: ${NSCC_PROVIDER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-submit-crime-forms-dev-ecr:latest}
     ports:
       - 3001:3000
-    environment:
-      - SECRET_KEY_BASE=needed_for_assets_precompile
-      - RAILS_ENV=development
-      - RAILS_DEVELOPMENT_HOSTS=nscc-provider
-      - RAILS_LOG_TO_STDOUT=true
-      - ENV=development
-      - APP_STORE_URL=http://nscc-appstore:8000
-      - REDIS_URL=redis://nscc-redis:6379/1
-      - REDIS_PASSWORD=redis
-      - SIDEKIQ_WEB_UI_USERNAME=sidekiq
-      - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
-      - DATABASE_URL=postgresql://postgres:postgres@nscc-db-services:5432/laa_claim_non_standard_magistrate_fee_dev
-      - LAA_PORTAL_IDP_METADATA_FILE=config/laa_portal/metadata/samlmock.xml
-      - OMNIAUTH_TEST_MODE=true
-      - MAX_UPLOAD_SIZE_BYTES=10485760
-      - GOVUK_NOTIFY_API_KEY=12345
+    environment: &providerenvironment
+      SECRET_KEY_BASE: needed_for_assets_precompile
+      RAILS_ENV: test
+      RAILS_DEVELOPMENT_HOSTS: nscc-provider
+      RAILS_LOG_TO_STDOUT: true
+      ENV: test
+      APP_STORE_URL: http://nscc-appstore:8000
+      REDIS_URL: redis://nscc-redis:6379/1
+      REDIS_PASSWORD: redis
+      SIDEKIQ_WEB_UI_USERNAME: sidekiq
+      SIDEKIQ_WEB_UI_PASSWORD: sidekiq
+      DATABASE_URL: postgresql://postgres:postgres@nscc-db-services:5432/laa_claim_non_standard_magistrate_fee_dev
+      LAA_PORTAL_IDP_METADATA_FILE: config/laa_portal/metadata/samlmock.xml
+      OMNIAUTH_TEST_MODE: true
+      MAX_UPLOAD_SIZE_BYTES: 10485760
+      GOVUK_NOTIFY_API_KEY: 12345
     depends_on:
       nscc-redis:
         condition: service_started
       nscc-db-services:
         condition: service_healthy
-    command: |
-      bin/rails db:prepare
+
+  nscc-provider-worker:
+    <<: *provider
+    ports:
+      - 3011:3000
+    entrypoint: bundle exec sidekiq
+    container_name: nscc-provider-worker
+    environment:
+      <<: *providerenvironment
+      RAILS_DEVELOPMENT_HOSTS: nscc-provider-worker
+
 
   # NSCC CASEWORKER service
 
-  nscc-caseworker:
+  nscc-caseworker: &caseworker
     container_name: nscc-caseworker
     image: ${NSCC_CASEWORKER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-assess-crime-forms-dev:latest}
     ports:
       - 3002:3000
-    environment:
-      - SECRET_KEY_BASE=needed_for_assets_precompile
-      - RAILS_ENV=development
-      - RAILS_DEVELOPMENT_HOSTS=nscc-caseworker
-      - ENV=development
-      - REDIS_URL=redis://nscc-redis:6379/2
-      - REDIS_PASSWORD=redis
-      - RAILS_LOG_TO_STDOUT=true
-      - SIDEKIQ_WEB_UI_USERNAME=sidekiq
-      - SIDEKIQ_WEB_UI_PASSWORD=sidekiq
-      - DATABASE_URL=postgresql://postgres:postgres@nscc-db-services:5432/laa_assess_non_standard_magistrate_fee_dev
-      - OMNIAUTH_TEST_MODE=true
-      - OMNIAUTH_AZURE_CLIENT_ID=''
-      - OMNIAUTH_AZURE_CLIENT_SECRET=''
-      - OMNIAUTH_AZURE_REDIRECT_URI=''
-      - OMNIAUTH_AZURE_TENANT_ID=''
-      - APP_STORE_URL=http://nscc-appstore:8000
-      - DEV_AUTH_ENABLED=true
-      - GOVUK_NOTIFY_API_KEY=12345
+    environment: &caseworkerenvironment
+      SECRET_KEY_BASE: needed_for_assets_precompile
+      RAILS_ENV: test
+      RAILS_DEVELOPMENT_HOSTS: nscc-caseworker
+      ENV: test
+      REDIS_URL: redis://nscc-redis:6379/2
+      REDIS_PASSWORD: redis
+      RAILS_LOG_TO_STDOUT: true
+      SIDEKIQ_WEB_UI_USERNAME: sidekiq
+      SIDEKIQ_WEB_UI_PASSWORD: sidekiq
+      DATABASE_URL: postgresql://postgres:postgres@nscc-db-services:5432/laa_assess_non_standard_magistrate_fee_dev
+      OMNIAUTH_TEST_MODE: true
+      OMNIAUTH_AZURE_CLIENT_ID: ''
+      OMNIAUTH_AZURE_CLIENT_SECRET: ''
+      OMNIAUTH_AZURE_REDIRECT_URI: ''
+      OMNIAUTH_AZURE_TENANT_ID: ''
+      APP_STORE_URL: http://nscc-appstore:8000
+      DEV_AUTH_ENABLED: true
+      GOVUK_NOTIFY_API_KEY: 12345
     depends_on:
       nscc-redis:
         condition: service_started
       nscc-db-services:
         condition: service_healthy
-    command: |
-      bin/rails db:prepare
+
+  nscc-caseworker-worker:
+    <<: *caseworker
+    ports:
+      - 3012:3000
+    container_name: nscc-caseworker-worker
+    entrypoint: bundle exec sidekiq
+    environment:
+      <<: *caseworkerenvironment
+      RAILS_DEVELOPMENT_HOSTS: nscc-caseworker-worker
 
   # NSCC Application Store service
 
