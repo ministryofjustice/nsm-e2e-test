@@ -2,7 +2,7 @@
 FROM node:16
 
 # Get the latest version of Playwright
-FROM mcr.microsoft.com/playwright:v1.42.1-jammy
+FROM mcr.microsoft.com/playwright:v1.41.1-jammy
 
 # Set the working directory in the container to /app
 WORKDIR /app
@@ -22,4 +22,4 @@ RUN npm install
 COPY . .
 
 # Run the e2e-test when the container launches
-CMD ["npm", "run", "e2e-test"]
+# CMD ["npm", "run", "e2e-test"]
