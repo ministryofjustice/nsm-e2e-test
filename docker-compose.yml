@@ -113,9 +113,9 @@ services:
     environment: &caseworkerenvironment
       SECRET_KEY_BASE: needed_for_assets_precompile
       RAILS_ENV: test
-      ENV: localhost
+      ENV: local
       RAILS_DEVELOPMENT_HOSTS: nscc-caseworker
-      REDIS_URL: redis://nscc-redis:6379/1
+      REDIS_URL: redis://nscc-redis:6379/2
       REDIS_PASSWORD: redis
       RAILS_LOG_TO_STDOUT: true
       SIDEKIQ_WEB_UI_USERNAME: sidekiq
