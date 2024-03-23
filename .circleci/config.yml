@@ -45,7 +45,6 @@ jobs:
       - run:
           name: Build / Check services are up
           command: |
-            cd /home/circleci/project
             docker-compose build
             docker-compose run start_applications
       - run:
@@ -56,7 +55,6 @@ jobs:
       - run:
           name: Run end to end tests
           command: |
-            cd /home/circleci/project
             docker-compose run laa-crime-forms-end-to-end-tests
 
 workflows:
