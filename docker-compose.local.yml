@@ -9,7 +9,6 @@ services:
     platform: ${LOCAL_PLATFORM}
     build: https://github.com/ministryofjustice/laa-submit-crime-forms.git#main
 
-
   nscc-caseworker:
     platform: ${LOCAL_PLATFORM}
     build: https://github.com/ministryofjustice/laa-assess-crime-forms.git#main
