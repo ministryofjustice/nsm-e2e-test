@@ -8,14 +8,11 @@ services:
   nscc-provider:
     platform: ${LOCAL_PLATFORM}
     build: https://github.com/ministryofjustice/laa-submit-crime-forms.git#main
-    volumes:
-      - ./tmp/logs/provider:/usr/src/app/log
+
 
   nscc-caseworker:
     platform: ${LOCAL_PLATFORM}
     build: https://github.com/ministryofjustice/laa-assess-crime-forms.git#main
-    volumes:
-      - ./tmp/logs/caseworker:/usr/src/app/log
 
   nscc-appstore:
     platform: ${LOCAL_PLATFORM}
