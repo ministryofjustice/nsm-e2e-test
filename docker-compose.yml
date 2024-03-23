@@ -69,8 +69,6 @@ services:
   nscc-provider: &provider
     container_name: nscc-provider
     image: ${NSCC_PROVIDER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-submit-crime-forms-dev-ecr:latest}
-    volumes:
-      - ./tmp/logs/provider:/usr/src/app/log
     ports:
       - 3001:3000
     environment: &providerenvironment
@@ -110,8 +108,6 @@ services:
   nscc-caseworker: &caseworker
     container_name: nscc-caseworker
     image: ${NSCC_CASEWORKER_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-assess-crime-forms-dev:latest}
-    volumes:
-      - ./tmp/logs/caseworker:/usr/src/app/log
     ports:
       - 3002:3000
     environment: &caseworkerenvironment

@@ -73,17 +73,17 @@ export LOCAL_PLATFORM=linux/amd64
 To build the images:
 
 ```bash
-docker-compose -p="laa-crime-forms-end-to-end-test-applications" -f docker-compose.yml -f docker-compose.local.yml up -d --build
+docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
 ```
 
 To create the containers start the applications:
 
 ```bash
-docker-compose -p="laa-crime-forms-end-to-end-test-applications" run start_applications
+docker-compose run start_applications
 ```
 
 To run the tests:
 
 ```bash
-docker-compose -p="laa-crime-forms-end-to-end-test-applications" run laa-crime-forms-end-to-end-tests
+docker-compose run laa-crime-forms-end-to-end-tests
 ```
