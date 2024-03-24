@@ -33,7 +33,6 @@ services:
       - NSCC_CASEWORKER_URL=${NSCC_CASEWORKER_URL:-http://nscc-caseworker:3000}
       - NSCC_PROVIDER_URL=${NSCC_PROVIDER_URL:-http://nscc-provider:3000}
     volumes:
-      - .:/app
       - ./data:/data
 
   # NSCC DATABASE services
