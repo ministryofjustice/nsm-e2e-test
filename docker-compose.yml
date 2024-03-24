@@ -1,6 +1,5 @@
 # This Docker Compose file sets up multiple services for a web application stack.
 # The services include a database service (nscc-db-services), two application services (nscc-provider, nscc-caseworker), and an application store service (nscc-appstore).
-# Each service is assigned a static IP address on the 'app_net' network, which is defined with a subnet of 172.20.0.0/16.
 # The 'start_applications' service uses the 'dockerize' tool to wait for the other services to be available before starting.
 # The 'laa-crime-forms-end-to-end-tests' service runs end-to-end tests for the application.
 # Environment variables are used to configure the services, and volumes are used for data persistence and sharing files between the host and containers.
@@ -34,7 +33,7 @@ services:
       - NSCC_CASEWORKER_URL=${NSCC_CASEWORKER_URL:-http://nscc-caseworker:3000}
       - NSCC_PROVIDER_URL=${NSCC_PROVIDER_URL:-http://nscc-provider:3000}
     volumes:
-      - .:/e2e_source
+      - .:/app_local
       - ./data:/data
 
   # NSCC DATABASE services

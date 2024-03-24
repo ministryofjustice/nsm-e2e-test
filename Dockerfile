@@ -10,15 +10,13 @@ RUN apt-get update && apt-get -y install libnss3 libatk-bridge2.0-0 libdrm-dev l
 # Get the necessary tools to run the AWS-CLI
 RUN apt-get install unzip
 
+WORKDIR /app
+
 # Copy package.json and package-lock.json to the working directory
-COPY package*.json  .
+COPY package*.json ./
 
 # Install the application dependencies
 RUN npm install
-
-# Set the working directory in the container to /app
-RUN mkdir  /e2e_source
-WORKDIR /e2e_source
 
 # Copy the rest of the application code to the working directory
 COPY . .

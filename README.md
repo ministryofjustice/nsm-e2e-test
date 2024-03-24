@@ -70,20 +70,19 @@ If you have difficulties on a mac M1 then you can set the platform being used be
 export LOCAL_PLATFORM=linux/amd64
 ```
 
-To build the images:
 
-```bash
-docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
-```
+To run the tests locally just run this script:
 
-To create the containers start the applications:
+`./run_test_local.sh`
 
-```bash
-docker-compose run start_applications
-```
+If you want a more manual approach:
 
-To run the tests:
+`export DOCKER_BUILDKIT=0`
 
-```bash
-docker-compose run laa-crime-forms-end-to-end-tests
-```
+To build locally:
+`docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
+
+bash into the container and run them from there:
+`docker-compose run --entrypoint sh laa-crime-forms-end-to-end-tests`
+
+To run the tests in the docker container, cd into the mapped folder `app_local` first. You can then edit the files on your development machine and re-run the tests. 
