@@ -85,4 +85,6 @@ To build locally:
 bash into the container and run them from there:
 `docker-compose run --entrypoint sh laa-crime-forms-end-to-end-tests`
 
-To run the tests in the docker container, cd into the mapped folder `app_local` first. You can then edit the files on your development machine and re-run the tests. 
+To run the tests in the docker container, make sure you are in the app folder first. 
+
+You can then edit the files on your development machine and re-run the tests. 
