@@ -70,7 +70,6 @@ If you have difficulties on a mac M1 then you can set the platform being used be
 export LOCAL_PLATFORM=linux/amd64
 ```
 
-
 To run the tests locally just run this script:
 
 `./run_test_local.sh`
@@ -85,6 +84,6 @@ To build locally:
 bash into the container and run them from there:
 `docker-compose run --entrypoint sh laa-crime-forms-end-to-end-tests`
 
-To run the tests in the docker container, make sure you are in the app folder first. 
+To run the tests in the docker container, make sure you are in the app folder first.
 
-You can then edit the files on your development machine and re-run the tests. 
+You can then edit the files on your development machine and re-run the tests.
