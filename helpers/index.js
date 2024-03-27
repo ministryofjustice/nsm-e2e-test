@@ -40,7 +40,26 @@ export const formData = {
         firstName: 'Lex',
         lastName: 'Luthor',
         maatId: '1234'
-    }
+    },
+    main_offence_date: {
+        day: '1',
+        month: '1',
+        year: '2015'
+    },
+    hearing_date: {
+        day: '1',
+        month: '5',
+        year: '2015'
+    },
+    hearing_count: '1',
+    hearing_outcome: 'CP19',
+    matter_type: '9',
+    evidence_pages: {
+        prosecution: '10',
+        defence: '10',
+    },
+    witnesses: '1',
+
 };
 
 export async function fillDate(page, day, month, year) {
