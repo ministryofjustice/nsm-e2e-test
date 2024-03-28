@@ -10,8 +10,8 @@ export class AllClaimsPage {
         await this.page.goto(url);
     }
 
-    async changeRisk(claimRef) {
-        await this.page.getByRole('link', { name: claimRef }).click();
-        await this.page.getByRole('link', { name: 'Change risk' }).click();
-    }
+    // async changeRisk(claimRef) {
+    //     await this.page.getByRole('link', { name: claimRef }).click();
+    //     await this.page.getByRole('link', { name: 'Change risk' }).click();
+    // }
 }

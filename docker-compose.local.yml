@@ -1,12 +1,22 @@
 version: "3.4"
 
 services:
-  nsm-e2e-tests:
-    volumes:
-      - .:/e2e
+  laa-crime-forms-end-to-end-tests:
     stdin_open: true # docker run -i
     tty: true # docker run -t
-  nsm-crm7-claim:
-    build: https://github.com/ministryofjustice/laa-claim-non-standard-magistrate-fee-backend.git#main
-  nsm-crm7-assess:
-    build: https://github.com/ministryofjustice/laa-assess-non-standard-magistrate-fee.git#main
+
+  nscc-provider:
+    platform: ${LOCAL_PLATFORM}
+    build: https://github.com/ministryofjustice/laa-submit-crime-forms.git#main
+    volumes:
+      - ./tmp/logs/provider:/usr/src/app/log
+
+  nscc-caseworker:
+    platform: ${LOCAL_PLATFORM}
+    build: https://github.com/ministryofjustice/laa-assess-crime-forms.git#main
+    volumes:
+      - ./tmp/logs/caseworker:/usr/src/app/log
+
+  nscc-appstore:
+    platform: ${LOCAL_PLATFORM}
+    build: https://github.com/ministryofjustice/laa-crime-application-store.git#main

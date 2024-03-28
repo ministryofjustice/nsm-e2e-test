@@ -2,23 +2,19 @@
 FROM node:16
 
 # Get the latest version of Playwright
-FROM mcr.microsoft.com/playwright:focal
+FROM mcr.microsoft.com/playwright:v1.42.1-jammy
 
-# Set the working directory in the container to /app
+# Get the needed libraries to run Playwright
+RUN apt-get update && apt-get -y install libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev libasound-dev libatspi2.0-0 libxshmfence-dev net-tools iputils-ping
+
+# Get the necessary tools to run the AWS-CLI
+RUN apt-get install unzip
+
 WORKDIR /app
-
-# Set the environment variables for the test [ need to pass it from somewhere]
-ENV NSM_ASSESS_DEV_URL=https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/
-ENV NSM_CLAIMS_DEV_URL=https://crm7dev.apps.live.cloud-platform.service.justice.gov.uk/
 
 # Copy package.json and package-lock.json to the working directory
 COPY package*.json ./
 
-# Get the needed libraries to run Playwright
-RUN apt-get update && apt-get -y install libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev libasound-dev libatspi2.0-0 libxshmfence-dev
-
-# Get the necessary tools to run the AWS-CLI
-RUN apt-get install unzip
 # Install the application dependencies
 RUN npm install
 
