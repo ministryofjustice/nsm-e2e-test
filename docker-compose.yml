@@ -25,6 +25,7 @@ services:
       - nscc-caseworker-worker
       - nscc-appstore
       - nscc-redis
+      - nscc-metabase
 
   laa-crime-forms-end-to-end-tests:
     container_name: laa-crime-forms-end-to-end-tests
@@ -55,6 +56,24 @@ services:
     ports:
       - 5432:5432
 
+  nscc-metabase-db-services:
+    container_name: nscc-metabase-db-services
+    image: postgis/postgis:16-3.4-alpine
+    volumes:
+      - ./tmp/pgdata_metabase:/var/lib/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: metabase
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    ports:
+      - 5434:5432
+
   #nscc redis service
   nscc-redis:
     container_name: nscc-redis
@@ -62,6 +81,27 @@ services:
     command: redis-server
     ports:
       - "6379:6379"
+
+  nscc-metabase:
+    container_name: nscc-metabase
+    image: "metabase/metabase:v0.48.8"
+    restart: always
+    ports:
+      - 3003:3000
+    # volumes:
+    #   # declare your mount volume /host/dir:/container/dir
+    #   - /home/app/metabase-data:/metabase-data
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: postgres
+      MB_DB_PASS: postgres
+      MB_DB_HOST: nscc-metabase-db-services
+    depends_on:
+      - nscc-metabase-db-services
+    links:
+      - nscc-metabase-db-services
 
   # NSCC PROVIDER service
   nscc-provider: &provider
