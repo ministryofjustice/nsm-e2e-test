@@ -33,7 +33,8 @@ export const formData = {
     townOrCity: 'London',
     postcode: 'SW1H 9AJ',
     vatRegistered: 'Yes',
-    solicitorFullName: 'Any Testname',
+    solicitorFirstName: 'Any',
+    solicitorLastName: 'Testname',
     solicitorReferenceNumber: '2P341B',
     addAnotherSolicitor: 'No',
     defendant: {

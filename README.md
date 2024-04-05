@@ -63,7 +63,14 @@ This project is licensed under the MIT License.
 
 ## Running in docker containers
 
-It is not possible to pull from the ecr repos if working locally, you must build the images from source
+It is not possible to pull from the ecr repos if working locally, you must build the images from source. Inside the root of each repo, run `docker build -t <some-image-name> .` Then specify those images are to be used by setting env vars as follows:
+
+```bash
+export NSCC_PROVIDER_IMAGE=<provider-image-name>
+export NSCC_CASEWORKER_IMAGE=<caseworker-image-name>
+export NSCC_APPSTORE_IMAGE=<appstore-image-name>
+```
+
 If you have difficulties on a mac M1 then you can set the platform being used before building the applications.
 
 ```bash
