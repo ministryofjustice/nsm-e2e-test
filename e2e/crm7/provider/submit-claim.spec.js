@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { fillDate } from '../../../helpers';
 import {
     YourClaimsPage,
     WhatAreYouClaimingPage,
@@ -124,11 +123,6 @@ export default function createTests() {
     });
 
     test('Submit claim', async () => {
-
-
-
-
-
         // Letters and phone calls
 
         await page.getByLabel('Number of letters (optional)').fill('10');
@@ -173,6 +167,4 @@ export default function createTests() {
         await page.getByRole('button', { name: 'Save and submit' }).click();
 
     });
-
-
 }

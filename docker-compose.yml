@@ -21,8 +21,6 @@ services:
       - nscc-db-services
       - nscc-provider
       - nscc-caseworker
-      - nscc-provider-worker
-      - nscc-caseworker-worker
       - nscc-appstore
       - nscc-redis
 
@@ -85,21 +83,13 @@ services:
       OMNIAUTH_TEST_MODE: true
       MAX_UPLOAD_SIZE_BYTES: 10485760
       GOVUK_NOTIFY_API_KEY: 12345
+      RUN_SIDEKIQ_IN_TEST_MODE: true
+      ENABLE_SYNC_TRIGGER_ENDPOINT: true
     depends_on:
       nscc-redis:
         condition: service_started
       nscc-db-services:
         condition: service_healthy
-
-  nscc-provider-worker:
-    <<: *provider
-    ports:
-      - 3011:3000
-    entrypoint: bundle exec sidekiq
-    container_name: nscc-provider-worker
-    environment:
-      <<: *providerenvironment
-      RAILS_DEVELOPMENT_HOSTS: nscc-provider-worker
 
   # NSCC CASEWORKER service
 
@@ -127,21 +117,13 @@ services:
       APP_STORE_URL: http://nscc-appstore:8000
       DEV_AUTH_ENABLED: true
       GOVUK_NOTIFY_API_KEY: 12345
+      RUN_SIDEKIQ_IN_TEST_MODE: true
+      ENABLE_SYNC_TRIGGER_ENDPOINT: true
     depends_on:
       nscc-redis:
         condition: service_started
       nscc-db-services:
         condition: service_healthy
-
-  nscc-caseworker-worker:
-    <<: *caseworker
-    ports:
-      - 3012:3000
-    container_name: nscc-caseworker-worker
-    entrypoint: bundle exec sidekiq
-    environment:
-      <<: *caseworkerenvironment
-      RAILS_DEVELOPMENT_HOSTS: nscc-caseworker-worker
 
   # NSCC Application Store service
 
