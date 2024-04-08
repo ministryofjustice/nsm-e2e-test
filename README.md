@@ -63,13 +63,9 @@ This project is licensed under the MIT License.
 
 ## Running in docker containers
 
-It is not possible to pull from the ecr repos if working locally, you must build the images from source. Inside the root of each repo, run `docker build -t <some-image-name> .` Then specify those images are to be used by setting env vars as follows:
-
-```bash
-export NSCC_PROVIDER_IMAGE=<provider-image-name>
-export NSCC_CASEWORKER_IMAGE=<caseworker-image-name>
-export NSCC_APPSTORE_IMAGE=<appstore-image-name>
-```
+It is not possible to pull from the ecr repos if working locally.
+While `docker-compose.yml` is set up to pull images from ECR, `docker-compose.local.yml` is set up to override it to pull the source of each app from GitHub.
+If you experience error messages about not being able to access ECR, you may have an out-of-date docker engine. Docker desktop should be on at least version 4.28.
 
 If you have difficulties on a mac M1 then you can set the platform being used before building the applications.
 
