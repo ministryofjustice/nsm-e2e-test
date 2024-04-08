@@ -6,8 +6,8 @@ export default class ClaimDetailsPage {
     }
 
     async fillClaimDetails() {
-        await this.page.getByLabel('Number of pages of prosecution evidence').fill(formData.evidence_pages.prosecution);
-        await this.page.getByLabel('Number of pages of defence').fill(formData.evidence_pages.defence);
+        await this.page.getByLabel('Number of pages of prosecution evidence').fill(formData.evidencePages.prosecution);
+        await this.page.getByLabel('Number of pages of defence').fill(formData.evidencePages.defence);
         await this.page.getByLabel('Number of witnesses').fill(formData.witnesses);
         await this.page.getByRole('group', { name: 'Does this bill represent a' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you spend time watching' }).getByLabel('No').check();
