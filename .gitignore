@@ -8,4 +8,6 @@ playwright/.auth
 .DS_Store
 .vscode/
 tmp/
+.env.local
+.idea/
 ```
