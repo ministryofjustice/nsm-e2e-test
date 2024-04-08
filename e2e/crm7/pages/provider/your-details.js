@@ -12,7 +12,8 @@ export default class YourDetailsPage {
         await this.page.getByLabel('Town or city').fill(formData.townOrCity);
         await this.page.getByLabel('Postcode').fill(formData.postcode);
         await this.page.getByRole('group', { name: 'Is your firm VAT registered?' }).getByLabel('Yes').check();
-        await this.page.getByLabel('Solicitor full name').fill(formData.solicitorFullName);
+        await this.page.getByLabel('Solicitor first name').fill(formData.solicitorFirstName);
+        await this.page.getByLabel('Solicitor last name').fill(formData.solicitorLastName);
         await this.page.getByLabel('Solicitor reference number').fill(formData.solicitorReferenceNumber);
         await this.page.getByRole('group', { name: 'Do you want to add' }).getByLabel('No').check();
         await this.page.getByRole('button', { name: 'Save and continue' }).click();
