@@ -86,3 +86,20 @@ export function formatDate(dateObject) {
     const date = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
     return date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
 }
+
+export async function authenticateAsCaseworker(page) {
+    await page.goto(caseworkerAppUrl());
+    await page.getByLabel('Pick an account:').selectOption('case.worker@test.com');
+    await page.getByRole('button', { name: 'Sign in' }).click();
+}
+
+export async function authenticateAsSupervisor(page) {
+    await page.goto(caseworkerAppUrl());
+    await page.getByLabel('Pick an account:').selectOption('super.visor@test.com');
+    await page.getByRole('button', { name: 'Sign in' }).click();
+}
+
+export async function authenticateAsProvider(page) {
+    await page.goto(providerAppUrl());
+    await page.getByRole('button', { name: 'Log in as provider with single office code' }).click();
+}
