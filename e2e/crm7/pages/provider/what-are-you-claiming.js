@@ -7,7 +7,7 @@ export default class WhatAreYouClaimingPage {
     async fillClaimForm() {
         await this.page.getByLabel('What is your unique file').fill(formData.uniqueFile);
         await this.page.getByText(formData.claimType, { exact: true }).click();
-        await fillDate(this.page, formData.rep_order_date.day, formData.rep_order_date.month, formData.rep_order_date.year);
+        await fillDate(this.page, formData.repOrderDate.day, formData.repOrderDate.month, formData.repOrderDate.year);
         await this.page.getByRole('button', { name: 'Save and continue' }).click();
     }
 
