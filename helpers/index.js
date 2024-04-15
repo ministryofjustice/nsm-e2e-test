@@ -11,12 +11,12 @@ export function runTestAs(role) {
     }
 }
 
-export function caseworkerAppUrl() {
-    return process.env.NSCC_CASEWORKER_URL;
+export function caseworkerAppUrl(path = '') {
+    return `${process.env.NSCC_CASEWORKER_URL}${path}`;
 }
 
-export function providerAppUrl() {
-    return process.env.NSCC_PROVIDER_URL;
+export function providerAppUrl(path = '') {
+    return `${process.env.NSCC_PROVIDER_URL}${path}`;
 }
 
 export const formData = {
