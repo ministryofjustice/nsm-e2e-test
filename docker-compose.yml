@@ -83,7 +83,7 @@ services:
       RAILS_ENV: development
       ENV: localhost
       RAILS_DEVELOPMENT_HOSTS: nscc-provider
-      HOSTS: 'nscc-provider:3000'
+      HOSTS: "nscc-provider:3000"
       PROTOCOL: http
       RAILS_LOG_TO_STDOUT: enabled
       APP_STORE_URL: http://nscc-appstore:3000
@@ -116,7 +116,7 @@ services:
       RAILS_ENV: development
       ENV: local
       RAILS_DEVELOPMENT_HOSTS: nscc-caseworker
-      HOSTS: 'nscc-caseworker:3000'
+      HOSTS: "nscc-caseworker:3000"
       PROTOCOL: http
       REDIS_URL: redis://nscc-redis:6379/2
       REDIS_PASSWORD: redis
@@ -149,9 +149,9 @@ services:
       SECRET_KEY_BASE: any-key
       RAILS_ENV: development
       RAILS_DEVELOPMENT_HOSTS: nscc-appstore
-      AUTHENTICATION_REQUIRED: 'false'
+      AUTHENTICATION_REQUIRED: "false"
       DATABASE_URL: postgresql://postgres:postgres@nscc-db-services:5432/laa_crime_application_store
-      RUN_SIDEKIQ_IN_TEST_MODE: 'true'
+      RUN_SIDEKIQ_IN_TEST_MODE: "true"
     depends_on:
       nscc-db-services:
         condition: service_healthy
