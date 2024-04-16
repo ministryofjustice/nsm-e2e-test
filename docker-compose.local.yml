@@ -20,3 +20,5 @@ services:
   nscc-appstore:
     platform: ${LOCAL_PLATFORM}
     build: https://github.com/ministryofjustice/laa-crime-application-store.git#main
+    volumes:
+      - ./tmp/logs/appstore:/usr/src/app/log

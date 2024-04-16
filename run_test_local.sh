@@ -5,6 +5,9 @@ export DOCKER_FILES="-f docker-compose.yml -f docker-compose.local.yml"
 
 export DOCKER_BUILDKIT=0
 
+function start_app_store {
+  docker-compose $DOCKER_FILES run start_app_store
+}
 function start_applications {
   docker-compose $DOCKER_FILES run start_applications
 }
@@ -14,6 +17,7 @@ function run_tests {
 }
 
 docker-compose $DOCKER_FILES down
+start_app_store
 start_applications
 run_tests
 
