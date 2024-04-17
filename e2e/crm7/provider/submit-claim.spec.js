@@ -18,7 +18,8 @@ import {
     formData,
     formatDate,
     caseworkerAppUrl,
-    authenticateAsProvider
+    authenticateAsProvider,
+    providerAppUrl
 } from '../../../helpers';
 
 export default function createTests() {
@@ -180,8 +181,7 @@ export default function createTests() {
     });
 
     test('View claim in caseworker app', async () => {
-        const syncUrl = caseworkerAppUrl() + '/sync';
-        await page.goto(syncUrl);
+        await page.goto(caseworkerAppUrl('/sync') );
 
         await authenticateAsCaseworker(page);
 
@@ -240,8 +240,26 @@ export default function createTests() {
     })
 
     test('Verify claim is for correct amount', async () => {
-        page.getByRole('link', { name: 'Adjustments' }).click();
+        await page.getByRole('link', { name: 'Adjustments' }).click();
         await page.waitForURL('**/adjustments');
         await expect(page.locator('#main-content')).toContainText('£624.81');
+    });
+
+    test('Grant claim', async () => {
+        await page.getByRole('link', { name: 'Make a decision' }).click();
+        await page.waitForURL('**/make_decision');
+        await page.getByRole('group', { name: 'What do you want to do with this claim?' })
+                  .getByLabel('Grant it', { exact: true }).check();
+        await page.getByRole('button', { name: 'Submit decision' }).click();
+        await page.waitForURL('**/assessed_claims');
+        await page.getByRole('cell', { name: laaReference }).getByRole('link').click();
+        await page.waitForURL('**/claim_details');
+        await expect(page.locator('#main-content')).toContainText('Granted');
+    });
+
+    test('View result as provider', async () => {
+        await page.goto(providerAppUrl('/sync') );
+        await new YourClaimsPage(page).goto();
+        await expect(page.locator('#main-content')).toContainText(`${laaReference} Granted`);
     });
 }
