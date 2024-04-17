@@ -181,8 +181,6 @@ export default function createTests() {
     });
 
     test('View claim in caseworker app', async () => {
-        await page.goto(caseworkerAppUrl('/sync') );
-
         await authenticateAsCaseworker(page);
 
         const allClaimsPage = new AllClaimsPage(page);
@@ -258,7 +256,6 @@ export default function createTests() {
     });
 
     test('View result as provider', async () => {
-        await page.goto(providerAppUrl('/sync') );
         await new YourClaimsPage(page).goto();
         await expect(page.locator('#main-content')).toContainText(`${laaReference} Granted`);
     });

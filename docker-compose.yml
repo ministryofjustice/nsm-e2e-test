@@ -8,21 +8,30 @@
 version: "3.9"
 
 services:
+  start_app_store:
+    container_name: start_app_store
+    image: jwilder/dockerize
+    command: >
+      -wait tcp://nscc-appstore:3000
+      -wait-retry-interval 10s
+      -timeout 180s
+    depends_on:
+      - nscc-db-services
+      - nscc-appstore
+
   start_applications:
     container_name: start_applications
     image: jwilder/dockerize
     command: >
       -wait tcp://nscc-provider:3000
       -wait tcp://nscc-caseworker:3000
-      -wait tcp://nscc-appstore:8000
       -wait-retry-interval 10s
       -timeout 180s
     depends_on:
-      - nscc-db-services
       - nscc-provider
       - nscc-caseworker
-      - nscc-appstore
       - nscc-redis
+      - start_app_store
 
   laa-crime-forms-end-to-end-tests:
     container_name: laa-crime-forms-end-to-end-tests
@@ -68,12 +77,15 @@ services:
     ports:
       - 3001:3000
     environment: &providerenvironment
-      SECRET_KEY_BASE: needed_for_assets_precompile
-      RAILS_ENV: test
+      WORKERS: 3
+      SECRET_KEY_BASE: some-secret-key
+      RAILS_ENV: development
       ENV: localhost
       RAILS_DEVELOPMENT_HOSTS: nscc-provider
+      HOSTS: "nscc-provider:3000"
+      PROTOCOL: http
       RAILS_LOG_TO_STDOUT: enabled
-      APP_STORE_URL: http://nscc-appstore:8000
+      APP_STORE_URL: http://nscc-appstore:3000
       REDIS_URL: redis://nscc-redis:6379/1
       REDIS_PASSWORD: redis
       SIDEKIQ_WEB_UI_USERNAME: sidekiq
@@ -84,12 +96,10 @@ services:
       MAX_UPLOAD_SIZE_BYTES: 10485760
       GOVUK_NOTIFY_API_KEY: 12345
       RUN_SIDEKIQ_IN_TEST_MODE: true
-      ENABLE_SYNC_TRIGGER_ENDPOINT: true
     depends_on:
-      nscc-redis:
-        condition: service_started
-      nscc-db-services:
-        condition: service_healthy
+      - nscc-redis
+      - nscc-db-services
+      - start_app_store
 
   # NSCC CASEWORKER service
 
@@ -99,10 +109,13 @@ services:
     ports:
       - 3002:3000
     environment: &caseworkerenvironment
-      SECRET_KEY_BASE: needed_for_assets_precompile
+      WORKERS: 3
+      SECRET_KEY_BASE: some-secret-key
       RAILS_ENV: development
       ENV: local
       RAILS_DEVELOPMENT_HOSTS: nscc-caseworker
+      HOSTS: "nscc-caseworker:3000"
+      PROTOCOL: http
       REDIS_URL: redis://nscc-redis:6379/2
       REDIS_PASSWORD: redis
       RAILS_LOG_TO_STDOUT: enabled
@@ -114,30 +127,35 @@ services:
       OMNIAUTH_AZURE_CLIENT_SECRET: ""
       OMNIAUTH_AZURE_REDIRECT_URI: ""
       OMNIAUTH_AZURE_TENANT_ID: ""
-      APP_STORE_URL: http://nscc-appstore:8000
+      APP_STORE_URL: http://nscc-appstore:3000
       DEV_AUTH_ENABLED: true
       GOVUK_NOTIFY_API_KEY: 12345
       RUN_SIDEKIQ_IN_TEST_MODE: true
-      ENABLE_SYNC_TRIGGER_ENDPOINT: true
     depends_on:
-      nscc-redis:
-        condition: service_started
-      nscc-db-services:
-        condition: service_healthy
+      - nscc-redis
+      - nscc-db-services
+      - start_app_store
 
   # NSCC Application Store service
 
   nscc-appstore:
     container_name: nscc-appstore
     image: ${NSCC_APPSTORE_IMAGE:-754256621582.dkr.ecr.eu-west-2.amazonaws.com/laa-crime-forms-team/laa-crime-application-store-dev:latest}
-    environment:
-      - AUTHENTICATION_REQUIRED=False
-      - POSTGRES_USERNAME=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_HOSTNAME=nscc-db-services
-      - POSTGRES_NAME=laa_crime_application_store
+    environment: &appstoreenvironment
+      WORKERS: 3
+      SECRET_KEY_BASE: any-key
+      RAILS_ENV: development
+      RAILS_DEVELOPMENT_HOSTS: nscc-appstore
+      AUTHENTICATION_REQUIRED: "false"
+      DATABASE_URL: postgresql://postgres:postgres@nscc-db-services:5432/laa_crime_application_store
+      RUN_SIDEKIQ_IN_TEST_MODE: "true"
     depends_on:
       nscc-db-services:
         condition: service_healthy
+    healthcheck:
+      test: "curl -I  http://localhost:3000/ping | grep 200 || exit 1"
+      interval: 5s
+      timeout: 5s
+      retries: 20
     ports:
-      - 8000:8000
+      - 3003:3000
