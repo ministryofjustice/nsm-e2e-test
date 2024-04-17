@@ -28,7 +28,6 @@ services:
       -wait-retry-interval 10s
       -timeout 180s
     depends_on:
-      - nscc-db-services
       - nscc-provider
       - nscc-caseworker
       - nscc-redis
@@ -97,7 +96,6 @@ services:
       MAX_UPLOAD_SIZE_BYTES: 10485760
       GOVUK_NOTIFY_API_KEY: 12345
       RUN_SIDEKIQ_IN_TEST_MODE: true
-      ENABLE_SYNC_TRIGGER_ENDPOINT: true
     depends_on:
       - nscc-redis
       - nscc-db-services
@@ -133,7 +131,6 @@ services:
       DEV_AUTH_ENABLED: true
       GOVUK_NOTIFY_API_KEY: 12345
       RUN_SIDEKIQ_IN_TEST_MODE: true
-      ENABLE_SYNC_TRIGGER_ENDPOINT: true
     depends_on:
       - nscc-redis
       - nscc-db-services
