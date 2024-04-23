@@ -84,9 +84,16 @@ If you want a more manual approach:
 To build locally:
 `docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
 
-bash into the container and run them from there:
-`docker-compose run --entrypoint sh laa-crime-forms-end-to-end-tests`
+shell into the container to run them from there:
 
-To run the tests in the docker container, make sure you are in the app folder first.
+```sh
+# shell into e2e test container
+docker-compose run --entrypoint sh laa-crime-forms-end-to-end-tests
+```
 
-You can then edit the files on your development machine and re-run the tests.
+```sh
+# run tests inside container (with trace, optional)
+npx playwright test --trace on
+```
+
+You can extract the trace file if neccessary and upload it to [trace.playwright.dev](https://trace.playwright.dev/) to step through the test output.
