@@ -15,7 +15,6 @@ jobs:
       - checkout
       - setup_remote_docker
 
-      # Pull nscc provider image
       - aws-cli/setup:
           role_arn: $PROVIDER_ECR_ROLE_TO_ASSUME # this will use the env var
           region: $ECR_REGION
@@ -24,7 +23,7 @@ jobs:
           command: |
             echo "Pulling NSCC provider image"
             ./.circleci/pull_image nscc-provider
-      # Pull nscc appstore image
+      
       - aws-cli/setup:
           role_arn: $APPSTORE_ECR_ROLE_TO_ASSUME
           region: $ECR_REGION
@@ -33,7 +32,7 @@ jobs:
           command: |
             echo "Pulling NSCC-appstore image"
             ./.circleci/pull_image nscc-appstore
-      # Pull nscc caseworker image
+      
       - aws-cli/setup:
           role_arn: $CASEWORKER_ECR_ROLE_TO_ASSUME
           region: $ECR_REGION
@@ -42,8 +41,9 @@ jobs:
           command: |
             echo "Pulling NSCC caseworker image"
             ./.circleci/pull_image nscc-caseworker
+
       - run:
-          name: Build / Check services are up
+          name: Build and check/wait for services to be up
           command: |
             docker-compose build
             docker-compose run start_applications
