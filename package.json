@@ -6,8 +6,8 @@
   "scripts": {
     "e2e-test": "playwright test",
     "e2e-test:ui": "playwright test --ui",
-    "e2e-test-record:caseworker": "playwright codegen https://nsmassessdev.apps.live.cloud-platform.service.justice.gov.uk/",
-    "e2e-test-record:provider": "playwright codegen https://crm7dev.apps.live.cloud-platform.service.justice.gov.uk/"
+    "e2e-test-record:caseworker": "playwright codegen https://dev.assess-crime-forms.service.justice.gov.uk/",
+    "e2e-test-record:provider": "playwright codegen https://dev.submit-crime-forms.service.justice.gov.uk/"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.9.0",
