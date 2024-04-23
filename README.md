@@ -85,6 +85,7 @@ To build locally:
 `docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build`
 
 shell into the container to run them from there:
+
 ```sh
 # shell into e2e test container
 docker-compose run --entrypoint sh laa-crime-forms-end-to-end-tests
