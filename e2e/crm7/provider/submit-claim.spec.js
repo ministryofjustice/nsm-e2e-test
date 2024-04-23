@@ -242,8 +242,7 @@ export default function createTests() {
     test('Verify claim is for correct amount', async () => {
         await page.getByRole('link', { name: 'Review and adjust' }).click();
         await page.waitForURL('**/adjustments');
-        // TODO: this value result from a bug to be fixed by existing PR
-        await expect(page.locator('#main-content')).toContainText('Total£476.18£95.24£571.41');
+        await expect(page.locator('#main-content')).toContainText('Total£529.58£105.92£635.49');
     });
 
     test('Grant claim', async () => {
