@@ -160,8 +160,10 @@ export default function createTests() {
         await page.getByRole('button', { name: 'Save and continue' }).click();
 
         // Upload supporting evidence
+        // Set input field to a file fixture directly to prevent validation errors.
+        // This is simpler than attempting to emulate choosing of files.
         await expect(page.getByRole('heading', { name: 'Upload supporting evidence' })).toBeVisible();
-        await page.locator('#nsm-steps-supporting-evidence-form-send-by-post-true-field').check();
+        await page.locator('input#nsm-steps-supporting-evidence-form-supporting-evidence-field').setInputFiles('./e2e/fixtures/files/test.png');
         await page.getByRole('button', { name: 'Save and continue' }).click();
 
         // Check your answers
