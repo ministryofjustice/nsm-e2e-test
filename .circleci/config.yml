@@ -23,7 +23,7 @@ jobs:
           command: |
             echo "Pulling NSCC provider image"
             ./.circleci/pull_image nscc-provider
-      
+
       - aws-cli/setup:
           role_arn: $APPSTORE_ECR_ROLE_TO_ASSUME
           region: $ECR_REGION
@@ -32,7 +32,7 @@ jobs:
           command: |
             echo "Pulling NSCC-appstore image"
             ./.circleci/pull_image nscc-appstore
-      
+
       - aws-cli/setup:
           role_arn: $CASEWORKER_ECR_ROLE_TO_ASSUME
           region: $ECR_REGION
