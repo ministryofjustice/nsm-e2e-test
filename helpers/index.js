@@ -40,7 +40,7 @@ export const formData = {
     defendant: {
         firstName: 'Lex',
         lastName: 'Luthor',
-        maatId: '1234'
+        maatId: '1234567'
     },
     mainOffenceDate: {
         day: '1',
