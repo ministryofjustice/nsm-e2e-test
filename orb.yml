@@ -1,0 +1,160 @@
+version: 2.1
+description: The end-to-end test suite for use in crime forms app pipelines
+display:
+  home_url: "https://github.com/ministryofjustice/nsm-e2e-test"
+  source_url: "https://github.com/ministryofjustice/nsm-e2e-test/blob/main/orb.yml"
+
+namespace: crime-forms-end-to-end-tests
+orbs:
+  aws-cli: circleci/aws-cli@4.1.3
+  aws-ecr: circleci/aws-ecr@9.0.4
+
+# ------------
+# EXECUTORS
+# ------------
+executors:
+  e2e-test-executor:
+    docker:
+      - image: cimg/node:21.6.1
+
+# ------------
+# COMMANDS
+# ------------
+commands:
+  run-e2e-tests:
+    description: Run the crime forms apps in a docker cluster and run the playwright test suite against them
+
+    parameters:
+      e2e_working_directory:
+        description: Working directory to clone to and run crime forms e2e test suite
+        type: string
+        default: /tmp/nsm-end-to-end-tests
+      e2e_branch:
+        description: Branch of crime forms e2e repository to use
+        type: string
+        default: main
+      e2e_current_image_var:
+        description: Name of image env var that needs overriding in e2e tests
+        type: enum
+        enum: ["NSCC_PROVIDER_IMAGE", "NSCC_APPSTORE_IMAGE", "NSCC_CASEWORKER_IMAGE", ""]
+        default: ""
+      e2e_current_image:
+        description: Value for image env var that needs overriding in e2e testsdescription
+        type: string
+        default: ""
+    steps:
+      - checkout
+      - setup_remote_docker
+      - unless:
+          condition: << parameters.e2e_current_image_var >>
+          steps:
+            - run:
+                name: Setting no image tag for use in e2e tests
+                command: |
+                  echo "No image var set."
+                  echo "Running e2e against latest images for all apps."
+      - when:
+          condition: << parameters.e2e_current_image_var >>
+          steps:
+            - run:
+                name: Export image tag for use in e2e tests
+                command: |
+                  # Ensure exported env var name matches that expected in the
+                  # git@github.com:ministryofjustice/nsm-e2e-test.git repo
+                  # docker-compose.yml's relevant service-specific image: attribute
+                  #
+                  CURRENT_IMAGE=<< parameters.e2e_current_image >>
+                  echo "export << parameters.e2e_current_image_var >>=${CURRENT_IMAGE}" >> $BASH_ENV
+                  echo "Setting << parameters.e2e_current_image_var >> image to ${CURRENT_IMAGE}"
+
+      - run:
+          name: Set environment variables for subsequent steps
+          command: |
+            export E2E_WORKING_DIRECTORY=<< parameters.e2e_working_directory >>
+            echo "export E2E_WORKING_DIRECTORY=$E2E_WORKING_DIRECTORY"  >> $BASH_ENV
+            mkdir -p $E2E_WORKING_DIRECTORY
+            echo "E2E_WORKING_DIRECTORY is $E2E_WORKING_DIRECTORY"
+
+            export E2E_BRANCH=<< parameters.e2e_branch >>
+            echo "export E2E_BRANCH=$E2E_BRANCH" >> $BASH_ENV
+            echo "E2E_BRANCH is $E2E_BRANCH"
+
+      - run:
+          name: Clone e2e tests repository to their own directory
+          command: |
+            echo "Cloning branch ${E2E_BRANCH:-main} of nsm-e2e-test.git"
+            git clone --single-branch --branch ${E2E_BRANCH:-main} git@github.com:ministryofjustice/nsm-e2e-test.git $E2E_WORKING_DIRECTORY
+
+      - aws-cli/setup:
+          role_arn: $PROVIDER_ECR_ROLE_TO_ASSUME # this will use the env var
+          region: $ECR_REGION
+      - run:
+          name: Pull NSCC provider image
+          command: |
+            $E2E_WORKING_DIRECTORY/.circleci/pull_image nscc-provider
+
+      - aws-cli/setup:
+          role_arn: $APPSTORE_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run:
+          name: Pull NSCC appstore image
+          command: |
+            $E2E_WORKING_DIRECTORY/.circleci/pull_image nscc-appstore
+
+      - aws-cli/setup:
+          role_arn: $CASEWORKER_ECR_ROLE_TO_ASSUME
+          region: $ECR_REGION
+      - run:
+          name: Pull NSCC caseworker image
+          command: |
+            $E2E_WORKING_DIRECTORY/.circleci/pull_image nscc-caseworker
+
+      - run:
+          name: Build and check/wait for services to be up
+          command: |
+            cd $E2E_WORKING_DIRECTORY
+            docker-compose build
+            docker-compose run start_applications
+      - run:
+          name: "Failure: output container logs to console"
+          command: |
+            cd $E2E_WORKING_DIRECTORY
+            docker-compose logs
+          when: on_fail
+      - run:
+          name: Run playwright end-to-end tests
+          command: |
+            cd $E2E_WORKING_DIRECTORY
+            docker-compose run laa-crime-forms-end-to-end-tests
+
+# ------------
+# JOBS
+# ------------
+jobs:
+  # Wrapper job for executor and command above
+  run-tests:
+    executor: e2e-test-executor
+    parameters:
+      e2e_working_directory:
+        description: Working directory to clone to and run crime forms e2e test suite
+        type: string
+        default: /tmp/nsm-end-to-end-tests
+      e2e_branch:
+        description: Branch of crime forms e2e repository to use
+        type: string
+        default: main
+      e2e_current_image_var:
+        description: Name of image env var that needs overriding in e2e tests
+        type: enum
+        enum: ["NSCC_PROVIDER_IMAGE", "NSCC_APPSTORE_IMAGE", "NSCC_CASEWORKER_IMAGE", ""]
+        default: ""
+      e2e_current_image:
+        description: Value for image env var that needs overriding in e2e testsdescription
+        type: string
+        default: ""
+    steps:
+      - run-e2e-tests:
+          e2e_current_image_var: << parameters.e2e_current_image_var >>
+          e2e_current_image: << parameters.e2e_current_image >>
+          e2e_working_directory: << parameters.e2e_working_directory >>
+          e2e_branch: << parameters.e2e_branch >>
