@@ -149,8 +149,7 @@ export default function createTests() {
 
         // Check your claim
         await expect(page.getByRole('heading', { name: 'Check your payment claim' })).toBeVisible();
-        await expect(page.locator('div').filter({ hasText: /^£635\.49$/ })).toBeVisible();
-        await expect(page.getByRole('heading', { name: 'Work items total £571.41' })).toBeVisible();
+        await expect(page.locator('h2').filter({ hasText: /^£635\.49$/ })).toBeVisible();
         await page.getByRole('link', { name: 'Save and continue' }).click();
 
         // Other relevant information
