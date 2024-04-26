@@ -69,26 +69,41 @@ workflows:
 
   publish-orb:
     jobs:
-      # version 10.1.0 compatible only
+      - hold_dev_orb_publishing:
+          type: approval
+
+      # orb-tools@10.1.0 compatible only
       - orb-tools/publish-dev:
           name: publish_dev_orb
           attach-workspace: false
           checkout: true
           orb-name: ministryofjustice/crime-forms-end-to-end-tests
           orb-path: orb.yml
+          requires: 
+            - hold_dev_orb_publishing
           context:
             - laa-crime-forms-orb-publishing
 
+      - hold_production_orb_publishing:
+          type: approval
+          requires:
+            - publish_dev_orb
+          filters:
+            branches:
+              only:
+                - main
+
+      # orb-tools@10.1.0 compatible only
       - orb-tools/increment:
           name: publish_production_orb
           segment: patch
           orb-ref: ministryofjustice/crime-forms-end-to-end-tests
           orb-path: orb.yml
           requires:
-            - publish_dev_orb
+            - hold_production_orb_publishing
           context:
             - laa-crime-forms-orb-publishing
-          # filters:
-          #   branches:
-          #     only:
-          #       - main
+          filters:
+            branches:
+              only:
+                - main
