@@ -79,7 +79,7 @@ workflows:
           checkout: true
           orb-name: ministryofjustice/crime-forms-end-to-end-tests
           orb-path: orb.yml
-          requires: 
+          requires:
             - hold_dev_orb_publishing
           context:
             - laa-crime-forms-orb-publishing
