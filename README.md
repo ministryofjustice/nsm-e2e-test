@@ -78,10 +78,11 @@ export LOCAL_PLATFORM=linux/amd64
 _If you want a more manual approach you can build and shell into the test runner container and run them from there_
 
 ```sh
-export DOCKER_BUILDKIT=0
+# build locally on macos intel chipset
+DOCKER_BUILDKIT=0 docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
 
-# build locally
-docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
+# build locally on macos apple silicon chipset (tested on M1)
+DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d --build
 
 # shell into e2e test container
 docker-compose run --entrypoint sh laa-crime-forms-end-to-end-tests
@@ -90,7 +91,17 @@ docker-compose run --entrypoint sh laa-crime-forms-end-to-end-tests
 npx playwright test --trace on
 ```
 
-You can extract the trace file if neccessary and upload it to [trace.playwright.dev](https://trace.playwright.dev/) to step through the test output.
+Alternatively, this local build has been wrapped up in a script which you can use as follows:
+
+```sh
+# build and shell into container
+./build_test_local.sh
+
+# run the tests in the container
+npx playwright test --trace on
+```
+
+You can extract the trace file from the container if neccessary and upload it to [trace.playwright.dev](https://trace.playwright.dev/) to step through the test output.
 
 ## Running tests as part of other CI pipeline
 
