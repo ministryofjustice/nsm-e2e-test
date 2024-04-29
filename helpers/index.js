@@ -28,7 +28,7 @@ export const formData = {
         year: '2021'
     },
     firmName: 'Test Automate',
-    firmAccountNumber: '12345678',
+    firmAccountNumber: '1A123B',
     addressLine1: '102 Petty France',
     townOrCity: 'London',
     postcode: 'SW1H 9AJ',
