@@ -98,3 +98,39 @@ As for the branch testing the context is required for ECR repository name and ro
 ```yml
 context: laa-crime-forms-e2e-tests
 ```
+
+## Suggested workflow for integration breakages
+If an integrated run of the e2e tests in another repo occurs you should first identify the cause. 
+
+The cause is likely to fall into one of two areas
+
+- a change to the UI of the app on which the e2e tests failed
+- a change to the payload of the app causing a breakage in the other apps
+
+If the cause is the result of changes to the UI of the app on which the e2e tests failed then a suggested workflow would be:
+
+1. checkout a branch of the end-to-end tests (this repository)
+2. add a commit to the "consuming" app's branch to run the e2e test using the new e2e branch
+
+This is done by amending the `e2e_branch` value to your new branch name:
+
+```sh
+  # Amend the job in the consuming app to point it at the new e2e test suite branch
+  e2e-test-branch:
+    ...
+    steps:
+      - crime-forms-end-to-end-tests/run-e2e-tests:
+          ...
+          e2e_branch: main # Change to work against a fixed e2e test repo branch if needed
+          =>
+          e2e_branch: my-branch-of-e2e-tests
+```
+ 3. Amend the e2e test suite branch to fix the tests
+
+ 4. Have both the comsumer app and e2e test suite pull requests reviewed and approved (ready to go)
+
+ 5. Merge the e2e test suite branch's PR
+ 6. Amend the [already approved] consuming app's PR to change `e2e_branch` back to `main` and then merge as soon as possible *
+
+ \* *you should merge asap so as not to break other consuming app branchs.*
+

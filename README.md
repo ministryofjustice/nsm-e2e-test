@@ -94,9 +94,10 @@ You can extract the trace file if neccessary and upload it to [trace.playwright.
 
 ## Running tests as part of other CI pipeline
 
-The purpose of the end-to-end tests is to idenitfy breaking changes in the LAA crime form app repositories. To achieve a simple, reusable integration an orb has therefore been published.
+The purpose of the end-to-end tests is to identify breaking changes in the LAA crime form app repositories. To achieve a simple, reusable integration an orb has therefore been published.
 
 - [Integrating end-to-end tests into other pipelines](docs/orb/integration.md)
+- [Suggested workflow for integration breakages](docs/orb/integration.md#suggested-workflow-for-integration-breakages)
 - [Publishing the end-to-end test orb](docs/orb/publishing.md)
 
 ## License
