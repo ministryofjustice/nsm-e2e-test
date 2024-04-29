@@ -100,7 +100,8 @@ context: laa-crime-forms-e2e-tests
 ```
 
 ## Suggested workflow for integration breakages
-If an integrated run of the e2e tests in another repo occurs you should first identify the cause. 
+
+If an integrated run of the e2e tests in another repo occurs you should first identify the cause.
 
 The cause is likely to fall into one of two areas
 
@@ -125,12 +126,12 @@ This is done by amending the `e2e_branch` value to your new branch name:
           =>
           e2e_branch: my-branch-of-e2e-tests
 ```
- 3. Amend the e2e test suite branch to fix the tests
 
- 4. Have both the comsumer app and e2e test suite pull requests reviewed and approved (ready to go)
+3.  Amend the e2e test suite branch to fix the tests
 
- 5. Merge the e2e test suite branch's PR
- 6. Amend the [already approved] consuming app's PR to change `e2e_branch` back to `main` and then merge as soon as possible *
+4.  Have both the comsumer app and e2e test suite pull requests reviewed and approved (ready to go)
 
- \* *you should merge asap so as not to break other consuming app branchs.*
+5.  Merge the e2e test suite branch's PR
+6.  Amend the [already approved] consuming app's PR to change `e2e_branch` back to `main` and then merge as soon as possible \*
 
+\* _you should merge asap so as not to break other consuming app branchs._
