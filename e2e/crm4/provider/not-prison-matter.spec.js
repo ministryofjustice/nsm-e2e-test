@@ -43,7 +43,7 @@ export default function createTests() {
 		});
 	});
 
-	test(' Start a new application that is a Prison Law Matter and more than £100', async () => {
+	test(' Start a new application that is a Prison Law Matter and less than £500', async () => {
 		await test.step('Starting a new application', async () => {
 			const yourApplicationsPage = new YourApplicationsPage(page);
 			// Actions
@@ -62,7 +62,7 @@ export default function createTests() {
 			await expect(page.getByRole('heading', { name: 'Are you applying for a total' })).toBeVisible();
 		});
 
-		await test.step('Applying for total of less than £100', async () => {
+		await test.step('Applying for total of less than £500', async () => {
 			const applyingTotalAmountPage = new ApplyingTotalAmountPage(page);
 			// Actions
 			await applyingTotalAmountPage.fillApplyingTotalAmountForm('Yes');
