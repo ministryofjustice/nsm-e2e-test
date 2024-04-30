@@ -63,6 +63,38 @@ export const formData = {
 
 };
 
+export const priorAuthorityData = {
+    ufn: '120223/001',
+    caseContact: {
+        firstName: 'Clark',
+        lastName: 'Kent',
+        email: 'superman@krypton.com',
+        firmName: 'Daily Planet',
+    },
+    clientDetails: {
+        firstName: 'Bruce',
+        lastName: 'Wayne',
+        dob: {
+            day: '1',
+            month: '1',
+            year: '1980'
+        }
+    },
+    serviceProvider: {
+        firstName: 'Barry',
+        lastName: 'Allen',
+        organisation: 'Central City Police Department',
+        postcode: 'SW1H 9AJ',
+    },
+    serviceCost: {
+        granted: 'No',
+        serviceType: {
+            name: 'Transcription (recording)',
+            numberOfMinutes: '10',
+            costPerMinute: '5.00',
+        }
+    }
+};
 export async function fillDate(page, day, month, year) {
     await page.getByRole('textbox', { name: 'Day' }).fill(day.toString());
     await page.getByRole('textbox', { name: 'Month' }).fill(month.toString());
