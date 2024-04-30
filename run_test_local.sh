@@ -3,7 +3,13 @@
 set -e
 export DOCKER_FILES="-f docker-compose.yml -f docker-compose.local.yml"
 
-export DOCKER_BUILDKIT=0
+if [[ $(uname -m) == 'arm64' ]];
+then
+  echo "Apple Silicon detected"
+  export DOCKER_BUILDKIT=1
+else
+  export DOCKER_BUILDKIT=0
+fi
 
 function start_app_store {
   docker-compose $DOCKER_FILES run start_app_store
