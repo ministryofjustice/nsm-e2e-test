@@ -1,5 +1,5 @@
 # Get the base image of Node version 16
-FROM node:21
+FROM node:22
 
 # Get the latest version of Playwright
 FROM mcr.microsoft.com/playwright:v1.43.1-jammy
