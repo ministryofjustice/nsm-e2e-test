@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { saveToStorage, getFromStorage } from '../../../helpers';
 import {
 	YourApplicationsPage,
 	IsThisPrisonLawPage,
@@ -80,6 +81,11 @@ export default function createTests() {
 			await clientDetailsPage.fillClientDetailsForm();
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your application progress' })).toBeVisible();
+			// Set LAA reference for future use
+			const asideLocator = await page.locator('.aside-task-list');
+			const asideText = await asideLocator.textContent();
+			const laaReference = asideText.split('LAA reference')[1].trim().split('\n')[0];
+			await saveToStorage(page, 'laaReference', laaReference);
 			// Actions
 			await page.getByRole('link', { name: 'Case and hearing details' }).click();
 		});
@@ -148,6 +154,9 @@ export default function createTests() {
 			await page.getByRole('button', { name: 'View my applications' }).click();
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your applications' })).toBeVisible();
+			await page.getByRole('tab', { name: 'Submitted' }).click();
+			const savedLAAReference = await getFromStorage(page, 'laaReference');
+			await expect(page.getByRole('cell', { name: savedLAAReference })).toBeVisible();
 		});
 
 	});

@@ -101,17 +101,14 @@ export async function fillDate(page, day, month, year) {
     await page.getByRole('textbox', { name: 'Year' }).fill(year.toString());
 }
 
-// Helper function to save current URL to local storage
-export async function saveCurrentUrl(page) {
-    const currentUrl = await page.url();
-    await page.evaluate((url) => {
-        localStorage.setItem('savedUrl', url);
-    }, currentUrl);
+// Helper function to save Laa Reference to local storage
+export async function saveToStorage(page, reference, data) {
+    await page.evaluate(({ ref, value }) => localStorage.setItem(ref, value), { ref: reference, value: data });
 }
 
-// Helper function to get saved URL from local storage
-export async function getSavedUrl(page) {
-    return await page.evaluate(() => localStorage.getItem('savedUrl'));
+// Helper function to get saved laaReference from local storage
+export async function getFromStorage(page, reference) {
+    return await page.evaluate(({ ref }) => localStorage.getItem(ref), { ref: reference });
 }
 
 export function formatDate(dateObject) {
