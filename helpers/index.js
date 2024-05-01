@@ -1,4 +1,9 @@
 require('dotenv').config();
+import fs from 'fs';
+import util from 'util';
+
+const writeFile = util.promisify(fs.writeFile);
+const readFile = util.promisify(fs.readFile);
 
 // write function to export supervisor file so i can use it in the test
 export function runTestAs(role) {
@@ -101,14 +106,18 @@ export async function fillDate(page, day, month, year) {
     await page.getByRole('textbox', { name: 'Year' }).fill(year.toString());
 }
 
-// Helper function to save Laa Reference to local storage
-export async function saveToStorage(page, reference, data) {
-    await page.evaluate(({ ref, value }) => localStorage.setItem(ref, value), { ref: reference, value: data });
+// Helper function to save Laa Reference to local file
+export async function saveToStorage(reference, data) {
+    await writeFile(`./${reference}.txt`, data);
 }
 
-// Helper function to get saved laaReference from local storage
-export async function getFromStorage(page, reference) {
-    return await page.evaluate(({ ref }) => localStorage.getItem(ref), { ref: reference });
+// Helper function to get save laaReference from local file
+export async function getFromStorage(reference) {
+    if (typeof reference !== 'string') {
+        throw new Error('Reference must be a string');
+    }
+    const data = await readFile(`./${reference}.txt`, 'utf8');
+    return data;
 }
 
 export function formatDate(dateObject) {

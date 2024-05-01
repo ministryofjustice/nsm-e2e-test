@@ -85,7 +85,7 @@ export default function createTests() {
 			const asideLocator = await page.locator('.aside-task-list');
 			const asideText = await asideLocator.textContent();
 			const laaReference = asideText.split('LAA reference')[1].trim().split('\n')[0];
-			await saveToStorage(page, 'laaReference', laaReference);
+			await saveToStorage('laaReference', laaReference);
 			// Actions
 			await page.getByRole('link', { name: 'Case and hearing details' }).click();
 		});
@@ -155,7 +155,7 @@ export default function createTests() {
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your applications' })).toBeVisible();
 			await page.getByRole('tab', { name: 'Submitted' }).click();
-			const savedLAAReference = await getFromStorage(page, 'laaReference');
+			const savedLAAReference = await getFromStorage('laaReference');
 			await expect(page.getByRole('cell', { name: savedLAAReference })).toBeVisible();
 		});
 
