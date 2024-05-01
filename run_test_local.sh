@@ -13,6 +13,7 @@ else
 fi
 
 function destroy {
+  # stop and remove the container with all the networks and volumes
   docker-compose $DOCKER_FILES down -v
 }
 

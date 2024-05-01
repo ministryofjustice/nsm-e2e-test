@@ -13,6 +13,7 @@ else
 fi
 
 function build {
+  # stop and remove the container with all the networks and volumes
   docker-compose down -v
   docker-compose $DOCKER_FILES up -d --build --pull "always" --force-recreate
 }
