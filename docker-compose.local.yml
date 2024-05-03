@@ -1,5 +1,3 @@
-version: "3.4"
-
 services:
   laa-crime-forms-end-to-end-tests:
     stdin_open: true # docker run -i
