@@ -7,11 +7,14 @@ if [[ $(uname -m) == 'arm64' ]];
 then
   echo "Apple Silicon detected"
   export DOCKER_BUILDKIT=1
+  export LOCAL_PLATFORM=linux/amd64
 else
   export DOCKER_BUILDKIT=0
 fi
 
 function build {
+  # stop and remove the container with all the networks and volumes
+  docker-compose down -v
   docker-compose $DOCKER_FILES up -d --build --pull "always" --force-recreate
 }
 
