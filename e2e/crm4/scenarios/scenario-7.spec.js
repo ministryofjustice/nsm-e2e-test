@@ -1,5 +1,4 @@
 import { test, expect } from '@playwright/test';
-import { saveToStorage, getFromStorage } from '../../../helpers';
 import {
 	YourApplicationsPage,
 	IsThisPrisonLawPage,
@@ -14,11 +13,13 @@ import {
 	ReasonWhyPage,
 	CheckAnswersPage
 } from '../pages/provider';
+import { YourApplicationsPageCaseworker, AssessApplicationPage, MakeDecisionPage } from '../pages/caseworker';
 
-import { authenticateAsProvider } from '../../../helpers';
+import { authenticateAsProvider, authenticateAsCaseworker } from '../../../helpers';
 
-export default function createTests() {
+test.describe('CRM4 - Scenario 7', () => {
 	let page;
+	let laaReference;
 	test.describe.configure({ mode: 'serial' });
 	test.beforeAll(async ({ browser }) => {
 		page = await browser.newPage();
@@ -27,7 +28,7 @@ export default function createTests() {
 		await page.close();
 	});
 
-	test('Submit a new CRM4 application', async () => {
+	test('Provider - Submit a new CRM4 application ', async () => {
 		await authenticateAsProvider(page);
 		await test.step('Starting a new application', async () => {
 			const yourApplicationsPage = new YourApplicationsPage(page);
@@ -84,8 +85,7 @@ export default function createTests() {
 			// Set LAA reference for future use
 			const asideLocator = await page.locator('.aside-task-list');
 			const asideText = await asideLocator.textContent();
-			const laaReference = asideText.split('LAA reference')[1].trim().split('\n')[0];
-			await saveToStorage('laaReference', laaReference);
+			laaReference = asideText.split('LAA reference')[1].trim().split('\n')[0];
 			// Actions
 			await page.getByRole('link', { name: 'Case and hearing details' }).click();
 		});
@@ -144,7 +144,7 @@ export default function createTests() {
 			await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
 		});
 
-		await test.step('Check your answers', async () => {
+		await test.step('Check your answers and submit', async () => {
 			const checkAnswersPage = new CheckAnswersPage(page);
 			// Actions
 			await checkAnswersPage.fillCheckAnswersForm();
@@ -155,10 +155,39 @@ export default function createTests() {
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your applications' })).toBeVisible();
 			await page.getByRole('tab', { name: 'Submitted' }).click();
-			const savedLAAReference = await getFromStorage('laaReference');
-			await expect(page.getByRole('cell', { name: savedLAAReference })).toBeVisible();
+			await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
 		});
 
 	});
 
-}
+	test('Caseworker - Making decision on a submitted CRM4 application', async () => {
+		await authenticateAsCaseworker(page);
+		await test.step('Assigning next application', async () => {
+			const yourApplicationsPage = new YourApplicationsPageCaseworker(page);
+			// Actions
+			await yourApplicationsPage.goto();
+			// Expectations
+			await expect(page.getByRole('heading', { name: 'Your applications' })).toBeVisible();
+			// Actions
+			await page.getByRole('button', { name: 'Assess next application' }).click();
+		});
+
+		await test.step('Assessing the application', async () => {
+			new AssessApplicationPage(page);
+			// Expectations
+			await expect(page.getByRole('heading', { name: laaReference })).toBeVisible();
+			await page.getByRole('link', { name: 'Make a decision' }).click();
+			await expect(page.getByRole('heading', { name: 'Make a decision' })).toBeVisible();
+		});
+
+		await test.step('Making a decision', async () => {
+			const makeDecisionPage = new MakeDecisionPage(page);
+			// Actions
+			await makeDecisionPage.grantApplication();
+			// Expectations
+			await expect(page.getByRole('heading', { name: 'Decision sent' })).toBeVisible();
+		});
+
+	});
+
+});
