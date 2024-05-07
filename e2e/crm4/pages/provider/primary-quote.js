@@ -13,6 +13,8 @@ export default class PrimaryQuotePage {
 		await this.page.getByLabel('Last name').fill(priorAuthorityData.serviceProvider.lastName);
 		await this.page.getByLabel('Organisation').click();
 		await this.page.getByLabel('Organisation').fill(priorAuthorityData.serviceProvider.organisation);
+		await this.page.getByLabel('Town').click();
+		await this.page.getByLabel('Town').fill(priorAuthorityData.serviceProvider.town);
 		await this.page.getByLabel('Postcode').click();
 		await this.page.getByLabel('Postcode').fill(priorAuthorityData.serviceProvider.postcode);
 		await this.page.getByLabel('Upload the quote').click();
