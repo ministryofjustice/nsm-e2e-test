@@ -158,9 +158,7 @@ test.describe('CRM4 - Scenario 7', () => {
 			await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
 		});
 
-	});
-
-	test('Caseworker - Making decision on a submitted CRM4 application', async () => {
+		// Caseworker - Making decision on a submitted CRM4 application
 		await authenticateAsCaseworker(page);
 		await test.step('Assigning next application', async () => {
 			const yourApplicationsPage = new YourApplicationsPageCaseworker(page);
