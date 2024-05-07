@@ -17,12 +17,10 @@ import {
     authenticateAsCaseworker,
     formData,
     formatDate,
-    caseworkerAppUrl,
     authenticateAsProvider,
-    providerAppUrl
 } from '../../../helpers';
 
-export default function createTests() {
+test.describe('CRM7 - Scenario 1', () => {
     let page;
     let laaReference;
     test.describe.configure({ mode: 'serial' });
@@ -248,7 +246,7 @@ export default function createTests() {
         await page.getByRole('link', { name: 'Make a decision' }).click();
         await page.waitForURL('**/make_decision');
         await page.getByRole('group', { name: 'What do you want to do with this claim?' })
-                  .getByLabel('Grant it', { exact: true }).check();
+            .getByLabel('Grant it', { exact: true }).check();
         await page.getByRole('button', { name: 'Submit decision' }).click();
         await page.waitForURL('**/assessed_claims');
         await page.getByRole('cell', { name: laaReference }).getByRole('link').click();
@@ -260,4 +258,4 @@ export default function createTests() {
         await new YourClaimsPage(page).goto();
         await expect(page.locator('#main-content')).toContainText(`${laaReference} Granted`);
     });
-}
+});
