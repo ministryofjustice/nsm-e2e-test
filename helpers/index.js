@@ -89,6 +89,7 @@ export const priorAuthorityData = {
         firstName: 'Barry',
         lastName: 'Allen',
         organisation: 'Central City Police Department',
+        town: 'Central City',
         postcode: 'SW1H 9AJ',
     },
     serviceCost: {
