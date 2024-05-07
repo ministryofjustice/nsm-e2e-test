@@ -2,7 +2,7 @@
 FROM node:22
 
 # Get the latest version of Playwright
-FROM mcr.microsoft.com/playwright:v1.43.1-jammy
+FROM mcr.microsoft.com/playwright:v1.44.0-jammy
 
 # Get the needed libraries to run Playwright
 RUN apt-get update && apt-get -y install libnss3 libatk-bridge2.0-0 libdrm-dev libxkbcommon-dev libgbm-dev libasound-dev libatspi2.0-0 libxshmfence-dev net-tools iputils-ping
