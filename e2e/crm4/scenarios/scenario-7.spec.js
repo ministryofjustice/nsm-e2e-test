@@ -28,7 +28,7 @@ test.describe('CRM4 - Scenario 7', () => {
 		await page.close();
 	});
 
-	test('Provider - Submit a new CRM4 application ', async () => {
+	test('Submit a new CRM4 application and assess ', async () => {
 		await authenticateAsProvider(page);
 		await test.step('Starting a new application', async () => {
 			const yourApplicationsPage = new YourApplicationsPage(page);
