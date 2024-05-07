@@ -23,6 +23,7 @@ import {
 test.describe('CRM7 - Scenario 1', () => {
     let page;
     let laaReference;
+    test.describe.configure({ mode: 'serial' });
 
     test.beforeAll(async ({ browser }) => {
         page = await browser.newPage();

@@ -20,7 +20,7 @@ import { authenticateAsProvider, authenticateAsCaseworker } from '../../../helpe
 test.describe('CRM4 - Scenario 7', () => {
 	let page;
 	let laaReference;
-
+	test.describe.configure({ mode: 'serial' });
 	test.beforeAll(async ({ browser }) => {
 		page = await browser.newPage();
 	});
