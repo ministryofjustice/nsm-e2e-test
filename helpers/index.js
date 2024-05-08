@@ -63,23 +63,43 @@ export const formData = {
 
 };
 
+export const priorAuthorityData = {
+    ufn: '120223/001',
+    caseContact: {
+        firstName: 'Clark',
+        lastName: 'Kent',
+        email: 'superman@krypton.com',
+        firmName: 'Daily Planet',
+    },
+    clientDetails: {
+        firstName: 'Bruce',
+        lastName: 'Wayne',
+        dob: {
+            day: '1',
+            month: '1',
+            year: '1980'
+        }
+    },
+    serviceProvider: {
+        firstName: 'Barry',
+        lastName: 'Allen',
+        organisation: 'Central City Police Department',
+        town: 'Central City',
+        postcode: 'SW1H 9AJ',
+    },
+    serviceCost: {
+        granted: 'No',
+        serviceType: {
+            name: 'Transcription (recording)',
+            numberOfMinutes: '10',
+            costPerMinute: '5.00',
+        }
+    }
+};
 export async function fillDate(page, day, month, year) {
     await page.getByRole('textbox', { name: 'Day' }).fill(day.toString());
     await page.getByRole('textbox', { name: 'Month' }).fill(month.toString());
     await page.getByRole('textbox', { name: 'Year' }).fill(year.toString());
-}
-
-// Helper function to save current URL to local storage
-export async function saveCurrentUrl(page) {
-    const currentUrl = await page.url();
-    await page.evaluate((url) => {
-        localStorage.setItem('savedUrl', url);
-    }, currentUrl);
-}
-
-// Helper function to get saved URL from local storage
-export async function getSavedUrl(page) {
-    return await page.evaluate(() => localStorage.getItem('savedUrl'));
 }
 
 export function formatDate(dateObject) {
