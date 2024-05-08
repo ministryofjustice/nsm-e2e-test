@@ -1,6 +1,6 @@
 import { caseworkerAppUrl } from "../../../../helpers";
 
-export default class YourApplicationsPage {
+export default class YourApplicationsPageCaseworker {
 
 	constructor(page) {
 		this.page = page;

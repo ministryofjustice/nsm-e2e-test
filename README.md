@@ -111,6 +111,8 @@ The purpose of the end-to-end tests is to identify breaking changes in the LAA c
 - [Suggested workflow for integration breakages](docs/orb/integration.md#suggested-workflow-for-integration-breakages)
 - [Publishing the end-to-end test orb](docs/orb/publishing.md)
 
+## [CRM 4 Scenarios](https://docs.google.com/spreadsheets/d/1i97rgTQsUfZflPTJE_PPHfZizo8yW-u7ZGZfBvdHwt4/edit#gid=534567382)
+
 ## License
 
 This project is licensed under the MIT License.
