@@ -12,9 +12,9 @@ else
   export DOCKER_BUILDKIT=0
 fi
 
-function destroy {
-  # stop and remove the container with all the networks and volumes
-  docker-compose $DOCKER_FILES down -v
+function teardown {
+  # stop and remove containers with all networks and volumes
+  docker-compose $DOCKER_FILES down --volumes --rmi "all"
 }
 
 function start_app_store {
@@ -29,7 +29,7 @@ function run_tests {
   docker-compose up --build laa-crime-forms-end-to-end-tests
 }
 
-destroy
+teardown
 start_app_store
 start_applications
 run_tests
