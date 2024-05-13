@@ -121,5 +121,5 @@ export async function authenticateAsSupervisor(page) {
 
 export async function authenticateAsProvider(page) {
     await page.goto(providerAppUrl());
-    await page.getByRole('button', { name: 'Log in as provider with single office code (CRM7)' }).click();
+    await page.getByRole('button', { name: 'Log in as primary test user (CRM7/4/5)' }).click();
 }
