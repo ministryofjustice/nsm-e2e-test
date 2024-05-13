@@ -28,7 +28,7 @@ export const formData = {
         year: '2021'
     },
     firmName: 'Test Automate',
-    firmAccountNumber: '1A123B',
+    firmAccountNumber: 'AAAAAA',
     addressLine1: '102 Petty France',
     townOrCity: 'London',
     postcode: 'SW1H 9AJ',
@@ -121,5 +121,5 @@ export async function authenticateAsSupervisor(page) {
 
 export async function authenticateAsProvider(page) {
     await page.goto(providerAppUrl());
-    await page.getByRole('button', { name: 'Log in as provider with single office code' }).click();
+    await page.getByRole('button', { name: 'Log in as provider with single office code (CRM7)' }).click();
 }

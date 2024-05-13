@@ -226,7 +226,7 @@ test.describe('CRM7 - Scenario 1', () => {
                 `Solicitor full name${formData.solicitorFirstName} ${formData.solicitorLastName}`,
                 `Solicitor reference number${formData.solicitorReferenceNumber}`,
                 'Alternative contact detailsNot provided',
-                'Provider email addresssingle@office.com',
+                'Provider email addresssingle@office.crm7.com',
                 'Equality questionsNo, skip the equality questions'
             ]
 
