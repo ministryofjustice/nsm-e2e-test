@@ -1,4 +1,4 @@
-import { formData } from '../../../../helpers/index'
+import { nsmData } from '../../../../helpers/index'
 
 export default class FirmAccountNumberPage {
 
@@ -6,7 +6,7 @@ export default class FirmAccountNumberPage {
 		this.page = page;
 	}
 	async fillFirmAccountNumberForm() {
-		await this.page.getByLabel(formData.firmAccountNumber).click();
+		await this.page.getByLabel(nsmData.firmAccountNumber).click();
 		await this.page.getByRole('button', { name: 'Save and continue' }).click();
 	}
 

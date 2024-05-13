@@ -1,4 +1,4 @@
-import { formData } from '../../../../helpers/index'
+import { nsmData } from '../../../../helpers/index'
 export default class ClaimDetailsPage {
 
     constructor(page) {
@@ -6,9 +6,9 @@ export default class ClaimDetailsPage {
     }
 
     async fillClaimDetails() {
-        await this.page.getByLabel('Number of pages of prosecution evidence').fill(formData.evidencePages.prosecution);
-        await this.page.getByLabel('Number of pages of defence').fill(formData.evidencePages.defence);
-        await this.page.getByLabel('Number of witnesses').fill(formData.witnesses);
+        await this.page.getByLabel('Number of pages of prosecution evidence').fill(nsmData.evidencePages.prosecution);
+        await this.page.getByLabel('Number of pages of defence').fill(nsmData.evidencePages.defence);
+        await this.page.getByLabel('Number of witnesses').fill(nsmData.witnesses);
         await this.page.getByRole('group', { name: 'Does this bill represent a' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you spend time watching' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you do any work before' }).getByLabel('No').check();
