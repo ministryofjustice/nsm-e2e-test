@@ -19,7 +19,7 @@ export function providerAppUrl(path = '') {
     return `${process.env.NSCC_PROVIDER_URL}${path}`;
 }
 
-export const formData = {
+export const nsmData = {
     uniqueFile: '120223/001',
     claimType: 'Non-standard magistrates\' court payment',
     repOrderDate: {

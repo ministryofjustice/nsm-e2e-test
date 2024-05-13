@@ -16,7 +16,7 @@ import {
 import { AllClaimsPage } from '../pages/caseworker/all-claims';
 import {
     authenticateAsCaseworker,
-    formData,
+    nsmData,
     formatDate,
     authenticateAsProvider,
 } from '../../../helpers';
@@ -198,45 +198,45 @@ test.describe('CRM7 - Scenario 1', () => {
             await expect(page.locator('#main-content')).toContainText(laaReference);
             await page.getByRole('link', { name: laaReference }).click();
             await page.waitForURL('**/claim_details');
-            await expect(page.getByRole('heading', { name: `${formData.defendant.firstName} ${formData.defendant.lastName}` })).toBeVisible();
+            await expect(page.getByRole('heading', { name: `${nsmData.defendant.firstName} ${nsmData.defendant.lastName}` })).toBeVisible();
         });
 
         await test.step('Verify claim details', async () => {
             const texts = [
-                `Unique file number${formData.uniqueFile}`,
-                `Type of claim${formData.claimType}`,
-                `Representation order date${formatDate(formData.repOrderDate)}`,
-                `Main defendant full name${formData.defendant.firstName} ${formData.defendant.lastName}`,
-                `Main defendant MAAT ID${formData.defendant.maatId}`,
+                `Unique file number${nsmData.uniqueFile}`,
+                `Type of claim${nsmData.claimType}`,
+                `Representation order date${formatDate(nsmData.repOrderDate)}`,
+                `Main defendant full name${nsmData.defendant.firstName} ${nsmData.defendant.lastName}`,
+                `Main defendant MAAT ID${nsmData.defendant.maatId}`,
                 'Main offence nameCriminal Damage',
-                `Offence date${formatDate(formData.mainOffenceDate)}`,
+                `Offence date${formatDate(nsmData.mainOffenceDate)}`,
                 'Assigned counselNo',
                 'Unassigned counselNo',
                 'Instructed agentNo',
                 "Case remitted from Crown Court to magistrates' courtNo",
                 'Category 1Guilty plea',
                 "Why are you claiming a non-standard magistrates' payment?Enhanced rates claimed",
-                `Number of pages of prosecution evidence${formData.evidencePages.prosecution}`,
-                `Number of pages of defence statements${formData.evidencePages.defence}`,
-                `Number of witnesses${formData.witnesses}`,
+                `Number of pages of prosecution evidence${nsmData.evidencePages.prosecution}`,
+                `Number of pages of defence statements${nsmData.evidencePages.defence}`,
+                `Number of witnesses${nsmData.witnesses}`,
                 'Supplemental claimNo',
                 'Recorded evidenceNo',
                 'Work done before order was grantedNo',
                 'Work was done after last hearingNo',
-                `Date of first hearing${formatDate(formData.hearingDate)}`,
-                `Number of hearings${formData.hearingCount}`,
+                `Date of first hearing${formatDate(nsmData.hearingDate)}`,
+                `Number of hearings${nsmData.hearingCount}`,
                 "Magistrates' courtCity of London Magistrates' Court",
                 'Court is in designated area of the firmNo',
                 'Youth courtNo',
-                `Hearing outcome${formData.hearingOutcome}`,
-                `Matter type${formData.matterType}`,
+                `Hearing outcome${nsmData.hearingOutcome}`,
+                `Matter type${nsmData.matterType}`,
                 'Any other informationNo',
                 'Proceedings concluded over 3 months agoNo',
-                `Firm name${formData.firmName}`,
-                `Firm account number${formData.firmAccountNumber}`,
-                `Firm address${formData.addressLine1}${formData.townOrCity}${formData.postcode}`,
-                `Solicitor full name${formData.solicitorFirstName} ${formData.solicitorLastName}`,
-                `Solicitor reference number${formData.solicitorReferenceNumber}`,
+                `Firm name${nsmData.firmName}`,
+                `Firm account number${nsmData.firmAccountNumber}`,
+                `Firm address${nsmData.addressLine1}${nsmData.townOrCity}${nsmData.postcode}`,
+                `Solicitor full name${nsmData.solicitorFirstName} ${nsmData.solicitorLastName}`,
+                `Solicitor reference number${nsmData.solicitorReferenceNumber}`,
                 'Alternative contact detailsNot provided',
                 'Provider email addressprovider@example.com',
                 'Equality questionsNo, skip the equality questions'
