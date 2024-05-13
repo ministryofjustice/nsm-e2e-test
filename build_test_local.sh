@@ -13,9 +13,9 @@ else
 fi
 
 function build {
-  # stop and remove the container with all the networks and volumes
-  docker-compose down -v
-  docker-compose $DOCKER_FILES up -d --build --pull "always" --force-recreate
+  docker-compose $DOCKER_FILES down --volumes --rmi "all"
+  docker-compose $DOCKER_FILES build --no-cache
+  docker-compose $DOCKER_FILES up -d
 }
 
 function shellin {

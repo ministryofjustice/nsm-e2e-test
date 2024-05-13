@@ -4,6 +4,7 @@ import {
 	IsThisPrisonLawPage,
 	ApplyingTotalAmountPage,
 	UniqueFileNumberPage,
+	FirmAccountNumberPage,
 	CaseContactPage,
 	ClientDetailsPage,
 	CaseAndHearingDetailsPage,
@@ -62,7 +63,7 @@ test.describe('CRM4 - Scenario 7', () => {
 			await uniqueFileNumberPage.fillUniqueFileNumberForm();
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your application progress' })).toBeVisible();
-			//Actions
+			// Actions
 			await page.getByRole('link', { name: 'Case contact' }).click();
 		});
 
@@ -71,8 +72,16 @@ test.describe('CRM4 - Scenario 7', () => {
 			// Actions
 			await caseContactPage.fillCaseContactForm();
 			// Expectations
+			await expect(page.getByRole('heading', { name: 'Which firm account number is this application for?' })).toBeVisible();
+		});
+
+		await test.step('Select firm account number', async () => {
+			const firmAccountNumberPage = new FirmAccountNumberPage(page);
+			// Actions
+			await firmAccountNumberPage.fillFirmAccountNumberForm();
+			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your application progress' })).toBeVisible();
-			//Actions
+			// Actions
 			await page.getByRole('link', { name: 'Client details' }).click();
 		});
 

@@ -9,7 +9,7 @@ setup('authenticate as provider', async ({ page }) => {
     await authenticateAsProvider(page);
 
     // Wait until the page reaches a state where all cookies are set.
-    await expect(page.getByText('single@office.com')).toBeVisible();
+    await expect(page.getByText('provider@example.com')).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Submit a crime form' })).toBeVisible();
 
     // End of authentication steps.

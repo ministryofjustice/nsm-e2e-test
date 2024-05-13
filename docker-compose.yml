@@ -5,8 +5,6 @@
 # Environment variables are used to configure the services, and volumes are used for data persistence and sharing files between the host and containers.
 # This configuration allows for a full-stack application to be run and tested in an isolated environment with consistent IP addresses for inter-service communication.
 
-version: "3.9"
-
 services:
   start_app_store:
     container_name: start_app_store
