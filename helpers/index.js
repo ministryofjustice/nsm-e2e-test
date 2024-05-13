@@ -28,7 +28,7 @@ export const formData = {
         year: '2021'
     },
     firmName: 'Test Automate',
-    firmAccountNumber: 'AAAAAA',
+    firmAccountNumber: '1A123B',
     addressLine1: '102 Petty France',
     townOrCity: 'London',
     postcode: 'SW1H 9AJ',
@@ -65,6 +65,7 @@ export const formData = {
 
 export const priorAuthorityData = {
     ufn: '120223/001',
+    firmAccountNumber: '1A123B',
     caseContact: {
         firstName: 'Clark',
         lastName: 'Kent',

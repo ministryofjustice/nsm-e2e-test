@@ -4,6 +4,7 @@ import {
     WhatAreYouClaimingPage,
     YouClaimProgressPage,
     YourDetailsPage,
+    FirmAccountNumberPage,
     DefendantDetailsPage,
     CasesDetailsPage,
     HearingDetailsPage,
@@ -67,14 +68,25 @@ test.describe('CRM7 - Scenario 1', () => {
 
         await test.step('Filling up Your details', async () => {
             const yourDetails = new YourDetailsPage(page);
-            yourDetails.fillYourDetails();
-            // Defendant details
-            await expect(page.getByRole('heading', { name: 'Defendant details' })).toBeVisible();
+            // Actions
+            await yourDetails.fillYourDetails();
+            // Expecation
+            await expect(page.getByRole('heading', { name: 'Which firm account number is this application for?' })).toBeVisible();
         });
+
+		await test.step('Select firm account number', async () => {
+			const firmAccountNumberPage = new FirmAccountNumberPage(page);
+			// Actions
+			await firmAccountNumberPage.fillFirmAccountNumberForm();
+			// Expectations
+            await expect(page.getByRole('heading', { name: 'Defendant details' })).toBeVisible();
+		});
 
         await test.step('Filling up Defendant details', async () => {
             const defendantDetails = new DefendantDetailsPage(page);
-            defendantDetails.addDefendant();
+            // Actions
+            await defendantDetails.addDefendant();
+            //Expectations
             await expect(page.getByRole('heading', { name: 'You added 1 defendant' })).toBeVisible();
             await expect(page.getByRole('cell', { name: 'Lex Luthor' })).toBeVisible();
             // Defendant lists
@@ -84,7 +96,7 @@ test.describe('CRM7 - Scenario 1', () => {
         });
 
         await test.step('Filling up Case details', async () => {
-            //Case details
+            // Case details
             const caseDetails = new CasesDetailsPage(page);
             caseDetails.fillCaseDetails();
             // Hearing details
