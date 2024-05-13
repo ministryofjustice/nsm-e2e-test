@@ -13,7 +13,7 @@ else
 fi
 
 function teardown {
-  # stop and remove containers with all networks and volumes
+  # stop and remove containers with all images, networks and volumes
   docker-compose $DOCKER_FILES down --volumes --rmi "all"
 }
 
