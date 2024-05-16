@@ -6,7 +6,7 @@ export class AllClaimsPage {
     }
 
     async goto() {
-        const url = caseworkerAppUrl() + '/nsm/claims';
+        const url = caseworkerAppUrl() + '/nsm/claims/open';
         await this.page.goto(url);
     }
 
