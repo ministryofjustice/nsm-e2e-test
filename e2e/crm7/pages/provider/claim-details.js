@@ -13,6 +13,7 @@ export default class ClaimDetailsPage {
         await this.page.getByRole('group', { name: 'Did you spend time watching' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you do any work before' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you do any further work' }).getByLabel('No').check();
+        await this.page.getByRole('group', { name: 'Have wasted costs been' }).getByLabel('No').check();
         await this.page.getByRole('button', { name: 'Save and continue' }).click();
     }
 
