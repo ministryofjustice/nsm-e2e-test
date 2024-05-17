@@ -63,7 +63,7 @@ test.describe('CRM7 - Scenario 1', () => {
             const yourClaimProgressPage = new YouClaimProgressPage(page);
             await yourClaimProgressPage.clickOnYourDetails();
             // Your details
-            await expect(page.getByRole('heading', { name: 'Your details' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Firm details' })).toBeVisible();
         });
 
         await test.step('Filling up Your details', async () => {

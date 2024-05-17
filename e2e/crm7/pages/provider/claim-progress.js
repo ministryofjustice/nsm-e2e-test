@@ -5,7 +5,7 @@ export default class YouClaimProgressPage {
     }
 
     async clickOnYourDetails() {
-        await this.page.getByRole('link', { name: 'Your details' }).click();
+        await this.page.getByRole('link', { name: 'Firm details' }).click();
     }
 
 }
