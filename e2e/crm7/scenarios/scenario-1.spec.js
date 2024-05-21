@@ -225,7 +225,7 @@ test.describe('CRM7 - Scenario 1', () => {
                 'Work was done after last hearingNo',
                 `Date of first hearing${formatDate(nsmData.hearingDate)}`,
                 `Number of hearings${nsmData.hearingCount}`,
-                "Magistrates' courtCity of London Magistrates' Court",
+                "Magistrates' courtAberconwy PSD - C3237",
                 'Court is in designated area of the firmNo',
                 'Youth courtNo',
                 `Hearing outcome${nsmData.hearingOutcome}`,
