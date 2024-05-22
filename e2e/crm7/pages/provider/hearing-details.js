@@ -8,8 +8,8 @@ export default class HearingDetailsPage {
     async fillHearingDetails() {
         await fillDate(this.page, nsmData.hearingDate.day, nsmData.hearingDate.month, nsmData.hearingDate.year);
         await this.page.getByLabel('How many hearings were held').fill(nsmData.hearingCount);
-        await this.page.getByLabel('Which court was the last case').fill('Lon');
-        await this.page.getByRole('option', { name: "City of London Magistrates' Court" }).click();
+        await this.page.getByLabel('Which court was the last case').fill('Aberconwy');
+        await this.page.getByRole('option', { name: "Aberconwy PSD - C3237" }).click();
         await this.page.getByRole('group', { name: 'Is this court in a designated' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Is this court a youth court?' }).getByLabel('No').check();
         await this.page.getByLabel('Hearing outcome').fill(nsmData.hearingOutcome);

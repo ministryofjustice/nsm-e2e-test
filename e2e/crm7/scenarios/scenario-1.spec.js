@@ -63,7 +63,7 @@ test.describe('CRM7 - Scenario 1', () => {
             const yourClaimProgressPage = new YouClaimProgressPage(page);
             await yourClaimProgressPage.clickOnYourDetails();
             // Your details
-            await expect(page.getByRole('heading', { name: 'Your details' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Firm details' })).toBeVisible();
         });
 
         await test.step('Filling up Your details', async () => {
@@ -225,7 +225,7 @@ test.describe('CRM7 - Scenario 1', () => {
                 'Work was done after last hearingNo',
                 `Date of first hearing${formatDate(nsmData.hearingDate)}`,
                 `Number of hearings${nsmData.hearingCount}`,
-                "Magistrates' courtCity of London Magistrates' Court",
+                "Magistrates' courtAberconwy PSD - C3237",
                 'Court is in designated area of the firmNo',
                 'Youth courtNo',
                 `Hearing outcome${nsmData.hearingOutcome}`,
@@ -259,7 +259,7 @@ test.describe('CRM7 - Scenario 1', () => {
             await page.getByRole('group', { name: 'What do you want to do with this claim?' })
                 .getByLabel('Grant it', { exact: true }).check();
             await page.getByRole('button', { name: 'Submit decision' }).click();
-            await page.waitForURL('**/assessed_claims');
+            await page.waitForURL('**/closed');
             await page.getByRole('cell', { name: laaReference }).getByRole('link').click();
             await page.waitForURL('**/claim_details');
             await expect(page.locator('#main-content')).toContainText('Granted');
