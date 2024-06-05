@@ -201,6 +201,14 @@ test.describe('CRM7 - Scenario 1', () => {
             await expect(page.getByRole('heading', { name: `${nsmData.defendant.firstName} ${nsmData.defendant.lastName}` })).toBeVisible();
         });
 
+        await test.step('Self-assign claim', async () => {
+            await page.getByRole('link', { name: 'Add to my list' }).click();
+            await page.waitForURL('**/new');
+            await page.getByLabel('Explain').fill('Assigning this to myself to I can interact with it');
+            await page.getByRole('button', { name: 'Yes, add to my list' }).click();
+            await page.waitForURL('**/claim_details');
+        });
+
         await test.step('Verify claim details', async () => {
             const texts = [
                 `Unique file number${nsmData.uniqueFile}`,
