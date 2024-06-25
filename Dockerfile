@@ -17,6 +17,7 @@ COPY package*.json ./
 
 # Install the application dependencies
 RUN npm install
+RUN npx playwright install --with-deps
 
 # Copy the rest of the application code to the working directory
 COPY . .
