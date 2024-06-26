@@ -160,7 +160,7 @@ test.describe('CRM4 - Scenario 7', () => {
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Application complete' })).toBeVisible();
 			// Actions
-			await page.getByRole('button', { name: 'View my applications' }).click();
+			await page.getByRole('button', { name: 'View your applications' }).click();
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your applications' })).toBeVisible();
 			await page.getByRole('tab', { name: 'Submitted' }).click();
