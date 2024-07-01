@@ -148,6 +148,8 @@ services:
       AUTHENTICATION_REQUIRED: "false"
       DATABASE_URL: postgresql://postgres:postgres@nscc-db-services:5432/laa_crime_application_store
       RUN_SIDEKIQ_IN_TEST_MODE: "true"
+      ANALYTICS_USERNAME: analytics
+      ANALYTICS_PASSWORD: postgres
     depends_on:
       nscc-db-services:
         condition: service_healthy
