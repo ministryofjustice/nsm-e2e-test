@@ -71,7 +71,7 @@ test.describe('CRM7 - Scenario 1', () => {
             // Actions
             await yourDetails.fillYourDetails();
             // Expecation
-            await expect(page.getByRole('heading', { name: 'Which firm account number is this application for?' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Which firm account number is this claim for?' })).toBeVisible();
         });
 
 		await test.step('Select firm account number', async () => {
