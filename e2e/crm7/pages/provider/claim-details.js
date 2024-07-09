@@ -13,6 +13,10 @@ export default class ClaimDetailsPage {
         await this.page.getByRole('group', { name: 'Did you spend time watching' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you do any work before' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you do any further work' }).getByLabel('No').check();
+        // Date work completed
+        await page.getByRole('textbox', { name: 'Day' }).fill('1');
+        await page.getByRole('textbox', { name: 'Month' }).fill('1');
+        await page.getByRole('textbox', { name: 'Year' }).fill('2024');
         await this.page.getByRole('group', { name: 'Have wasted costs been' }).getByLabel('No').check();
         await this.page.getByRole('button', { name: 'Save and continue' }).click();
     }
