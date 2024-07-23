@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@axe-core/playwright": "^4.9.1",
-    "@playwright/test": "1.45.2",
+    "@playwright/test": "1.45.3",
     "@types/node": "^20.14.11",
     "dotenv": "^16.4.5"
   }
