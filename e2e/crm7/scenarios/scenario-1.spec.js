@@ -257,8 +257,10 @@ test.describe('CRM7 - Scenario 1', () => {
 
         await test.step('Verify claim is for correct amount', async () => {
             await page.getByRole('link', { name: 'Review and adjust' }).click();
-            await page.waitForURL('**/adjustments');
-            await expect(page.locator('#main-content')).toContainText('Total£529.58£105.92£635.49');
+            await page.waitForURL('**/review_and_adjusts');
+            await expect(page.locator('#main-content')).toContainText(
+                'TotalSum of net cost claimed: £529.58Sum of VAT on claimed: £105.92Sum of net cost and VAT on claimed: £635.49'
+            );
         });
 
         await test.step('Grant claim', async () => {
