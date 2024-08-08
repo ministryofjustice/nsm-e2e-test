@@ -249,7 +249,7 @@ test.describe('CRM7 - Scenario 1', () => {
                 'Any other informationNo',
                 'Proceedings concluded over 3 months agoNo',
                 `Firm name${nsmData.firmName}`,
-                `Firm office account number${nsmData.firmAccountNumber}`,
+                `Firm account number${nsmData.firmAccountNumber}`,
                 `Firm address${nsmData.addressLine1}${nsmData.townOrCity}${nsmData.postcode}`,
                 `Solicitor full name${nsmData.solicitorFirstName} ${nsmData.solicitorLastName}`,
                 `Solicitor reference number${nsmData.solicitorReferenceNumber}`,
