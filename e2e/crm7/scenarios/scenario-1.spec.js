@@ -64,7 +64,7 @@ test.describe('CRM7 - Scenario 1', () => {
 
             const asideLocator = await page.locator('.aside-task-list');
             const asideText = await asideLocator.textContent();
-            laaReference = asideText.split('LAA reference')[1].trim();
+            laaReference = asideText.split('LAA reference')[1].split('Claim type')[0].trim();
         });
 
         await test.step('Go to details and select Your details', async () => {
