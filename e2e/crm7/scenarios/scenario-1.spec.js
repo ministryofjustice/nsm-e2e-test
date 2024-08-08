@@ -51,6 +51,14 @@ test.describe('CRM7 - Scenario 1', () => {
             // What you are claiming for
             await expect(page.getByRole('heading', { name: 'What you are claiming for' })).toBeVisible();
             await whatAreYouClaimingPage.fillClaimForm();
+
+            await expect(page.getByRole('heading', { name: 'Was this case worked on in an office in an undesignated area?' })).toBeVisible();
+        });
+
+        await test.step('Complete office area question', async () => {
+            await this.page.getByText(nsmData.officeInUndesignatedArea, { exact: true }).click();
+            await this.page.getByRole('button', { name: 'Save and continue' }).click();
+
             // Your claim progress
             await expect(page.getByRole('heading', { name: 'Your claim progress' })).toBeVisible();
 

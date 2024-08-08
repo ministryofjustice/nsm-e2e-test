@@ -22,6 +22,7 @@ export function providerAppUrl(path = '') {
 export const nsmData = {
     uniqueFile: '120223/001',
     claimType: 'Non-standard magistrates\' court payment',
+    officeInUndesignatedArea: 'No',
     repOrderDate: {
         day: '27',
         month: '3',
