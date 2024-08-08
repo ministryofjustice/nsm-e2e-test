@@ -79,10 +79,10 @@ test.describe('CRM7 - Scenario 1', () => {
             // Actions
             await yourDetails.fillYourDetails();
             // Expecation
-            await expect(page.getByRole('heading', { name: 'Which firm account number is this claim for?' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Which firm office account number is this claim for?' })).toBeVisible();
         });
 
-		await test.step('Select firm account number', async () => {
+		await test.step('Select firm office account number', async () => {
 			const firmAccountNumberPage = new FirmAccountNumberPage(page);
 			// Actions
 			await firmAccountNumberPage.fillFirmAccountNumberForm();
@@ -249,7 +249,7 @@ test.describe('CRM7 - Scenario 1', () => {
                 'Any other informationNo',
                 'Proceedings concluded over 3 months agoNo',
                 `Firm name${nsmData.firmName}`,
-                `Firm account number${nsmData.firmAccountNumber}`,
+                `Firm office account number${nsmData.firmAccountNumber}`,
                 `Firm address${nsmData.addressLine1}${nsmData.townOrCity}${nsmData.postcode}`,
                 `Solicitor full name${nsmData.solicitorFirstName} ${nsmData.solicitorLastName}`,
                 `Solicitor reference number${nsmData.solicitorReferenceNumber}`,
