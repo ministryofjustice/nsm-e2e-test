@@ -72,10 +72,10 @@ test.describe('CRM4 - Scenario 7', () => {
 			// Actions
 			await caseContactPage.fillCaseContactForm();
 			// Expectations
-			await expect(page.getByRole('heading', { name: 'Which firm account number is this application for?' })).toBeVisible();
+			await expect(page.getByRole('heading', { name: 'Which firm office account number is this application for?' })).toBeVisible();
 		});
 
-		await test.step('Select firm account number', async () => {
+		await test.step('Select firm office account number', async () => {
 			const firmAccountNumberPage = new FirmAccountNumberPage(page);
 			// Actions
 			await firmAccountNumberPage.fillFirmAccountNumberForm();
