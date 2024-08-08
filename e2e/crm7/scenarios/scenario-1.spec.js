@@ -51,12 +51,20 @@ test.describe('CRM7 - Scenario 1', () => {
             // What you are claiming for
             await expect(page.getByRole('heading', { name: 'What you are claiming for' })).toBeVisible();
             await whatAreYouClaimingPage.fillClaimForm();
+
+            await expect(page.getByRole('heading', { name: 'Was this case worked on in an office in an undesignated area?' })).toBeVisible();
+        });
+
+        await test.step('Complete office area question', async () => {
+            await page.getByText(nsmData.officeInUndesignatedArea, { exact: true }).click();
+            await page.getByRole('button', { name: 'Save and continue' }).click();
+
             // Your claim progress
             await expect(page.getByRole('heading', { name: 'Your claim progress' })).toBeVisible();
 
             const asideLocator = await page.locator('.aside-task-list');
             const asideText = await asideLocator.textContent();
-            laaReference = asideText.split('LAA reference')[1].trim();
+            laaReference = asideText.split('LAA reference')[1].split('Claim type')[0].trim();
         });
 
         await test.step('Go to details and select Your details', async () => {
