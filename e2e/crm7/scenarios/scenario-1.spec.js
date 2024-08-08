@@ -242,7 +242,6 @@ test.describe('CRM7 - Scenario 1', () => {
                 `Date of first hearing${formatDate(nsmData.hearingDate)}`,
                 `Number of hearings${nsmData.hearingCount}`,
                 "Magistrates' courtAberconwy PSD - C3237",
-                'Court is in designated area of the firmNo',
                 'Youth courtNo',
                 `Hearing outcome${nsmData.hearingOutcome}`,
                 `Matter type${nsmData.matterType}`,
