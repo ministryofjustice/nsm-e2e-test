@@ -223,7 +223,7 @@ test.describe('CRM7 - Scenario 1', () => {
                 `Type of claim${nsmData.claimType}`,
                 `Representation order date${formatDate(nsmData.repOrderDate)}`,
                 `Main defendant full name${nsmData.defendant.firstName} ${nsmData.defendant.lastName}`,
-                `Main defendant MAAT ID${nsmData.defendant.maatId}`,
+                `Main defendant MAAT ID number${nsmData.defendant.maatId}`,
                 'Main offence nameCriminal Damage',
                 `Offence date${formatDate(nsmData.mainOffenceDate)}`,
                 'Assigned counselNo',
