@@ -146,7 +146,7 @@ test.describe('CRM7 - Scenario 1', () => {
             workItem.fillWorkItem();
             // Work items list
             await expect(page.getByRole('heading', { name: "You've added 1 work item" })).toBeVisible();
-            await expect(page.getByText('May 28, 2015')).toBeVisible();
+            await expect(page.getByText('28 May 2015')).toBeVisible();
             await expect(page.getByRole('cell', { name: 'Preparation' })).toBeVisible();
             await page.getByRole('group', { name: 'Do you want to add another work item?' }).getByLabel('No').check();
             await page.getByRole('button', { name: 'Save and continue' }).click();
