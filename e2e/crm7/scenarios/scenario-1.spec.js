@@ -53,8 +53,16 @@ test.describe('CRM7 - Scenario 1', () => {
             await expect(page.getByRole('heading', { name: 'What you are claiming for' })).toBeVisible();
             await whatAreYouClaimingPage.fillClaimForm();
 
-            await expect(page.getByRole('heading', { name: 'Was this case worked on in an office in an undesignated area?' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Which firm office account number is this claim for?' })).toBeVisible();
         });
+
+		await test.step('Select firm office account number', async () => {
+			const firmAccountNumberPage = new FirmAccountNumberPage(page);
+			// Actions
+			await firmAccountNumberPage.fillFirmAccountNumberForm();
+			// Expectations
+            await expect(page.getByRole('heading', { name: 'Was this case worked on in an office in an undesignated area?' })).toBeVisible();
+		});
 
         await test.step('Complete office area question', async () => {
             await page.getByText(nsmData.officeInUndesignatedArea, { exact: true }).click();
@@ -88,16 +96,8 @@ test.describe('CRM7 - Scenario 1', () => {
             // Actions
             await contactDetails.fillContactDetails();
             // Expectation
-            await expect(page.getByRole('heading', { name: 'Which firm office account number is this claim for?' })).toBeVisible();
-        });
-
-		await test.step('Select firm office account number', async () => {
-			const firmAccountNumberPage = new FirmAccountNumberPage(page);
-			// Actions
-			await firmAccountNumberPage.fillFirmAccountNumberForm();
-			// Expectations
             await expect(page.getByRole('heading', { name: 'Defendant details' })).toBeVisible();
-		});
+        });
 
         await test.step('Filling up Defendant details', async () => {
             const defendantDetails = new DefendantDetailsPage(page);
