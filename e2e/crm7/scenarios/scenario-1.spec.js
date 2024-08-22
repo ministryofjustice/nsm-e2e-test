@@ -4,6 +4,7 @@ import {
     WhatAreYouClaimingPage,
     YouClaimProgressPage,
     YourDetailsPage,
+    ContactDetailsPage,
     FirmAccountNumberPage,
     DefendantDetailsPage,
     CasesDetailsPage,
@@ -78,7 +79,15 @@ test.describe('CRM7 - Scenario 1', () => {
             const yourDetails = new YourDetailsPage(page);
             // Actions
             await yourDetails.fillYourDetails();
-            // Expecation
+            // Expectation
+            await expect(page.getByRole('heading', { name: 'Contact details' })).toBeVisible();
+        });
+
+        await test.step('Complete contact details', async () => {
+            const contactDetails = new ContactDetailsPage(page);
+            // Actions
+            await contactDetails.fillContactDetails();
+            // Expectation
             await expect(page.getByRole('heading', { name: 'Which firm office account number is this claim for?' })).toBeVisible();
         });
 

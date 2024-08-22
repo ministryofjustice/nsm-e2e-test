@@ -37,7 +37,9 @@ export const nsmData = {
     solicitorFirstName: 'Any',
     solicitorLastName: 'Testname',
     solicitorReferenceNumber: '2P341B',
-    addAnotherSolicitor: 'No',
+    contactFirstName: 'Joe',
+    contactLastName: 'Bloggs',
+    contactEmailAddress: 'joe@bloggs.com',
     defendant: {
         firstName: 'Lex',
         lastName: 'Luthor',
