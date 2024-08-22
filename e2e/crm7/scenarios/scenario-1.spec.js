@@ -261,8 +261,8 @@ test.describe('CRM7 - Scenario 1', () => {
                 `Firm address${nsmData.addressLine1}${nsmData.townOrCity}${nsmData.postcode}`,
                 `Solicitor full name${nsmData.solicitorFirstName} ${nsmData.solicitorLastName}`,
                 `Solicitor reference number${nsmData.solicitorReferenceNumber}`,
-                'Alternative contact detailsNot provided',
-                'Provider email addressprovider@example.com',
+                `Contact full name${nsmData.contactFirstName} ${nsmData.contactLastName}`,
+                `Contact email address${nsmData.contactEmailAddress}`,
                 'Equality questionsNo, skip the equality questions'
             ]
 

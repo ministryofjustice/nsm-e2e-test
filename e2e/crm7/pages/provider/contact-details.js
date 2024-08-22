@@ -5,7 +5,7 @@ export default class ContactDetailsPage {
         this.page = page;
     }
 
-    async fillYourDetails() {
+    async fillContactDetails() {
         await this.page.getByLabel('First name').fill(nsmData.contactFirstName);
         await this.page.getByLabel('Last name').fill(nsmData.contactLastName);
         await this.page.getByLabel('Email address').fill(nsmData.contactEmailAddress);
