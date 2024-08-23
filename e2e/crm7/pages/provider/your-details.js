@@ -14,7 +14,6 @@ export default class YourDetailsPage {
         await this.page.getByLabel('Solicitor first name').fill(nsmData.solicitorFirstName);
         await this.page.getByLabel('Solicitor last name').fill(nsmData.solicitorLastName);
         await this.page.getByLabel('Solicitor reference number').fill(nsmData.solicitorReferenceNumber);
-        await this.page.getByRole('group', { name: 'Do you want to add' }).getByLabel('No').check();
         await this.page.getByRole('button', { name: 'Save and continue' }).click();
     }
 
