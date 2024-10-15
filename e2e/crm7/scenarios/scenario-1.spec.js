@@ -96,7 +96,7 @@ test.describe('CRM7 - Scenario 1', () => {
             // Actions
             await contactDetails.fillContactDetails();
             // Expectation
-            await expect(page.getByRole('heading', { name: 'Defendant details' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Defendant 1 (lead defendant)' })).toBeVisible();
         });
 
         await test.step('Filling up Defendant details', async () => {
