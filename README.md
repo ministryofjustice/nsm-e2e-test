@@ -113,6 +113,8 @@ The purpose of the end-to-end tests is to identify breaking changes in the LAA c
 
 ## [CRM 4 Scenarios](https://docs.google.com/spreadsheets/d/1i97rgTQsUfZflPTJE_PPHfZizo8yW-u7ZGZfBvdHwt4/edit#gid=534567382)
 
-## License
+## Licence
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License][mit].
+
+[mit]: LICENCE
