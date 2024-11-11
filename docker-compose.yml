@@ -24,7 +24,7 @@ services:
       -wait tcp://nscc-provider:3000
       -wait tcp://nscc-caseworker:3000
       -wait-retry-interval 10s
-      -timeout 180s
+      -timeout 300s
     depends_on:
       - nscc-provider
       - nscc-caseworker
@@ -157,7 +157,7 @@ services:
     healthcheck:
       test: "curl -I  http://localhost:3000/ping | grep 200 || exit 1"
       interval: 5s
-      timeout: 5s
-      retries: 20
+      timeout: 10s
+      retries: 30
     ports:
       - 3003:3000
