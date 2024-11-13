@@ -10,7 +10,7 @@
     "e2e-test-record:provider": "playwright codegen https://dev.submit-crime-forms.service.justice.gov.uk/"
   },
   "dependencies": {
-    "@axe-core/playwright": "^4.10.0",
+    "@axe-core/playwright": "^4.10.1",
     "@playwright/test": "1.48.2",
     "@types/node": "^22.9.0",
     "dotenv": "^16.4.5"
