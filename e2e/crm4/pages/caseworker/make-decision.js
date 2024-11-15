@@ -4,7 +4,7 @@ export default class MakeDecisionPage {
 		this.page = page;
 	}
 	async grantApplication() {
-		await this.page.getByLabel('Granted', { exact: true }).check();
+		await this.page.getByLabel('Grant', { exact: true }).check();
 		await this.page.getByRole('button', { name: 'Submit decision' }).click();
 	}
 
