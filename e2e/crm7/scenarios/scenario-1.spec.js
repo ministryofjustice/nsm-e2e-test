@@ -281,8 +281,7 @@ test.describe('CRM7 - Scenario 1', () => {
         await test.step('Grant claim', async () => {
             await page.getByRole('link', { name: 'Make a decision' }).click();
             await page.waitForURL('**/make_decision');
-            await page.getByRole('group', { name: 'What do you want to do with this claim?' })
-                .getByLabel('Grant it', { exact: true }).check();
+            await page.getByLabel('Grant', { exact: true }).check();
             await page.getByRole('button', { name: 'Submit decision' }).click();
             await page.waitForURL('**/closed');
             await page.getByRole('cell', { name: laaReference }).getByRole('link').click();
