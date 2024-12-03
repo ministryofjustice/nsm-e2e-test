@@ -9,12 +9,14 @@ import {
     DefendantDetailsPage,
     CasesDetailsPage,
     HearingDetailsPage,
-    CaseDisposalPage,
+    CaseCategoryPage,
+    CaseOutcomePage,
+    EligibleYouthCourtFeePage,
     ClaimReasonPage,
     ClaimDetailsPage,
     WorkItemPage
 } from '../pages/provider';
-import { AllClaimsPage } from '../pages/caseworker/all-claims';
+
 import {
     authenticateAsCaseworker,
     nsmData,
@@ -22,7 +24,7 @@ import {
     authenticateAsProvider,
 } from '../../../helpers';
 
-test.describe('CRM7 - Scenario 1', () => {
+test.describe('NSM Claim for Youth court fee', () => {
     let page;
     let laaReference;
     test.describe.configure({ mode: 'serial' });
@@ -34,8 +36,7 @@ test.describe('CRM7 - Scenario 1', () => {
         await page.close();
     });
 
-    // Checking current risk level
-    test(' Start a new claim with No Disbursements and no uploads', async () => {
+    test(' Start a new claim for Youth court Fee', async () => {
         await authenticateAsProvider(page);
         await test.step('Starting a new claim', async () => {
             const yourClaimsPage = new YourClaimsPage(page);
@@ -46,12 +47,11 @@ test.describe('CRM7 - Scenario 1', () => {
             await page.getByRole('button', { name: 'Start a new claim' }).click();
         });
 
-
         await test.step('Filling up why claiming', async () => {
             const whatAreYouClaimingPage = new WhatAreYouClaimingPage(page);
             // What you are claiming for
             await expect(page.getByRole('heading', { name: 'What you are claiming for' })).toBeVisible();
-            await whatAreYouClaimingPage.fillClaimForm();
+            await whatAreYouClaimingPage.fillClaimFormPostDecWithoutBOI();
 
             await expect(page.getByRole('heading', { name: 'Which firm office account number is this claim for?' })).toBeVisible();
         });
@@ -123,16 +123,39 @@ test.describe('CRM7 - Scenario 1', () => {
         await test.step('Filling up Hearing details', async () => {
             // Hearing details
             const hearingDetails = new HearingDetailsPage(page);
-            await hearingDetails.fillHearingDetails();
-            // Case Disposal
-            await expect(page.getByRole('heading', { name: 'Select the case disposal' })).toBeVisible();
+            await hearingDetails.fillHearingDetails('SelectYouthCourt');
+            // Case Category
+            await expect(page.getByRole('heading', { name: 'Select the case category' })).toBeVisible();
         });
 
-        await test.step('Filling up Case Disposal', async () => {
-            // Case Disposal
-            const caseDisposal = new CaseDisposalPage(page);
-            await caseDisposal.selectCaseDisposal();
-            await expect(page.getByRole('heading', { name: "Why are you claiming a non-standard magistrates' court payment?" })).toBeVisible();
+        await test.step('Checking all the possible categories are visible', async () => {
+            await expect(page.locator('div').filter({ hasText: /^Category 1A$/ })).toBeVisible();
+            await expect(page.locator('div').filter({ hasText: /^Category 1B$/ })).toBeVisible();
+            await expect(page.locator('div').filter({ hasText: /^Category 2A$/ })).toBeVisible();
+            await expect(page.locator('div').filter({ hasText: /^Category 2B$/ })).toBeVisible();
+        });
+
+        await test.step('Filling up Case category', async () => {
+            // Case Category
+            const caseCategory = new CaseCategoryPage(page);
+            await caseCategory.selectCaseCategory('Category 1A');
+            await expect(page.getByRole('heading', { name: "Select the case outcome" })).toBeVisible();
+        });
+
+        await test.step('Filling up Case outcome', async () => {
+            // Case Outcome
+            const caseOutcome = new CaseOutcomePage(page);
+            await caseOutcome.selectCaseOutcome();
+            await expect(page.getByRole('heading', { name: 'Do you want to claim the' })).toBeVisible();
+        });
+
+        await test.step('Filling up Eligible Youth Court Fee', async () => {
+            // Eligible Youth Court Fee
+            const eligibleYouthCourtFee = new EligibleYouthCourtFeePage(page);
+            await expect(page.getByText('Based on the answers you have')).toBeVisible();
+            // Claiming Youth Court Fee
+            await eligibleYouthCourtFee.claimYouthCourtFee(true);
+            await expect(page.getByRole('heading', { name: 'Why are you claiming' })).toBeVisible();
         });
 
         await test.step('Filling up Claim Reason', async () => {
@@ -176,7 +199,8 @@ test.describe('CRM7 - Scenario 1', () => {
 
             // Check your claim
             await expect(page.getByRole('heading', { name: 'Check your payment claim' })).toBeVisible();
-            await expect(page.getByRole('heading', { name: '£635.49' })).toBeVisible({ timeout: 10000 });
+            // await expect(page.locator('h2').filter({ hasText: /^£730\.71$/ })).toBeVisible();
+            await expect(page.getByRole('heading', { name: '£1,449.02' })).toBeVisible({ timeout: 20000 });
             await page.getByRole('link', { name: 'Save and continue' }).click();
 
             // Other relevant information
@@ -194,6 +218,10 @@ test.describe('CRM7 - Scenario 1', () => {
 
             // Check your answers
             await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+            await expect(page.getByText('Category 1a')).toBeVisible();
+            await expect(page.getByText('Guilty plea')).toBeVisible();
+            await expect(page.getByText('Additional fee')).toBeVisible();
+            await expect(page.getByText('Youth court fee claimed')).toBeVisible();
             await expect(page.getByText('Test Automate')).toBeVisible();
             await page.getByRole('link', { name: 'Save and continue' }).click();
 
@@ -206,92 +234,6 @@ test.describe('CRM7 - Scenario 1', () => {
             await expect(page.getByRole('heading', { name: 'Confirm the following' })).toBeVisible();
             await page.getByLabel('Full name').fill('Test Automate');
             await page.getByRole('button', { name: 'Save and submit' }).click();
-        });
-        // Assessing the claim
-        await authenticateAsCaseworker(page);
-        await test.step('View claim in caseworker app', async () => {
-            const allClaimsPage = new AllClaimsPage(page);
-            await allClaimsPage.goto();
-            await expect(page.locator('#main-content')).toContainText(laaReference);
-            await page.getByRole('link', { name: laaReference }).click();
-            await page.waitForURL('**/claim_details');
-            await expect(page.getByRole('heading', { name: `${nsmData.defendant.firstName} ${nsmData.defendant.lastName}` })).toBeVisible();
-        });
-
-        await test.step('Self-assign claim', async () => {
-            await page.getByRole('link', { name: 'Add to my list' }).click();
-            await page.waitForURL('**/new');
-            await page.getByLabel('Explain').fill('Assigning this to myself to I can interact with it');
-            await page.getByRole('button', { name: 'Yes, add to my list' }).click();
-            await page.waitForURL('**/claim_details');
-        });
-
-        await test.step('Verify claim details', async () => {
-            const texts = [
-                `Unique file number${nsmData.uniqueFile}`,
-                `Type of claim${nsmData.claimType.nsm}`,
-                `Representation order date${formatDate(nsmData.repOrderDate.default)}`,
-                `Defendant 1 (lead)${nsmData.defendant.firstName} ${nsmData.defendant.lastName}${nsmData.defendant.maatId}`,
-                'Main offence nameCriminal Damage',
-                `Offence date${formatDate(nsmData.mainOffenceDate)}`,
-                'Assigned counselNo',
-                'Unassigned counselNo',
-                'Instructed agentNo',
-                "Case remitted from Crown Court to magistrates' courtNo",
-                'Category 1Guilty plea',
-                "Why are you claiming a non-standard magistrates' payment?Enhanced rates claimed",
-                `Number of pages of prosecution evidence${nsmData.evidencePages.prosecution}`,
-                `Number of pages of defence statements${nsmData.evidencePages.defence}`,
-                `Number of witnesses${nsmData.witnesses}`,
-                'Supplemental claimNo',
-                'Recorded evidenceNo',
-                'Work done before order was grantedNo',
-                'Work was done after last hearingNo',
-                `Date of first hearing${formatDate(nsmData.hearingDate)}`,
-                `Number of hearings${nsmData.hearingCount}`,
-                "Magistrates' courtAberconwy PSD - C3237",
-                'Youth courtNo',
-                `Hearing outcome${nsmData.hearingOutcome}`,
-                `Matter type${nsmData.matterType}`,
-                'Any other informationNo',
-                'Proceedings concluded over 3 months agoNo',
-                `Firm name${nsmData.firmName}`,
-                `Firm office account number${nsmData.firmAccountNumber}`,
-                `Firm address${nsmData.addressLine1}${nsmData.townOrCity}${nsmData.postcode}`,
-                `Solicitor full name${nsmData.solicitorFirstName} ${nsmData.solicitorLastName}`,
-                `Solicitor reference number${nsmData.solicitorReferenceNumber}`,
-                `Contact full name${nsmData.contactFirstName} ${nsmData.contactLastName}`,
-                `Contact email address${nsmData.contactEmailAddress}`,
-                'Equality questionsNo, skip the equality questions'
-            ]
-
-            texts.forEach(async (text) => {
-                await expect(page.locator('#main-content')).toContainText(text);
-            });
-        })
-
-        await test.step('Verify claim is for correct amount', async () => {
-            await page.getByRole('link', { name: 'Review and adjust' }).click();
-            await page.waitForURL('**/work_items');
-            await expect(page.locator('#main-content')).toContainText(
-                'TotalSum of net cost claimed: £529.58Sum of VAT on claimed: £105.92Sum of net cost and VAT on claimed: £635.49'
-            );
-        });
-
-        await test.step('Grant claim', async () => {
-            await page.getByRole('link', { name: 'Make a decision' }).click();
-            await page.waitForURL('**/make_decision');
-            await page.getByLabel('Grant', { exact: true }).check();
-            await page.getByRole('button', { name: 'Submit decision' }).click();
-            await page.waitForURL('**/closed');
-            await page.getByRole('cell', { name: laaReference }).getByRole('link').click();
-            await page.waitForURL('**/claim_details');
-            await expect(page.locator('#main-content')).toContainText('Granted');
-        });
-
-        await test.step('View result as provider', async () => {
-            await new YourClaimsPage(page).goto();
-            await expect(page.locator('#main-content')).toContainText(`${laaReference} Granted`);
         });
     });
 

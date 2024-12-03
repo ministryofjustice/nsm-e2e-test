@@ -21,12 +21,30 @@ export function providerAppUrl(path = '') {
 
 export const nsmData = {
     uniqueFile: '120223/001',
-    claimType: 'Non-standard magistrates\' court payment',
+    claimType: {
+        nsm: 'Non-standard magistrates\' court payment',
+        boi: 'Breach of injunction',
+    },
     officeInUndesignatedArea: 'No',
     repOrderDate: {
-        day: '27',
-        month: '3',
-        year: '2021'
+        default: {
+            day: '27',
+            month: '3',
+            year: '2021'
+        },
+        youthCourtFee: {
+            day: '6',
+            month: '12',
+            year: '2024'
+        }
+    },
+    breachOfInjunction: {
+        cntp: 'CNTP1234',
+        repOrderDate: {
+            day: '12',
+            month: '1',
+            year: '2024'
+        }
     },
     firmName: 'Test Automate',
     firmAccountNumber: '1A123B',
