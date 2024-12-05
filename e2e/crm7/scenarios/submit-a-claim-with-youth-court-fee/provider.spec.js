@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../../fixtures/global-setup';
 import {
     YourClaimsPage,
     WhatAreYouClaimingPage,
@@ -15,28 +15,18 @@ import {
     ClaimReasonPage,
     ClaimDetailsPage,
     WorkItemPage
-} from '../pages/provider';
+} from '../../pages/provider';
 
 import {
-    authenticateAsCaseworker,
     nsmData,
-    formatDate,
     authenticateAsProvider,
-} from '../../../helpers';
+    storeLAAReference
+} from '../../../../helpers';
 
 test.describe('NSM Claim for Youth court fee', () => {
-    let page;
-    let laaReference;
-    test.describe.configure({ mode: 'serial' });
-
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-    });
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test(' Start a new claim for Youth court Fee', async () => {
+    test(' Start a new claim for Youth court Fee', async ({ providerFixture }) => {
+        const { page, scenarioName } = providerFixture;
+        let laaReference;
         await authenticateAsProvider(page);
         await test.step('Starting a new claim', async () => {
             const yourClaimsPage = new YourClaimsPage(page);
@@ -74,6 +64,8 @@ test.describe('NSM Claim for Youth court fee', () => {
             const asideLocator = await page.locator('.aside-task-list');
             const asideText = await asideLocator.textContent();
             laaReference = asideText.split('LAA reference')[1].split('Claim type')[0].trim();
+            // Store LAA reference using scenario name from fixture
+            await storeLAAReference(page, laaReference, scenarioName);
         });
 
         await test.step('Go to details and select Your details', async () => {
@@ -139,7 +131,7 @@ test.describe('NSM Claim for Youth court fee', () => {
             // Case Category
             const caseCategory = new CaseCategoryPage(page);
             await caseCategory.selectCaseCategory('Category 1A');
-            await expect(page.getByRole('heading', { name: "Select the case outcome" })).toBeVisible();
+            await expect(page.getByRole('heading', { name: "Case outcome" })).toBeVisible();
         });
 
         await test.step('Filling up Case outcome', async () => {
