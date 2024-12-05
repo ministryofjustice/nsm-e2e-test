@@ -1,19 +1,11 @@
-import { test, expect } from '@playwright/test';
-import { YourApplicationsPage, IsThisPrisonLawPage, ApplyingTotalAmountPage } from '../pages/provider';
+import { test, expect } from '../../../fixtures/global-setup';
+import { YourApplicationsPage, IsThisPrisonLawPage, ApplyingTotalAmountPage } from '../../pages/provider';
 
-import { authenticateAsProvider } from '../../../helpers';
+import { authenticateAsProvider } from '../../../../helpers';
 
-test.describe('CRM4 - Scenario 2', () => {
-	let page;
-	test.describe.configure({ mode: 'serial' });
-	test.beforeAll(async ({ browser }) => {
-		page = await browser.newPage();
-	});
-	test.afterAll(async () => {
-		await page.close();
-	});
-
-	test('Provider - Start a new application that is a Prison Law Matter and less than £500', async () => {
+test.describe('CRM4 - As a Provider', () => {
+	test('starting a new application that is a Prison Law Matter and less than £500', async ({ providerFixture }) => {
+		const { page } = providerFixture;
 		await authenticateAsProvider(page);
 		await test.step('Starting a new application', async () => {
 			const yourApplicationsPage = new YourApplicationsPage(page);

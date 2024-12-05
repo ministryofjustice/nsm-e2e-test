@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from '../../../fixtures/global-setup';
 import {
     YourClaimsPage,
     WhatAreYouClaimingPage,
@@ -9,34 +9,21 @@ import {
     DefendantDetailsPage,
     CasesDetailsPage,
     HearingDetailsPage,
-    CaseCategoryPage,
-    CaseOutcomePage,
-    EligibleYouthCourtFeePage,
+    CaseDisposalPage,
     ClaimReasonPage,
     ClaimDetailsPage,
     WorkItemPage
-} from '../pages/provider';
-
+} from '../../pages/provider';
 import {
-    authenticateAsCaseworker,
     nsmData,
-    formatDate,
     authenticateAsProvider,
-} from '../../../helpers';
+    storeLAAReference
+} from '../../../../helpers';
 
-test.describe('NSM Claim for Youth court fee', () => {
-    let page;
-    let laaReference;
-    test.describe.configure({ mode: 'serial' });
-
-    test.beforeAll(async ({ browser }) => {
-        page = await browser.newPage();
-    });
-    test.afterAll(async () => {
-        await page.close();
-    });
-
-    test(' Start a new claim for Youth court Fee', async () => {
+test.describe('CRM7 - As a Provider', () => {
+    test('submitting a new claim', async ({ providerFixture }) => {
+        const { page, scenarioName } = providerFixture;
+        let laaReference;
         await authenticateAsProvider(page);
         await test.step('Starting a new claim', async () => {
             const yourClaimsPage = new YourClaimsPage(page);
@@ -51,7 +38,7 @@ test.describe('NSM Claim for Youth court fee', () => {
             const whatAreYouClaimingPage = new WhatAreYouClaimingPage(page);
             // What you are claiming for
             await expect(page.getByRole('heading', { name: 'What you are claiming for' })).toBeVisible();
-            await whatAreYouClaimingPage.fillClaimFormPostDecWithoutBOI();
+            await whatAreYouClaimingPage.fillClaimForm();
 
             await expect(page.getByRole('heading', { name: 'Which firm office account number is this claim for?' })).toBeVisible();
         });
@@ -74,6 +61,8 @@ test.describe('NSM Claim for Youth court fee', () => {
             const asideLocator = await page.locator('.aside-task-list');
             const asideText = await asideLocator.textContent();
             laaReference = asideText.split('LAA reference')[1].split('Claim type')[0].trim();
+            // Store LAA reference using scenario name from fixture
+            await storeLAAReference(page, laaReference, scenarioName);
         });
 
         await test.step('Go to details and select Your details', async () => {
@@ -123,45 +112,22 @@ test.describe('NSM Claim for Youth court fee', () => {
         await test.step('Filling up Hearing details', async () => {
             // Hearing details
             const hearingDetails = new HearingDetailsPage(page);
-            await hearingDetails.fillHearingDetails('SelectYouthCourt');
-            // Case Category
-            await expect(page.getByRole('heading', { name: 'Select the case category' })).toBeVisible();
+            await hearingDetails.fillHearingDetailsWithYouthCourt(false);
+            // Case Disposal
+            await expect(page.getByRole('heading', { name: 'Select the case disposal' })).toBeVisible();
         });
 
-        await test.step('Checking all the possible categories are visible', async () => {
-            await expect(page.locator('div').filter({ hasText: /^Category 1A$/ })).toBeVisible();
-            await expect(page.locator('div').filter({ hasText: /^Category 1B$/ })).toBeVisible();
-            await expect(page.locator('div').filter({ hasText: /^Category 2A$/ })).toBeVisible();
-            await expect(page.locator('div').filter({ hasText: /^Category 2B$/ })).toBeVisible();
-        });
-
-        await test.step('Filling up Case category', async () => {
-            // Case Category
-            const caseCategory = new CaseCategoryPage(page);
-            await caseCategory.selectCaseCategory('Category 1A');
-            await expect(page.getByRole('heading', { name: "Select the case outcome" })).toBeVisible();
-        });
-
-        await test.step('Filling up Case outcome', async () => {
-            // Case Outcome
-            const caseOutcome = new CaseOutcomePage(page);
-            await caseOutcome.selectCaseOutcome();
-            await expect(page.getByRole('heading', { name: 'Do you want to claim the' })).toBeVisible();
-        });
-
-        await test.step('Filling up Eligible Youth Court Fee', async () => {
-            // Eligible Youth Court Fee
-            const eligibleYouthCourtFee = new EligibleYouthCourtFeePage(page);
-            await expect(page.getByText('Based on the answers you have')).toBeVisible();
-            // Claiming Youth Court Fee
-            await eligibleYouthCourtFee.claimYouthCourtFee(true);
-            await expect(page.getByRole('heading', { name: 'Why are you claiming' })).toBeVisible();
+        await test.step('Filling up Case Disposal', async () => {
+            // Case Disposal
+            const caseDisposal = new CaseDisposalPage(page);
+            await caseDisposal.selectCaseDisposal();
+            await expect(page.getByRole('heading', { name: "Why are you claiming a non-standard magistrates' court payment?" })).toBeVisible();
         });
 
         await test.step('Filling up Claim Reason', async () => {
             // Why are you claiming
             const claimReason = new ClaimReasonPage(page);
-            await claimReason.selectClaimReason();
+            await claimReason.selectClaimReason('Enhanced rates claimed');
             await expect(page.getByRole('heading', { name: 'Claim details' })).toBeVisible();
         });
 
@@ -199,8 +165,7 @@ test.describe('NSM Claim for Youth court fee', () => {
 
             // Check your claim
             await expect(page.getByRole('heading', { name: 'Check your payment claim' })).toBeVisible();
-            // await expect(page.locator('h2').filter({ hasText: /^£730\.71$/ })).toBeVisible();
-            await expect(page.getByRole('heading', { name: '£1,449.02' })).toBeVisible({ timeout: 20000 });
+            await expect(page.getByRole('heading', { name: '£635.49' })).toBeVisible({ timeout: 10000 });
             await page.getByRole('link', { name: 'Save and continue' }).click();
 
             // Other relevant information
@@ -218,10 +183,6 @@ test.describe('NSM Claim for Youth court fee', () => {
 
             // Check your answers
             await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
-            await expect(page.getByText('Category 1a')).toBeVisible();
-            await expect(page.getByText('Guilty plea')).toBeVisible();
-            await expect(page.getByText('Additional fee')).toBeVisible();
-            await expect(page.getByText('Youth court fee claimed')).toBeVisible();
             await expect(page.getByText('Test Automate')).toBeVisible();
             await page.getByRole('link', { name: 'Save and continue' }).click();
 

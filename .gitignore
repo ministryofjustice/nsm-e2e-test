@@ -5,6 +5,7 @@ node_modules/
 /playwright/.cache/
 
 playwright/.auth
+e2e/storage
 .DS_Store
 .vscode/
 tmp/

@@ -1,147 +1,45 @@
-require('dotenv').config();
+// e2e/helpers/index.js
 
-// write function to export supervisor file so i can use it in the test
-export function runTestAs(role) {
-    if (role === 'supervisor') {
-        return 'playwright/.auth/supervisor.json';
-    } else if (role === 'caseworker') {
-        return 'playwright/.auth/caseworker.json';
-    } else if (role === 'provider') {
-        return 'playwright/.auth/provider.json';
-    }
-}
+// Authentication helpers
+export {
+    authenticateAsCaseworker,
+    authenticateAsSupervisor,
+    authenticateAsProvider,
+    runTestAs
+} from './auth';
 
-export function caseworkerAppUrl(path = '') {
-    return `${process.env.NSCC_CASEWORKER_URL}${path}`;
-}
+// URL helpers
+export {
+    caseworkerAppUrl,
+    providerAppUrl
+} from './appUrl';
 
-export function providerAppUrl(path = '') {
-    return `${process.env.NSCC_PROVIDER_URL}${path}`;
-}
+// Storage helpers
+export {
+    storeLAAReference,
+    getLAAReference,
+    getScenarioName
+} from './storage';
 
-export const nsmData = {
-    uniqueFile: '120223/001',
-    claimType: {
-        nsm: 'Non-standard magistrates\' court payment',
-        boi: 'Breach of injunction',
-    },
-    officeInUndesignatedArea: 'No',
-    repOrderDate: {
-        default: {
-            day: '27',
-            month: '3',
-            year: '2021'
-        },
-        youthCourtFee: {
-            day: '6',
-            month: '12',
-            year: '2024'
-        }
-    },
-    breachOfInjunction: {
-        cntp: 'CNTP1234',
-        repOrderDate: {
-            day: '12',
-            month: '1',
-            year: '2024'
-        }
-    },
-    firmName: 'Test Automate',
-    firmAccountNumber: '1A123B',
-    addressLine1: '102 Petty France',
-    townOrCity: 'London',
-    postcode: 'SW1H 9AJ',
-    vatRegistered: 'Yes',
-    solicitorFirstName: 'Any',
-    solicitorLastName: 'Testname',
-    solicitorReferenceNumber: '2P341B',
-    contactFirstName: 'Joe',
-    contactLastName: 'Bloggs',
-    contactEmailAddress: 'joe@bloggs.com',
-    defendant: {
-        firstName: 'Lex',
-        lastName: 'Luthor',
-        maatId: '1234567'
-    },
-    mainOffenceDate: {
-        day: '1',
-        month: '1',
-        year: '2015'
-    },
-    hearingDate: {
-        day: '1',
-        month: '5',
-        year: '2015'
-    },
-    hearingCount: '1',
-    hearingOutcome: 'CP19',
-    matterType: '9',
-    evidencePages: {
-        prosecution: '10',
-        defence: '10',
-    },
-    witnesses: '1',
+// Test data
+export {
+    nsmData,
+    priorAuthorityData
+} from './data';
 
-};
+// Utils
+export {
+    convertToBoolean,
+    fillDate,
+    formatDate
+} from './utils';
 
-export const priorAuthorityData = {
-    ufn: '120223/001',
-    firmAccountNumber: '1A123B',
-    caseContact: {
-        firstName: 'Clark',
-        lastName: 'Kent',
-        email: 'superman@krypton.com',
-        firmName: 'Daily Planet',
-    },
-    clientDetails: {
-        firstName: 'Bruce',
-        lastName: 'Wayne',
-        dob: {
-            day: '1',
-            month: '1',
-            year: '1980'
-        }
-    },
-    serviceProvider: {
-        firstName: 'Barry',
-        lastName: 'Allen',
-        organisation: 'Central City Police Department',
-        town: 'Central City',
-        postcode: 'SW1H 9AJ',
-    },
-    serviceCost: {
-        granted: 'No',
-        serviceType: {
-            name: 'Transcription (recording)',
-            numberOfMinutes: '10',
-            costPerMinute: '5.00',
-        }
-    }
-};
-export async function fillDate(page, day, month, year) {
-    await page.getByRole('textbox', { name: 'Day' }).fill(day.toString());
-    await page.getByRole('textbox', { name: 'Month' }).fill(month.toString());
-    await page.getByRole('textbox', { name: 'Year' }).fill(year.toString());
-}
+// Form helpers
+export {
+    selectRadioButton,
+} from './formHelper';
 
-export function formatDate(dateObject) {
-    const date = new Date(dateObject.year, dateObject.month - 1, dateObject.day);
-    return date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })
-}
-
-export async function authenticateAsCaseworker(page) {
-    await page.goto(caseworkerAppUrl());
-    await page.getByLabel('Pick an account:').selectOption('case.worker@test.com');
-    await page.getByRole('button', { name: 'Sign in' }).click();
-}
-
-export async function authenticateAsSupervisor(page) {
-    await page.goto(caseworkerAppUrl());
-    await page.getByLabel('Pick an account:').selectOption('super.visor@test.com');
-    await page.getByRole('button', { name: 'Sign in' }).click();
-}
-
-export async function authenticateAsProvider(page) {
-    await page.goto(providerAppUrl());
-    await page.getByRole('button', { name: 'Log in as primary test user (CRM7/4/5)' }).click();
-}
+// Page Map
+export {
+    providerPageMap,
+} from './pageMap';
