@@ -6,8 +6,20 @@ export default class CasesDetailsPage {
     }
 
     async fillCaseDetails() {
+        await this.page.getByLabel('Main offence').waitFor({
+            state: 'visible',
+            timeout: 5000
+        });
+        await this.page.getByLabel('Main offence').click();
         await this.page.getByLabel('Main offence').fill('crim');
-        await this.page.getByRole('option', { name: 'Criminal Damage Criminal Damage and Arson', exact: true }).click();
+        await this.page.getByRole('option', {
+            name: 'Criminal Damage Criminal Damage and Arson',
+            exact: true
+        }).waitFor({ state: 'visible', timeout: 5000 });
+        await this.page.getByRole('option', {
+            name: 'Criminal Damage Criminal Damage and Arson',
+            exact: true
+        }).click();
         await this.page.getByRole('group', { name: 'What is the offence type?' }).getByLabel('Summary only').check();
         await fillDate(this.page, nsmData.mainOffenceDate.day, nsmData.mainOffenceDate.month, nsmData.mainOffenceDate.year);
         await this.page.getByRole('group', { name: 'Was there an assigned counsel?' }).getByLabel('No').check();
