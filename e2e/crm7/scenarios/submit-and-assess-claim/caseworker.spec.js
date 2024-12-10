@@ -90,11 +90,5 @@ test.describe('CRM7 - As a Caseworker', () => {
             await page.waitForURL('**/claim_details');
             await expect(page.locator('#main-content')).toContainText('Granted');
         });
-
-        // await test.step('View result as provider', async () => {
-        //     await new YourClaimsPage(page).goto();
-        //     await expect(page.locator('#main-content')).toContainText(`${laaReference} Granted`);
-        // });
     });
-
 });

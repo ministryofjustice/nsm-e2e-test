@@ -83,4 +83,26 @@ export class GlobalHelper {
             throw new Error(`Failed to click button "${buttonTitle}": ${error.message}`);
         }
     };
+
+    /**
+     * Clicks an element with the specified role and name
+     * @param {string} title - Text content of the element
+     * @param {string} [role='button'] - Role of the element (e.g., 'button', 'link')
+     * @throws {Error} If element is not found or click fails
+     * @returns {Promise<void>}
+     * @example
+     * await clickOnElement('Save and continue'); // Clicks button
+     * await clickOnElement('View details', 'link'); // Clicks link
+     */
+    clickOnElement = async (title, role = 'button') => {
+        if (!title) {
+            throw new Error('Element title is required');
+        }
+
+        try {
+            await this.page.getByRole(role, { name: title }).click();
+        } catch (error) {
+            throw new Error(`Failed to click ${role} "${title}": ${error.message}`);
+        }
+    };
 }

@@ -30,6 +30,7 @@ exports.testConfig = {
         scenarioConfig('submit-and-assess-claim', 'crm7').caseworker,
         // Scenario : NSM Submit a claim with Youth Court fee claimed
         scenarioConfig('submit-a-claim-with-youth-court-fee', 'crm7').provider,
+        scenarioConfig('submit-a-claim-with-youth-court-fee', 'crm7').caseworker,
         // Scenario : NSM Submit a claim with Breach of Injunction post Dec
         scenarioConfig('submit-a-claim-with-boi', 'crm7').provider,
         // Scenario : PA Submit an application that is not Prison Law and less than £100

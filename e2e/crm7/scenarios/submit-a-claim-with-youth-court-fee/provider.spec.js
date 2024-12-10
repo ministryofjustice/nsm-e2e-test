@@ -72,7 +72,7 @@ test.describe('NSM Claim for Youth court fee', () => {
 
         await test.step('Filling up Eligible Youth Court Fee', async () => {
             // Eligible Youth Court Fee
-            await expectations.text('Based on the answers you have');
+            await expectations.text('Based on the answers you have provided you are eligible for the youth court additional fee.');
             await providerHelper.claimYouthCourtFee(true);
             await expectations.heading('Why are you claiming');
         });
