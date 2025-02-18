@@ -249,7 +249,7 @@ export class ProviderTestStepsHelper {
     fillUpOneWorkItems = async () => {
         const workItem = new WorkItemPage(this.page);
         await workItem.fillWorkItem();
-        await this.expectations.heading("You've added 1 work item");
+        await this.expectations.heading("Work items");
         await this.expectations.text('28 May 2015');
         await this.expectations.cellText('Preparation');
         await selectRadioButton(this.page, 'Do you want to add another work item?', 'No');
