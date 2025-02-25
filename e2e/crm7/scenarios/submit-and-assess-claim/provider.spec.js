@@ -143,7 +143,7 @@ test.describe('CRM7 - As a Provider', () => {
             const workItem = new WorkItemPage(page);
             await workItem.fillWorkItem();
             // Work items list
-            await expect(page.getByRole('heading', { name: "You've added 1 work item" })).toBeVisible();
+            await expect(page.getByRole('heading', { name: "Work items" })).toBeVisible();
             await expect(page.getByText('28 May 2015')).toBeVisible();
             await expect(page.getByRole('cell', { name: 'Preparation' })).toBeVisible();
             await page.getByRole('group', { name: 'Do you want to add another work item?' }).getByLabel('No').check();
