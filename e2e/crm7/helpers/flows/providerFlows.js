@@ -35,7 +35,7 @@ export class ProviderFlows {
         } else {
             await this.helper.addDefendantDetails();
         }
-        await this.expectations.heading("You've added 1 defendant");
+        await this.expectations.heading('Defendants');
         await this.expectations.cellText('Lex Luthor');
         await this.helper.selectNoMoreDefendants();
 

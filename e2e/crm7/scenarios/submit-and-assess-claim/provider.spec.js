@@ -93,7 +93,7 @@ test.describe('CRM7 - As a Provider', () => {
             // Actions
             await defendantDetails.addDefendant();
             //Expectations
-            await expect(page.getByRole('heading', { name: "You've added 1 defendant" })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Defendants' })).toBeVisible();
             await expect(page.getByRole('cell', { name: 'Lex Luthor' })).toBeVisible();
             // Defendant lists
             await page.getByRole('group', { name: 'Do you want to add another defendant?' }).getByLabel('No').check();
