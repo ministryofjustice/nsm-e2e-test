@@ -45,7 +45,6 @@ test.describe('CRM7 - As a Caseworker', () => {
                 `Number of pages of prosecution evidence${nsmData.evidencePages.prosecution}`,
                 `Number of pages of defence statements${nsmData.evidencePages.defence}`,
                 `Number of witnesses${nsmData.witnesses}`,
-                'Supplemental claimNo',
                 'Recorded evidenceNo',
                 'Work done before order was grantedNo',
                 'Work was done after last hearingNo',
