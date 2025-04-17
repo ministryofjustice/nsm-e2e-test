@@ -75,7 +75,7 @@ test.describe('CRM7 - As a Caseworker', () => {
             await page.getByRole('link', { name: 'Review and adjust' }).click();
             await page.waitForURL('**/work_items');
             await expect(page.locator('#main-content')).toContainText(
-                'TotalSum of net cost claimed: £529.58Sum of VAT on claimed: £105.92Sum of net cost and VAT on claimed: £635.49'
+                'TotalSum of net cost claimed: £529.58Sum of VAT on claimed: £105.92Sum of net cost and VAT on claimed: £635.50'
             );
         });
 

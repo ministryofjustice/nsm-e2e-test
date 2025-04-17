@@ -165,7 +165,7 @@ test.describe('CRM7 - As a Provider', () => {
 
             // Check your claim
             await expect(page.getByRole('heading', { name: 'Check your payment claim' })).toBeVisible();
-            await expect(page.getByRole('heading', { name: '£635.49' })).toBeVisible({ timeout: 10000 });
+            await expect(page.getByRole('heading', { name: '£635.50' })).toBeVisible({ timeout: 10000 });
             await page.getByRole('link', { name: 'Save and continue' }).click();
 
             // Other relevant information

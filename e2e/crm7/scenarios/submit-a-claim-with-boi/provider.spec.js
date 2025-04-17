@@ -77,7 +77,7 @@ test.describe('NSM Claim for Youth court fee', () => {
         });
 
         await test.step('Complete claim details, work items, disbursements and verifying claim amount', async () => {
-            await flows.completeWorkItemsAndDisbursements('£730.71');
+            await flows.completeWorkItemsAndDisbursements('£730.72');
         });
 
         await test.step('Filling up Other relevant information', async () => {
