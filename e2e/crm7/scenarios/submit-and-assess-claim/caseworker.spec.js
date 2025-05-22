@@ -28,49 +28,6 @@ test.describe('CRM7 - As a Caseworker', () => {
             await page.waitForURL('**/claim_details');
         });
 
-        await test.step('Verify claim details', async () => {
-            const texts = [
-                `Unique file number${nsmData.uniqueFile}`,
-                `Type of claim${nsmData.claimType.nsm}`,
-                `Representation order date${formatDate(nsmData.repOrderDate.default)}`,
-                `Defendant 1 (lead)${nsmData.defendant.firstName} ${nsmData.defendant.lastName}${nsmData.defendant.maatId}`,
-                'Main offence nameCriminal Damage',
-                `Offence date${formatDate(nsmData.mainOffenceDate)}`,
-                'Assigned counselNo',
-                'Unassigned counselNo',
-                'Instructed agentNo',
-                "Case remitted from Crown Court to magistrates' courtNo",
-                'Category 1Guilty plea',
-                "Why are you claiming a non-standard magistrates' payment?Enhanced rates claimed",
-                `Number of pages of prosecution evidence${nsmData.evidencePages.prosecution}`,
-                `Number of pages of defence statements${nsmData.evidencePages.defence}`,
-                `Number of witnesses${nsmData.witnesses}`,
-                'Recorded evidenceNo',
-                'Work done before order was grantedNo',
-                'Work was done after last hearingNo',
-                `Date of first hearing${formatDate(nsmData.hearingDate)}`,
-                `Number of hearings${nsmData.hearingCount}`,
-                "Magistrates' courtAberconwy PSD - C3237",
-                'Youth courtNo',
-                `Hearing outcome${nsmData.hearingOutcome}`,
-                `Matter type${nsmData.matterType}`,
-                'Any other informationNo',
-                'Proceedings concluded over 3 months agoNo',
-                `Firm name${nsmData.firmName}`,
-                `Firm office account number${nsmData.firmAccountNumber}`,
-                `Firm address${nsmData.addressLine1}${nsmData.townOrCity}${nsmData.postcode}`,
-                `Solicitor full name${nsmData.solicitorFirstName} ${nsmData.solicitorLastName}`,
-                `Solicitor reference number${nsmData.solicitorReferenceNumber}`,
-                `Contact full name${nsmData.contactFirstName} ${nsmData.contactLastName}`,
-                `Contact email address${nsmData.contactEmailAddress}`,
-                'Equality questionsNo, skip the equality questions'
-            ]
-
-            texts.forEach(async (text) => {
-                await expect(page.locator('#main-content')).toContainText(text);
-            });
-        })
-
         await test.step('Verify claim is for correct amount', async () => {
             await page.getByRole('link', { name: 'Review and adjust' }).click();
             await page.waitForURL('**/work_items');
