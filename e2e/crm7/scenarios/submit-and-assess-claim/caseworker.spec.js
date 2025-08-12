@@ -17,7 +17,7 @@ test.describe('CRM7 - As a Caseworker', () => {
             await expect(page.locator('#main-content')).toContainText(laaReference);
             await page.getByRole('link', { name: laaReference }).click();
             await page.waitForURL('**/claim_details');
-            await expect(page.getByRole('heading', { name: `${nsmData.defendant.firstName} ${nsmData.defendant.lastName}` })).toBeVisible();
+            await expect(page.getByRole('heading', { name: laaReference })).toBeVisible();
         });
 
         await test.step('Self-assign claim', async () => {
