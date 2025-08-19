@@ -13,7 +13,7 @@ import {
 test.describe('NSM Claim for Youth court fee', () => {
     test(' Start a new claim for Youth court Fee', async ({ providerFixture }) => {
         const { page, scenarioName } = providerFixture;
-        let laaReference;
+    
         // Initialize helper
         const providerHelper = new ProviderTestStepsHelper(page);
         const expectations = new ExpectationHelper(page);
