@@ -1,4 +1,3 @@
-import { storeLAAReference } from '../../../../helpers';
 export class ProviderFlows {
     constructor(page, providerHelper, expectations, globalHelper) {
         this.page = page;
@@ -19,8 +18,6 @@ export class ProviderFlows {
     */
     async completeDetails(scenarioName, withBOI = false) {
         await this.expectations.heading('Your claim progress');
-        const laaReference = await this.globalHelper.getLAAReference();
-        await storeLAAReference(this.page, laaReference, scenarioName);
 
         await this.helper.clickOnFirmDetails();
         await this.expectations.heading('Firm details');
