@@ -21,7 +21,6 @@ test.describe('CRM4 - As a Provider', () => {
 
 	test('submitting a new CRM4 application', async ({ providerFixture }) => {
 		const { page, scenarioName } = providerFixture;
-		let laaReference;
 		await authenticateAsProvider(page);
 		await test.step('Starting a new application', async () => {
 			const yourApplicationsPage = new YourApplicationsPage(page);
@@ -83,12 +82,6 @@ test.describe('CRM4 - As a Provider', () => {
 			await clientDetailsPage.fillClientDetailsForm();
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your application progress' })).toBeVisible();
-			// Set LAA reference for future use
-			const asideLocator = await page.locator('.aside-task-list');
-			const asideText = await asideLocator.textContent();
-			laaReference = asideText.split('LAA reference')[1].trim().split('\n')[0];
-			// Store LAA reference using scenario name from fixture
-			await storeLAAReference(page, laaReference, scenarioName);
 			// Actions
 			await page.getByRole('link', { name: 'Case and hearing details' }).click();
 		});
@@ -153,12 +146,21 @@ test.describe('CRM4 - As a Provider', () => {
 			await checkAnswersPage.fillCheckAnswersForm();
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Application complete' })).toBeVisible();
-			// Actions
+
+      // Set LAA reference for future use
+      let laaReference;
+      const panelLocator = await page.locator('.govuk-panel__body');
+			const panelText = await panelLocator.textContent();
+			laaReference = panelText.split('Your LAA reference number')[1].trim();
+			// Store LAA reference using scenario name from fixture
+			await storeLAAReference(page, laaReference, scenarioName);
+
+      // Actions
 			await page.getByRole('button', { name: 'View your applications' }).click();
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Your applications' })).toBeVisible();
 			await page.getByRole('tab', { name: 'Submitted' }).click();
-			await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+      await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
 		});
 	});
 

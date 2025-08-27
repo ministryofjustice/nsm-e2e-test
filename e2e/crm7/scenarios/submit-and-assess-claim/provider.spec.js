@@ -23,7 +23,6 @@ import {
 test.describe('CRM7 - As a Provider', () => {
     test('submitting a new claim', async ({ providerFixture }) => {
         const { page, scenarioName } = providerFixture;
-        let laaReference;
         await authenticateAsProvider(page);
         await test.step('Starting a new claim', async () => {
             const yourClaimsPage = new YourClaimsPage(page);
@@ -57,12 +56,6 @@ test.describe('CRM7 - As a Provider', () => {
 
             // Your claim progress
             await expect(page.getByRole('heading', { name: 'Your claim progress' })).toBeVisible();
-
-            const asideLocator = await page.locator('.aside-task-list');
-            const asideText = await asideLocator.textContent();
-            laaReference = asideText.split('LAA reference')[1].split('Claim type')[0].trim();
-            // Store LAA reference using scenario name from fixture
-            await storeLAAReference(page, laaReference, scenarioName);
         });
 
         await test.step('Go to details and select Your details', async () => {
@@ -195,6 +188,14 @@ test.describe('CRM7 - As a Provider', () => {
             await expect(page.getByRole('heading', { name: 'Confirm the following' })).toBeVisible();
             await page.getByLabel('Full name').fill('Test Automate');
             await page.getByRole('button', { name: 'Save and submit' }).click();
+
+            // Set LAA reference for future use
+            let laaReference;
+            const panelLocator = await page.locator('.govuk-panel__body');
+            const panelText = await panelLocator.textContent();
+            laaReference = panelText.split('Your LAA reference number')[1].trim();
+            // Store LAA reference using scenario name from fixture
+            await storeLAAReference(page, laaReference, scenarioName);
         });
     });
 

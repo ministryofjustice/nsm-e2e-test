@@ -12,7 +12,6 @@ import {
 test.describe('NSM Claim for Youth court fee', () => {
     test(' Start a new claim with BOI with youth court and Category 1A', async ({ providerFixture }) => {
         const { page, scenarioName } = providerFixture;
-        let laaReference;
         // Initialize helper
         const providerHelper = new ProviderTestStepsHelper(page);
         const expectations = new ExpectationHelper(page);
