@@ -146,11 +146,7 @@ test.describe('CRM4 - As a Provider', () => {
 			await checkAnswersPage.fillCheckAnswersForm();
 			// Expectations
 			await expect(page.getByRole('heading', { name: 'Application complete' })).toBeVisible();
-			// Actions
-			await page.getByRole('button', { name: 'View your applications' }).click();
-			// Expectations
-			await expect(page.getByRole('heading', { name: 'Your applications' })).toBeVisible();
-			await page.getByRole('tab', { name: 'Submitted' }).click();
+
       // Set LAA reference for future use
       let laaReference;
       const panelLocator = await page.locator('.govuk-panel__body');
@@ -158,7 +154,13 @@ test.describe('CRM4 - As a Provider', () => {
 			laaReference = panelText.split('Your LAA reference number')[1].trim();
 			// Store LAA reference using scenario name from fixture
 			await storeLAAReference(page, laaReference, scenarioName);
-			await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+
+      // Actions
+			await page.getByRole('button', { name: 'View your applications' }).click();
+			// Expectations
+			await expect(page.getByRole('heading', { name: 'Your applications' })).toBeVisible();
+			await page.getByRole('tab', { name: 'Submitted' }).click();
+      await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
 		});
 	});
 
