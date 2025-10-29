@@ -1,0 +1,121 @@
+name: "Run E2E Tests"
+description: "Run end-to-end tests for the LAA crime forms services"
+
+on:
+  workflow_call:
+
+jobs:
+  run-e2e-tests:
+    name: "Run E2E Tests"
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout E2E Test Repository
+        uses: actions/checkout@v3
+        with:
+          repository: ministryofjustice/nsm-e2e-test
+          path: e2e-tests
+
+      # This is required to get around a bug in the terraform module
+      - name: Extract base registry URL and set repository URLs
+        shell: bash
+        run: |
+          # Extract the base registry URL (everything before the last '/')
+          BASE_URL=$(echo ${{ secrets.ECR_REGISTRY_URL }} | rev | cut -d/ -f2- | rev)
+          SUBMIT_IMAGE_URL=${BASE_URL}/${SUBMIT_DEV_ECR_REPOSITORY}:latest
+          ASSESS_IMAGE_URL=${BASE_URL}/${ASSESS_DEV_ECR_REPOSITORY}:latest
+          APPSTORE_IMAGE_URL=${BASE_URL}/${APP_STORE_DEV_ECR_REPOSITORY}:latest
+
+          # Mask all the secrets/variables we use so they don't show up in logs
+          # echo "::add-mask::$SUBMIT_IMAGE_URL"
+          echo "::add-mask::$ASSESS_IMAGE_URL"
+          echo "::add-mask::$APPSTORE_IMAGE_URL"
+          echo "::add-mask::${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}"
+          echo "::add-mask::${{ vars.ASSESS_DEV_ECR_REPOSITORY }}"
+          echo "::add-mask::${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}"
+          echo "::add-mask::${{ vars.SUBMIT_DEV_ECR_REGION }}"
+          echo "::add-mask::${{ vars.ECR_ROLE_SESSION_NAME }}"
+          
+          echo "SUBMIT_IMAGE_URL=$SUBMIT_IMAGE_URL" >> $GITHUB_ENV
+          echo "ASSESS_IMAGE_URL=$ASSESS_IMAGE_URL" >> $GITHUB_ENV
+          echo "APPSTORE_IMAGE_URL=$APPSTORE_IMAGE_URL" >> $GITHUB_ENV
+
+      # laa-submit-crime-forms
+      - name: Configure AWS credentials for laa-submit-crime-forms
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.SUBMIT_DEV_ECR_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.SUBMIT_DEV_ECR_REGION }}
+          role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
+
+      - name: Pull laa-submit-crime-forms image
+        shell: bash
+        working-directory: e2e-tests
+        run: |
+          docker pull $ASSESS_IMAGE_URL
+
+      # laa-crime-application-store
+      - name: Configure AWS credentials for AppStore
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.APP_STORE_DEV_ECR_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.ASSESS_DEV_ECR_REGION }}
+          role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
+
+      - name: Login to ECR for AppStore
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: "true"
+
+      - name: Pull NSCC appstore image
+        shell: bash
+        working-directory: e2e-tests
+        run: |
+          docker pull $APPSTORE_IMAGE_URL
+
+      # laa-assess-crime-forms
+      - name: Configure AWS credentials for Caseworker
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.ASSESS_DEV_ECR_ROLE_TO_ASSUME }}
+          aws-region: ${{ vars.APP_STORE_DEV_ECR_REGION }}
+          role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
+
+      - name: Login to ECR for Caseworker
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: "true"
+
+      - name: Pull NSCC caseworker image
+        shell: bash
+        working-directory: e2e-tests
+        run: |
+          docker pull $ASSESS_IMAGE_URL
+
+      - name: Build and check/wait for services
+        shell: bash
+        working-directory: e2e-tests
+        run: |
+          docker-compose build
+          docker-compose run start_applications
+
+      - name: Run end-to-end tests
+        shell: bash
+        working-directory: e2e-tests
+        run: |
+          docker-compose run laa-crime-forms-end-to-end-tests
+
+      - name: Output container logs on failure
+        if: failure()
+        shell: bash
+        working-directory: e2e-tests
+        run: |
+          docker-compose logs
+
+      - name: Cleanup
+        if: always()
+        shell: bash
+        working-directory: e2e-tests
+        run: docker-compose down -v
