@@ -21,4 +21,4 @@ jobs:
 
     steps:
       - name: Run E2E Tests
-        uses: ministryofjustice/nsm-e2e-test/.github/actions/run-e2e-tests@main
+        uses: ministryofjustice/nsm-e2e-test/.github/actions/run-e2e-tests@feature/CRM457-1781-migrate-pipeline-to-github-actions
