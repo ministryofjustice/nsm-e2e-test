@@ -1,0 +1,24 @@
+name: End-to-End Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  run-e2e-tests:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    
+    env:
+      PROVIDER_ECR_ROLE_TO_ASSUME: ${{ secrets.SUBMIT_DEV_ECR_ROLE_TO_ASSUME }}
+      APPSTORE_ECR_ROLE_TO_ASSUME: ${{ secrets.APP_STORE_DEV_ECR_ROLE_TO_ASSUME }}
+      CASEWORKER_ECR_ROLE_TO_ASSUME: ${{ secrets.ASSESS_DEV_ECR_ROLE_TO_ASSUME }}
+
+    steps:
+      - name: Run E2E Tests
+        uses: ministryofjustice/nsm-e2e-test/.github/actions/run-e2e-tests@main
