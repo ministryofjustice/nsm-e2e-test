@@ -23,14 +23,12 @@ jobs:
         shell: bash
         run: |
           # Extract the base registry URL (everything before the last '/')
-          echo ${{secrets.ECR_REGISTRY_URL}} | sed 's/./& /g'
-          BASE_URL=$(echo ${{ secrets.ECR_REGISTRY_URL }} | rev | cut -d/ -f2- | rev)
-          SUBMIT_IMAGE_URL=${BASE_URL}/${SUBMIT_DEV_ECR_REPOSITORY}:latest
-          ASSESS_IMAGE_URL=${BASE_URL}/${ASSESS_DEV_ECR_REPOSITORY}:latest
-          APPSTORE_IMAGE_URL=${BASE_URL}/${APP_STORE_DEV_ECR_REPOSITORY}:latest
+          SUBMIT_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:latest
+          ASSESS_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:latest
+          APPSTORE_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:latest
 
           # Mask all the secrets/variables we use so they don't show up in logs
-          # echo "::add-mask::$SUBMIT_IMAGE_URL"
+          echo "::add-mask::$SUBMIT_IMAGE_URL"
           echo "::add-mask::$ASSESS_IMAGE_URL"
           echo "::add-mask::$APPSTORE_IMAGE_URL"
           echo "::add-mask::${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}"
