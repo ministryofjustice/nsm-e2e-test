@@ -90,12 +90,12 @@ services:
       SIDEKIQ_WEB_UI_PASSWORD: sidekiq
       DATABASE_URL: postgresql://postgres:postgres@nscc-db-services:5432/laa_claim_non_standard_magistrate_fee_dev
       LAA_PORTAL_IDP_METADATA_FILE: config/laa_portal/metadata/samlmock.xml
-      OMNIAUTH_TEST_MODE: true
-      POSTAL_EVIDENCE: false
+      OMNIAUTH_TEST_MODE: "true"
+      POSTAL_EVIDENCE: "false"
       PA_MAX_UPLOAD_SIZE_BYTES: 10485760
       NSM_MAX_UPLOAD_SIZE_BYTES: 26214400
       GOVUK_NOTIFY_API_KEY: 12345
-      RUN_SIDEKIQ_IN_TEST_MODE: true
+      RUN_SIDEKIQ_IN_TEST_MODE: "true"
     depends_on:
       - nscc-redis
       - nscc-db-services
@@ -122,15 +122,15 @@ services:
       SIDEKIQ_WEB_UI_USERNAME: sidekiq
       SIDEKIQ_WEB_UI_PASSWORD: sidekiq
       DATABASE_URL: postgresql://postgres:postgres@nscc-db-services:5432/laa_assess_non_standard_magistrate_fee_dev
-      OMNIAUTH_TEST_MODE: true
+      OMNIAUTH_TEST_MODE: "true"
       OMNIAUTH_AZURE_CLIENT_ID: ""
       OMNIAUTH_AZURE_CLIENT_SECRET: ""
       OMNIAUTH_AZURE_REDIRECT_URI: ""
       OMNIAUTH_AZURE_TENANT_ID: ""
       APP_STORE_URL: http://nscc-appstore:3000
-      DEV_AUTH_ENABLED: true
+      DEV_AUTH_ENABLED: "true"
       GOVUK_NOTIFY_API_KEY: 12345
-      RUN_SIDEKIQ_IN_TEST_MODE: true
+      RUN_SIDEKIQ_IN_TEST_MODE: "true"
     depends_on:
       - nscc-redis
       - nscc-db-services
