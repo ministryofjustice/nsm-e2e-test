@@ -18,6 +18,10 @@ jobs:
           repository: ministryofjustice/nsm-e2e-test
           path: e2e-tests
 
+      - name: Install docker-compose
+        shell: bash
+        run: sudo apt install docker-compose
+
       # This is required to get around a bug in the terraform module
       - name: Extract base registry URL and set repository URLs
         shell: bash
@@ -48,41 +52,41 @@ jobs:
         shell: bash
         working-directory: e2e-tests
         run: |
-          docker pull $ASSESS_IMAGE_URL
+          docker pull $SUBMIT_IMAGE_URL
 
       # laa-crime-application-store
-      - name: Configure AWS credentials for AppStore
+      - name: Configure AWS credentials for laa-crime-application-store
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.APP_STORE_DEV_ECR_ROLE_TO_ASSUME }}
           aws-region: ${{ vars.ASSESS_DEV_ECR_REGION }}
           role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
 
-      - name: Login to ECR for AppStore
+      - name: Login to ECR for laa-crime-application-store
         uses: aws-actions/amazon-ecr-login@v2
         with:
           mask-password: "true"
 
-      - name: Pull NSCC appstore image
+      - name: Pull laa-crime-application-store image
         shell: bash
         working-directory: e2e-tests
         run: |
           docker pull $APPSTORE_IMAGE_URL
 
       # laa-assess-crime-forms
-      - name: Configure AWS credentials for Caseworker
+      - name: Configure AWS credentials for laa-assess-crime-forms
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.ASSESS_DEV_ECR_ROLE_TO_ASSUME }}
           aws-region: ${{ vars.APP_STORE_DEV_ECR_REGION }}
           role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
 
-      - name: Login to ECR for Caseworker
+      - name: Login to ECR for laa-assess-crime-forms
         uses: aws-actions/amazon-ecr-login@v2
         with:
           mask-password: "true"
 
-      - name: Pull NSCC caseworker image
+      - name: Pull NSCC laa-assess-crime-forms image
         shell: bash
         working-directory: e2e-tests
         run: |
@@ -107,9 +111,3 @@ jobs:
         working-directory: e2e-tests
         run: |
           docker-compose logs
-
-      - name: Cleanup
-        if: always()
-        shell: bash
-        working-directory: e2e-tests
-        run: docker-compose down -v
