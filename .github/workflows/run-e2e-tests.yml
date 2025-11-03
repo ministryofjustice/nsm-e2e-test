@@ -85,7 +85,7 @@ jobs:
         working-directory: e2e-tests
         run: |
           docker-compose build
-          docker-compose run --build start_applications
+          docker-compose run start_applications
 
       - name: Run end-to-end tests
         shell: bash
