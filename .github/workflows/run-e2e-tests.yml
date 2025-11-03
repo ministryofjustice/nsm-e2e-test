@@ -28,6 +28,10 @@ jobs:
     permissions:
       id-token: write
       contents: read
+    env:
+      NSCC_PROVIDER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:${{ inputs.submit-sha }}
+      NSCC_APPSTORE_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:${{ inputs.appstore-sha }}
+      NSCC_CASEWORKER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-sha }}      
     steps:
       - name: Checkout E2E Test Repository
         uses: actions/checkout@v3
@@ -52,7 +56,7 @@ jobs:
       - name: Pull laa-submit-crime-forms image
         shell: bash
         working-directory: e2e-tests
-        run: docker pull ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:${{ inputs.submit-sha }}
+        run: docker pull $NSCC_PROVIDER_IMAGE
 
       # laa-crime-application-store
       - name: Configure AWS credentials for laa-crime-application-store
@@ -65,7 +69,7 @@ jobs:
       - name: Pull laa-crime-application-store image
         shell: bash
         working-directory: e2e-tests
-        run: docker pull ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:${{ inputs.appstore-sha }}
+        run: docker pull $NSCC_APPSTORE_IMAGE
 
       # laa-assess-crime-forms
       - name: Configure AWS credentials for laa-assess-crime-forms
@@ -78,7 +82,7 @@ jobs:
       - name: Pull NSCC laa-assess-crime-forms image
         shell: bash
         working-directory: e2e-tests
-        run: docker pull ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-sha }}
+        run: docker pull $NSCC_CASEWORKER_IMAGE
 
       - name: Build and check/wait for services
         shell: bash
