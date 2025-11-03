@@ -54,77 +54,55 @@ jobs:
 
       # laa-submit-crime-forms
       - name: Configure AWS credentials for laa-submit-crime-forms
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/ecr-auth@e5500aa20b13a1406fe8a62b8788181a2ca18926
         with:
-          role-to-assume: ${{ secrets.SUBMIT_DEV_ECR_ROLE_TO_ASSUME }}
-          aws-region: ${{ vars.SUBMIT_DEV_ECR_REGION }}
+          ecr_role: ${{ secrets.SUBMIT_DEV_ECR_ROLE_TO_ASSUME }}
+          ecr_region: ${{ vars.SUBMIT_DEV_ECR_REGION }}
           role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
-
-      - name: Docker login to ECR
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: 'true'
 
       - name: Pull laa-submit-crime-forms image
         shell: bash
         working-directory: e2e-tests
-        run: |
-          docker pull $SUBMIT_IMAGE_URL
+        run: docker pull $SUBMIT_IMAGE_URL
 
       # laa-crime-application-store
       - name: Configure AWS credentials for laa-crime-application-store
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/ecr-auth@e5500aa20b13a1406fe8a62b8788181a2ca18926
         with:
-          role-to-assume: ${{ secrets.APP_STORE_DEV_ECR_ROLE_TO_ASSUME }}
-          aws-region: ${{ vars.ASSESS_DEV_ECR_REGION }}
+          ecr_role: ${{ secrets.APP_STORE_DEV_ECR_ROLE_TO_ASSUME }}
+          ecr_region: ${{ vars.APP_STORE_DEV_ECR_REGION }}
           role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
-
-      - name: Login to ECR for laa-crime-application-store
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: "true"
 
       - name: Pull laa-crime-application-store image
         shell: bash
         working-directory: e2e-tests
-        run: |
-          docker pull $APPSTORE_IMAGE_URL
+        run: docker pull $APPSTORE_IMAGE_URL
 
       # laa-assess-crime-forms
       - name: Configure AWS credentials for laa-assess-crime-forms
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: ministryofjustice/laa-reusable-github-actions/.github/actions/ecr-auth@e5500aa20b13a1406fe8a62b8788181a2ca18926
         with:
-          role-to-assume: ${{ secrets.ASSESS_DEV_ECR_ROLE_TO_ASSUME }}
-          aws-region: ${{ vars.APP_STORE_DEV_ECR_REGION }}
+          ecr_role: ${{ secrets.ASSESS_DEV_ECR_ROLE_TO_ASSUME }}
+          ecr_region: ${{ vars.ASSESS_DEV_ECR_REGION }}
           role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
-
-      - name: Login to ECR for laa-assess-crime-forms
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: "true"
 
       - name: Pull NSCC laa-assess-crime-forms image
         shell: bash
         working-directory: e2e-tests
-        run: |
-          docker pull $ASSESS_IMAGE_URL
+        run: docker pull $ASSESS_IMAGE_URL
 
       - name: Build and check/wait for services
         shell: bash
         working-directory: e2e-tests
-        run: |
-          docker-compose build
-          docker-compose run start_applications
+        run: docker-compose run --build start_applications
 
       - name: Run end-to-end tests
         shell: bash
         working-directory: e2e-tests
-        run: |
-          docker-compose run laa-crime-forms-end-to-end-tests
+        run: docker-compose run laa-crime-forms-end-to-end-tests
 
       - name: Output container logs on failure
         if: failure()
         shell: bash
         working-directory: e2e-tests
-        run: |
-          docker-compose logs
+        run: docker-compose logs
