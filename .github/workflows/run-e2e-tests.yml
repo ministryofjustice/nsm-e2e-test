@@ -36,21 +36,10 @@ jobs:
           path: e2e-tests
 
       - name: Install docker-compose
-        shell: bash
-        run: sudo apt install docker-compose
-
-      # This is required to get around a bug in the terraform module
-      - name: Extract base registry URL and set repository URLs
-        shell: bash
-        run: |
-          # Extract the base registry URL (everything before the last '/')
-          SUBMIT_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:${{ inputs.submit-sha }}
-          ASSESS_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-sha }}
-          APPSTORE_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:${{ inputs.appstore-sha }}
-
-          echo "SUBMIT_IMAGE_URL=$SUBMIT_IMAGE_URL" >> $GITHUB_ENV
-          echo "ASSESS_IMAGE_URL=$ASSESS_IMAGE_URL" >> $GITHUB_ENV
-          echo "APPSTORE_IMAGE_URL=$APPSTORE_IMAGE_URL" >> $GITHUB_ENV
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: docker-compose
+          version: 1.0
 
       # laa-submit-crime-forms
       - name: Configure AWS credentials for laa-submit-crime-forms
@@ -63,7 +52,7 @@ jobs:
       - name: Pull laa-submit-crime-forms image
         shell: bash
         working-directory: e2e-tests
-        run: docker pull $SUBMIT_IMAGE_URL
+        run: docker pull ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:${{ inputs.submit-sha }}
 
       # laa-crime-application-store
       - name: Configure AWS credentials for laa-crime-application-store
@@ -76,7 +65,7 @@ jobs:
       - name: Pull laa-crime-application-store image
         shell: bash
         working-directory: e2e-tests
-        run: docker pull $APPSTORE_IMAGE_URL
+        run: docker pull ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:${{ inputs.appstore-sha }}
 
       # laa-assess-crime-forms
       - name: Configure AWS credentials for laa-assess-crime-forms
@@ -89,7 +78,7 @@ jobs:
       - name: Pull NSCC laa-assess-crime-forms image
         shell: bash
         working-directory: e2e-tests
-        run: docker pull $ASSESS_IMAGE_URL
+        run: docker pull ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-sha }}
 
       - name: Build and check/wait for services
         shell: bash
