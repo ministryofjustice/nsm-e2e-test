@@ -30,27 +30,44 @@ jobs:
       contents: read
     strategy:
       matrix:
-        service:
+        include:
           - name: laa-submit-crime-forms
             service_key: SUBMIT
             sha: ${{ inputs.submit-sha }}
+            cache_key: docker-submit-${{ inputs.submit-sha }}
           - name: laa-crime-application-store
             service_key: APP_STORE
             sha: ${{ inputs.appstore-sha }}
+            cache_key: docker-appstore-${{ inputs.appstore-sha }}
           - name: laa-assess-crime-forms
             service_key: ASSESS
             sha: ${{ inputs.assess-sha }}
+            cache_key: docker-assess-${{ inputs.assess-sha }}
     steps:
-      - name: Configure AWS credentials for ${{ matrix.service.name }}
+      - shell: bash
+        run: mkdir -p ~/image-cache
+
+      - id: image-cache
+        uses: actions/cache@v3
+        with:
+          path: ~/image-cache
+          key: ${{ matrix.cache_key }}
+
+      - name: Configure AWS credentials and pull image
+        if: steps.image-cache.outputs.cache-hit != 'true'
         uses: ministryofjustice/laa-reusable-github-actions/.github/actions/ecr-auth@e5500aa20b13a1406fe8a62b8788181a2ca18926
         with:
-          ecr_role: ${{ secrets[format('{0}_DEV_ECR_ROLE_TO_ASSUME', matrix.service.service_key)] }}
-          ecr_region: ${{ vars[format('{0}_DEV_ECR_REGION', matrix.service.service_key)] }}
+          ecr_role: ${{ secrets[format('{0}_DEV_ECR_ROLE_TO_ASSUME', matrix.service_key)] }}
+          ecr_region: ${{ vars[format('{0}_DEV_ECR_REGION', matrix.service_key)] }}
           role-session-name: ${{ vars.ECR_ROLE_SESSION_NAME }}
 
-      - name: Pull ${{ matrix.service.name }} image
+      - name: Pull and save image
+        if: steps.image-cache.outputs.cache-hit != 'true'
         shell: bash
-        run: docker pull ${{ secrets.ECR_REGISTRY_URL }}/${{ vars[format('{0}_DEV_ECR_REPOSITORY', matrix.service.service_key)] }}:${{ matrix.service.sha }}
+        run: |
+          IMAGE_URL="${{ secrets.ECR_REGISTRY_URL }}/${{ vars[format('{0}_DEV_ECR_REPOSITORY', matrix.service_key)] }}:${{ matrix.sha }}"
+          docker pull $IMAGE_URL
+          docker save -o ~/image-cache/${{ matrix.name }}.tar $IMAGE_URL
 
   run-e2e-tests:
     name: "Run E2E Tests"
@@ -63,8 +80,35 @@ jobs:
           repository: ministryofjustice/nsm-e2e-test
           path: e2e-tests
 
-      - name: Install docker-compose
+      - shell: bash
+        run: mkdir -p ~/image-cache
+
+      - name: Restore submit image
+        uses: actions/cache@v3
+        with:
+          path: ~/image-cache
+          key: docker-submit-${{ inputs.submit-sha }}
+
+      - name: Restore appstore image
+        uses: actions/cache@v3
+        with:
+          path: ~/image-cache
+          key: docker-appstore-${{ inputs.appstore-sha }}
+
+      - name: Restore assess image
+        uses: actions/cache@v3
+        with:
+          path: ~/image-cache
+          key: docker-assess-${{ inputs.assess-sha }}
+
+      - name: Load Docker images
         shell: bash
+        run: |
+          for image_tar in ~/image-cache/*.tar; do
+            docker load < "$image_tar"
+          done
+
+      - name: Install docker-compose
         run: sudo apt install docker-compose
 
       - name: Build and check/wait for services
