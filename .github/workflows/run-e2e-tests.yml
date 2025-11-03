@@ -3,6 +3,23 @@ description: "Run end-to-end tests for the LAA crime forms services"
 
 on:
   workflow_call:
+    inputs:
+      submit-sha:
+        description: 'SHA hash of the container image to use for laa-submit-crime-forms'
+        default: 'latest'
+        required: false
+        type: string
+      assess-sha:
+        description: 'SHA hash of the container image to use for laa-assess-crime-forms'
+        default: 'latest'
+        required: false
+        type: string
+      appstore-sha:
+        description: 'SHA hash of the container image to use for laa-crime-application-store'
+        default: 'latest'
+        required: false
+        type: string
+
 
 jobs:
   run-e2e-tests:
@@ -27,10 +44,10 @@ jobs:
         shell: bash
         run: |
           # Extract the base registry URL (everything before the last '/')
-          SUBMIT_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:latest
-          ASSESS_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:latest
-          APPSTORE_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:latest
-          
+          SUBMIT_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:${{ inputs.submit-sha }}
+          ASSESS_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-sha }}
+          APPSTORE_IMAGE_URL=${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:${{ inputs.appstore-sha }}
+
           echo "SUBMIT_IMAGE_URL=$SUBMIT_IMAGE_URL" >> $GITHUB_ENV
           echo "ASSESS_IMAGE_URL=$ASSESS_IMAGE_URL" >> $GITHUB_ENV
           echo "APPSTORE_IMAGE_URL=$APPSTORE_IMAGE_URL" >> $GITHUB_ENV

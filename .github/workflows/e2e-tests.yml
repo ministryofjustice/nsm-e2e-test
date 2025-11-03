@@ -8,7 +8,7 @@ on:
 
 jobs:
   run-e2e-tests:
-    name: Run E2E Tests
+    name: Call E2E Tests
     uses: ministryofjustice/nsm-e2e-test/.github/workflows/run-e2e-tests.yml@feature/CRM457-1781-migrate-pipeline-to-github-actions
     secrets: inherit
     permissions:
