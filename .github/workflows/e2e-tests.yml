@@ -11,3 +11,6 @@ jobs:
     name: Call E2E Tests
     uses: ministryofjustice/nsm-e2e-test/.github/workflows/run-e2e-tests.yml@main
     secrets: inherit
+    permissions:
+      id-token: write
+      contents: read
