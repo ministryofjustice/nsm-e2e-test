@@ -9,7 +9,6 @@ export default class ClaimDetailsPage {
         await this.page.getByLabel('Number of pages of prosecution evidence').fill(nsmData.evidencePages.prosecution);
         await this.page.getByLabel('Number of pages of defence').fill(nsmData.evidencePages.defence);
         await this.page.getByLabel('Number of witnesses').fill(nsmData.witnesses);
-        await this.page.getByRole('group', { name: 'Does this bill represent a' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you spend time watching' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you do any work before' }).getByLabel('No').check();
         await this.page.getByRole('group', { name: 'Did you do any further work' }).getByLabel('No').check();

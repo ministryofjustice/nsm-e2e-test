@@ -36,7 +36,7 @@ test.describe('CRM7 - As a Provider', () => {
         await test.step('Filling up why claiming', async () => {
             const whatAreYouClaimingPage = new WhatAreYouClaimingPage(page);
             // What you are claiming for
-            await expect(page.getByRole('heading', { name: 'What you are claiming for' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'What do you want to claim?' })).toBeVisible();
             await whatAreYouClaimingPage.fillClaimForm();
 
             await expect(page.getByRole('heading', { name: 'Which firm office account number is this claim for?' })).toBeVisible();

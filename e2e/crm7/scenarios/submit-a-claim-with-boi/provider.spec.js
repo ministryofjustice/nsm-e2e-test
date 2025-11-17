@@ -28,7 +28,7 @@ test.describe('NSM Claim for Youth court fee', () => {
 
         await test.step('Selecting Breach of injunction with post dec Rep order Date', async () => {
             // What you are claiming for
-            await expectations.heading('What you are claiming for');
+            await expectations.heading('What do you want to claim?');
             await providerHelper.fillClaimType('fillClaimFormPostDecWithBOI');
         });
 
