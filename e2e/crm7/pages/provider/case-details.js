@@ -6,12 +6,13 @@ export default class CasesDetailsPage {
     }
 
     async fillCaseDetails() {
-        await this.page.getByLabel('Main offence').waitFor({
+        const offenceAutocomplete = this.page.getByLabel('Main offence')
+        await offenceAutocomplete.waitFor({
             state: 'visible',
             timeout: 5000
         });
-        await this.page.getByLabel('Main offence').click();
-        await this.page.getByLabel('Main offence').fill('crim');
+        await offenceAutocomplete.click();
+        await offenceAutocomplete.fill('crim');
         await this.page.getByRole('option', {
             name: 'Criminal Damage Criminal Damage and Arson',
             exact: true
