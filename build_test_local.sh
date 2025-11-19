@@ -14,7 +14,7 @@ fi
 
 function build {
   docker-compose $DOCKER_FILES down --volumes --rmi "all"
-  docker-compose $DOCKER_FILES build --no-cache
+  docker-compose $DOCKER_FILES build
   docker-compose $DOCKER_FILES up -d
 }
 
