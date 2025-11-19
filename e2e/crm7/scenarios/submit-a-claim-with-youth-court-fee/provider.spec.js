@@ -30,7 +30,7 @@ test.describe('NSM Claim for Youth court fee', () => {
 
         await test.step('Filling up why claiming', async () => {
             // What you are claiming for
-            await expectations.heading('What you are claiming for');
+            await expectations.heading("What do you want to claim?");
             await providerHelper.fillClaimType('fillClaimFormPostDecWithoutBOI');
         });
 
