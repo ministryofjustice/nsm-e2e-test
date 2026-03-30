@@ -34,13 +34,13 @@ jobs:
       NSCC_CASEWORKER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-sha }}      
     steps:
       - name: Checkout E2E Test Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
         with:
           repository: ministryofjustice/nsm-e2e-test
           path: e2e-tests
 
       - name: Install docker-compose
-        uses: awalsh128/cache-apt-pkgs-action@latest
+        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05 # was latest, pinned to v1.6.0
         with:
           packages: docker-compose
           version: 1.0
