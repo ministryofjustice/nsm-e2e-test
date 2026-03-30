@@ -39,12 +39,6 @@ jobs:
           repository: ministryofjustice/nsm-e2e-test
           path: e2e-tests
 
-      - name: Install docker-compose
-        uses: awalsh128/cache-apt-pkgs-action@acb598e5ddbc6f68a970c5da0688d2f3a9f04d05 # was latest, pinned to v1.6.0
-        with:
-          packages: docker-compose
-          version: 1.0
-
       # laa-submit-crime-forms
       - name: Configure AWS credentials for laa-submit-crime-forms
         uses: ministryofjustice/laa-reusable-github-actions/.github/actions/ecr-auth@e5500aa20b13a1406fe8a62b8788181a2ca18926
@@ -88,16 +82,16 @@ jobs:
         shell: bash
         working-directory: e2e-tests
         run: |
-          docker-compose build --no-cache
-          docker-compose run start_applications
+          docker compose build --no-cache
+          docker compose run start_applications
 
       - name: Run end-to-end tests
         shell: bash
         working-directory: e2e-tests
-        run: docker-compose run laa-crime-forms-end-to-end-tests
+        run: docker compose run laa-crime-forms-end-to-end-tests
 
       - name: Output container logs on failure
         if: failure()
         shell: bash
         working-directory: e2e-tests
-        run: docker-compose logs
+        run: docker compose logs
