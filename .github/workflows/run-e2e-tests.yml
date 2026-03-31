@@ -34,16 +34,10 @@ jobs:
       NSCC_CASEWORKER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-sha }}      
     steps:
       - name: Checkout E2E Test Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
         with:
           repository: ministryofjustice/nsm-e2e-test
           path: e2e-tests
-
-      - name: Install docker-compose
-        uses: awalsh128/cache-apt-pkgs-action@latest
-        with:
-          packages: docker-compose
-          version: 1.0
 
       # laa-submit-crime-forms
       - name: Configure AWS credentials for laa-submit-crime-forms
@@ -88,16 +82,16 @@ jobs:
         shell: bash
         working-directory: e2e-tests
         run: |
-          docker-compose build --no-cache
-          docker-compose run start_applications
+          docker compose build --no-cache
+          docker compose run start_applications
 
       - name: Run end-to-end tests
         shell: bash
         working-directory: e2e-tests
-        run: docker-compose run laa-crime-forms-end-to-end-tests
+        run: docker compose run laa-crime-forms-end-to-end-tests
 
       - name: Output container logs on failure
         if: failure()
         shell: bash
         working-directory: e2e-tests
-        run: docker-compose logs
+        run: docker compose logs
