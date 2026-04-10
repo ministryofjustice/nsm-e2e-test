@@ -33,6 +33,12 @@ async function createCaseworkerFixture(browser, testInfo) {
     return { page, laaReference };
 }
 
+async function createPaymentsFixture(browser, testInfo) {
+    const page = await browser.newPage();
+    const scenarioName = getScenarioName(testInfo.file);
+    return { page, scenarioName };
+}
+
 const test = setup.extend({
     providerFixture: async ({ browser }, use, testInfo) => {
         const fixture = await createProviderFixture(browser, testInfo);
@@ -42,6 +48,12 @@ const test = setup.extend({
 
     caseworkerFixture: async ({ browser }, use, testInfo) => {
         const fixture = await createCaseworkerFixture(browser, testInfo);
+        await use(fixture);
+        await fixture.page.close();
+    }, 
+
+    paymentsFixture: async ({ browser }, use, testInfo) => {
+        const fixture = await createPaymentsFixture(browser, testInfo);
         await use(fixture);
         await fixture.page.close();
     }

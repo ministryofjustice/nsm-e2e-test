@@ -13,6 +13,12 @@ const scenarioConfig = (scenarioName, applicationType) => ({
         testMatch: `**/${applicationType}/scenarios/${scenarioName}/caseworker.spec.js`,
         use: { ...devices['Desktop Chrome'] },
         dependencies: [`provider-${scenarioName}`]
+    }, 
+    payments: {
+        name: `payments-${scenarioName}`,
+        testMatch: `**/${applicationType}/scenarios/${scenarioName}/payments.spec.js`,
+        use: { ...devices['Desktop Chrome'] }, 
+        dependencies: ['setup']
     }
 });
 
@@ -25,6 +31,9 @@ exports.testConfig = {
             name: 'setup',
             testMatch: /.*\.setup\.js/
         },
+        // Scenario : Assigned Counsel Payment
+
+        scenarioConfig('assigned-counsel', 'payments').payments,
         // Scenario : NSM Submit and assess a claim
         scenarioConfig('submit-and-assess-claim', 'crm7').provider,
         scenarioConfig('submit-and-assess-claim', 'crm7').caseworker,
