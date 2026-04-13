@@ -1,15 +1,14 @@
 import { test, expect } from '../../../fixtures/global-setup';
 import {
     authenticateAsCaseworker,
-    selectRadioButton,
-    formatDate
 } from '../../../../helpers';
-import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage } from '../../pages';
+import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, ClaimDetailsPage } from '../../pages';
 
 test.describe('Assigned Counsel Payment - As a Caseworker', () => {
     test('Creating an assigned counsel payment from scratch', async ({paymentsFixture}) => {
         const {page} = paymentsFixture;
         await authenticateAsCaseworker(page);
+        const claimType = 'Assigned counsel';
         
         //Select payment type
         await page.getByRole('link', { name: 'Payments' }).click();
@@ -17,7 +16,7 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
         await page.getByRole('link', { name: 'Create payment request' }).click();
         
         const claimTypePage = new ClaimTypePage(page);
-        await claimTypePage.selectClaimType('Assigned counsel');    
+        await claimTypePage.selectClaimType(claimType);    
     
         //Create payment from scratch
         expect(page.getByRole('heading', { name: 'Search for the non-standard magistrates claim' })).toBeVisible();
@@ -29,5 +28,7 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
     
         //Fill in claim details 
         expect(page.getByRole('heading', { name: 'Claim details' })).toBeVisible();
+        const claimDetailsPage = new ClaimDetailsPage(page);
+        await claimDetailsPage.fillClaimDetails(claimType, false);
     });
 });
