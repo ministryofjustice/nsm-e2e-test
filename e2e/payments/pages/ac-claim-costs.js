@@ -1,8 +1,8 @@
 import { paymentData } from '../../../helpers';
 
-export default class ClaimCostsPage {
+export default class AcClaimCostsPage {
      /**
-     * Creates an instance of ClaimCostsPage
+     * Creates an instance of AcClaimCostsPage
      * @param {import('@playwright/test').Page} page - Playwright page object
      * @throws {Error} If page is not provided
      */

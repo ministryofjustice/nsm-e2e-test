@@ -2,7 +2,7 @@ import { test, expect } from '../../../fixtures/global-setup';
 import {
     authenticateAsCaseworker,
 } from '../../../../helpers';
-import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, ClaimDetailsPage, ClaimCostsPage } from '../../pages';
+import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, ClaimDetailsPage, AcClaimCostsPage } from '../../pages';
 
 test.describe('Assigned Counsel Payment - As a Caseworker', () => {
     test('Creating an assigned counsel payment from scratch', async ({paymentsFixture}) => {
@@ -33,7 +33,7 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
 
         //Fill in costs
         expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
-        const claimCostsPage = new ClaimCostsPage(page);
+        const claimCostsPage = new AcClaimCostsPage(page);
         await claimCostsPage.fillCosts();
         expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
         await claimCostsPage.fillCosts();
