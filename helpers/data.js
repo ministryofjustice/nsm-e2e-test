@@ -126,5 +126,9 @@ export const paymentData = {
         defendantLastName: 'Wayne',
         counselNumber: '1A123C', 
         counselName: 'The Counsel'
+    }, 
+    acCosts: {
+        netCounselFees: '100.00', 
+        vatCounselFees: '20.00'
     }
 };

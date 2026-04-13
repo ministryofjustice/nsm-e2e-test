@@ -2,7 +2,7 @@ import { test, expect } from '../../../fixtures/global-setup';
 import {
     authenticateAsCaseworker,
 } from '../../../../helpers';
-import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, ClaimDetailsPage } from '../../pages';
+import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, ClaimDetailsPage, ClaimCostsPage } from '../../pages';
 
 test.describe('Assigned Counsel Payment - As a Caseworker', () => {
     test('Creating an assigned counsel payment from scratch', async ({paymentsFixture}) => {
@@ -30,5 +30,19 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
         expect(page.getByRole('heading', { name: 'Claim details' })).toBeVisible();
         const claimDetailsPage = new ClaimDetailsPage(page);
         await claimDetailsPage.fillClaimDetails(claimType, false);
+
+        //Fill in costs
+        expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
+        const claimCostsPage = new ClaimCostsPage(page);
+        await claimCostsPage.fillCosts();
+        expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+        await claimCostsPage.fillCosts();
+
+        //Check you answers page
+        expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+        await page.getByRole('button', { name: 'Submit payment request' }).click();
+
+        //Confirmation page
+        expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
     });
 });
