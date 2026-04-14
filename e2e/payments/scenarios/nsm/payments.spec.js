@@ -1,43 +1,66 @@
 import { test, expect } from '../../../fixtures/global-setup';
 import {
     authenticateAsCaseworker,
+    storeLAAReference
 } from '../../../../helpers';
 import { ClaimTypePage,  SolicitorCodePage, ClaimDetailsPage, NsmClaimCostsPage } from '../../pages';
 
 test.describe('Non-Standard Magistrates payment - As a Caseworker', () => {
     test('Creating a non-standard magistrates payment from scratch', async ({paymentsFixture}) => {
-        const {page} = paymentsFixture;
+        const {page, scenarioName} = paymentsFixture;
         await authenticateAsCaseworker(page);
         const claimType = "Non-Standard Magistrates'";
         
-        //Select payment type
-        await page.getByRole('link', { name: 'Payments' }).click();
-        expect(page.getByRole('heading', { name: 'Payment requests' })).toBeVisible();
-        await page.getByRole('link', { name: 'Create payment request' }).click();
-        
-        const claimTypePage = new ClaimTypePage(page);
-        await claimTypePage.selectClaimType(claimType);    
-        
-        const solicitorCodePage = new SolicitorCodePage(page);
-        await solicitorCodePage.selectSolicitorCode('1A123B');
-    
-        //Fill in claim details 
-        expect(page.getByRole('heading', { name: 'Claim details' })).toBeVisible();
-        const claimDetailsPage = new ClaimDetailsPage(page);
-        await claimDetailsPage.fillClaimDetails(claimType, false);
+        await test.step('Select payment type', async () => {
+            await page.getByRole('link', { name: 'Payments' }).click();
+            expect(page.getByRole('heading', { name: 'Payment requests' })).toBeVisible();
+            await page.getByRole('link', { name: 'Create payment request' }).click();
+            
+            const claimTypePage = new ClaimTypePage(page);
+            await claimTypePage.selectClaimType(claimType);    
+        });
 
-        //Fill in costs
-        expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
-        const claimCostsPage = new NsmClaimCostsPage(page);
-        await claimCostsPage.fillCosts();
-        expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
-        await claimCostsPage.fillCosts();
+        await test.step('Select solicitor', async () => {
+            const solicitorCodePage = new SolicitorCodePage(page);
+            await solicitorCodePage.selectSolicitorCode('1A123B');
+        });
 
-        //Check you answers page
-        expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
-        await page.getByRole('button', { name: 'Submit payment request' }).click();
+        await test.step('Fill in claim details', async () => {
+            expect(page.getByRole('heading', { name: 'Claim details' })).toBeVisible();
+            const claimDetailsPage = new ClaimDetailsPage(page);
+            await claimDetailsPage.fillClaimDetails(claimType, false);
+        });
 
-        //Confirmation page
-        expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+        await test.step('Fill in costs', async () => {
+            expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
+            const claimCostsPage = new NsmClaimCostsPage(page);
+            await claimCostsPage.fillCosts();
+            expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+            await claimCostsPage.fillCosts();
+        });
+
+        await test.step('Submit and confirm payment', async () => {
+            expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+            await page.getByRole('button', { name: 'Submit payment request' }).click();
+
+            expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+        });
+
+        //Store LAA reference for future use
+        let laaReference;
+        const panelLocator = await page.locator('.govuk-panel__body');
+        const panelText = await panelLocator.textContent();
+        laaReference = panelText.split('Reference:')[1].trim();
+        await storeLAAReference(page, laaReference, scenarioName);
+
+        await test.step('View payment', async () => {
+            //See payment in homepage (TODO: This should be the button on the bottom of the page but this is currently being fixed)
+            await page.getByRole('link', {name: 'Payment requests'}).click();
+            expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+            await page.getByRole('cell', { name: laaReference }).click();
+
+            expect(page.getByRole('heading', { name: laaReference })).toBeVisible();
+            expect(page.getByText("Payment type: Non-Standard Magistrates'")).toBeVisible();
+        });
     });
 });
