@@ -113,7 +113,7 @@ export const paymentData = {
         defendantFirstName: 'Bruce',
         defendantLastName: 'Wayne',
         noOfDefendants: '1',
-        noOfAttendees: '1',
+        noOfAttendances: '1',
         hearingOutcome: 'CP19',
         matterType: '10 - Drug Offences', 
         court: 'BROMSGROVE & REDDITCH PSD', 
@@ -130,5 +130,11 @@ export const paymentData = {
     acCosts: {
         netCounselFees: '100.00', 
         vatCounselFees: '20.00'
+    },
+    nsmCosts: {
+        profitCosts: '1000.00', 
+        disbursementCosts: '204.00', 
+        travelCosts: '3000.00', 
+        waitingCosts: '500.00',
     }
 };

@@ -34,16 +34,13 @@ export default class ClaimDetailsPage {
                 await this.page.getByLabel('Date claim assessed').fill(paymentData.nsmClaimDetails.dateAssessed);
                 await this.page.getByLabel('Unique file number').click();
                 await this.page.getByLabel('Unique file number').fill(paymentData.nsmClaimDetails.ufn);
-                await this.page.getByLabel('Stage reached').click();
-                await this.page.getByLabel('Stage reached').fill(paymentData.nsmClaimDetails.stageReached);
+                await selectRadioButton(this.page, 'Stage reached', paymentData.nsmClaimDetails.stageReached);
                 await this.page.getByLabel('Defendant first name').click();
                 await this.page.getByLabel('Defendant first name').fill(paymentData.nsmClaimDetails.defendantFirstName);
                 await this.page.getByLabel('Defendant last name').click();
                 await this.page.getByLabel('Defendant last name').fill(paymentData.nsmClaimDetails.defendantLastName);
                 await this.page.getByLabel('Number of defendants').click();
                 await this.page.getByLabel('Number of defendants').fill(paymentData.nsmClaimDetails.noOfDefendants.toString());
-                await this.page.getByLabel('Number of attendees').click();
-                await this.page.getByLabel('Number of attendees').fill(paymentData.nsmClaimDetails.noOfAttendees.toString());
                 await this.page.getByLabel('Number of attendances').click();
                 await this.page.getByLabel('Number of attendances').fill(paymentData.nsmClaimDetails.noOfAttendances.toString());
                 await this.page.getByLabel('Hearing outcome code').click();
@@ -52,9 +49,9 @@ export default class ClaimDetailsPage {
                 await this.page.getByLabel('Matter type').fill(paymentData.nsmClaimDetails.matterType);
                 await this.page.getByLabel('Court').click();
                 await this.page.getByLabel('Court').fill(paymentData.nsmClaimDetails.court);
-                await selectRadioButton(this.page, 'Is this court a youth court', 'Yes');
                 await this.page.getByLabel('Date work completed').click();
                 await this.page.getByLabel('Date work completed').fill(paymentData.nsmClaimDetails.dateCompleted);
+                await selectRadioButton(this.page, 'Is this court a youth court', 'Yes'); //Doesn't work when this step is not last for some reason 
             }
             else if(claimType === 'Assigned counsel' && !linkedClaim){
                 await this.page.getByLabel('Date claim assessed').click();

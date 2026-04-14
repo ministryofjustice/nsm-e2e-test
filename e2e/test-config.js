@@ -34,6 +34,9 @@ exports.testConfig = {
         // Scenario : Assigned Counsel Payment
 
         scenarioConfig('assigned-counsel', 'payments').payments,
+
+        //Scenario : NSM Payment
+        scenarioConfig('nsm', 'payments').payments,
         // Scenario : NSM Submit and assess a claim
         scenarioConfig('submit-and-assess-claim', 'crm7').provider,
         scenarioConfig('submit-and-assess-claim', 'crm7').caseworker,
