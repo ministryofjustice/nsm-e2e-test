@@ -29,7 +29,7 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
 
         await test.step('Select solicitor', async () => {
             const solicitorCodePage = new SolicitorCodePage(page);
-            await solicitorCodePage.selectSolicitorCode('1A123B');
+            await solicitorCodePage.selectSolicitorCode();
         });
 
         await test.step('Fill in claim details', async () => {

@@ -31,9 +31,10 @@ exports.testConfig = {
             name: 'setup',
             testMatch: /.*\.setup\.js/
         },
-        // Scenario : Assigned Counsel Payment
+        // Scenario : Assigned Counsel Payments
 
         scenarioConfig('assigned-counsel', 'payments').payments,
+        scenarioConfig('assigned-counsel-appeal', 'payments').payments,
 
         //Scenario : NSM Payment with linked Assigned Counsel Payment
         scenarioConfig('nsm-and-linked-ac', 'payments').payments,

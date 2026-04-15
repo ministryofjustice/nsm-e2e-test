@@ -20,7 +20,7 @@ export default class SolicitorCodePage {
      * @example
      * await selectSolicitorCode('12345');
      */
-    async selectSolicitorCode(code) {
+    async selectSolicitorCode(code='1A123B') {
         if (!code) {
             throw new Error('Solicitor code is required');
         }

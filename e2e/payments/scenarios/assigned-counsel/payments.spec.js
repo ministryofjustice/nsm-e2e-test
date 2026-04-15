@@ -30,7 +30,7 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
 
         await test.step('Select solicitor', async () => {
             const solicitorCodePage = new SolicitorCodePage(page);
-            await solicitorCodePage.selectSolicitorCode('1A123B');
+            await solicitorCodePage.selectSolicitorCode();
         });
         
         await test.step('Fill in claim details', async () => {
