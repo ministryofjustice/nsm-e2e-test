@@ -3,9 +3,16 @@ import {
     authenticateAsCaseworker,
     storeLAAReference
 } from '../../../../helpers';
-import { ClaimTypePage,  SolicitorCodePage, ClaimDetailsPage, NsmClaimCostsPage } from '../../pages';
+import { 
+    ClaimTypePage, 
+    SolicitorCodePage,
+    ClaimDetailsPage,
+    NsmClaimCostsPage,
+    AcClaimCostsPage,
+    LinkedClaimPage 
+} from '../../pages';
 
-test.describe('Non-Standard Magistrates payment - As a Caseworker', () => {
+test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Caseworker', () => {
     test('Creating a non-standard magistrates payment from scratch', async ({paymentsFixture}) => {
         const {page, scenarioName} = paymentsFixture;
         await authenticateAsCaseworker(page);
@@ -61,6 +68,38 @@ test.describe('Non-Standard Magistrates payment - As a Caseworker', () => {
 
             expect(page.getByRole('heading', { name: laaReference })).toBeVisible();
             expect(page.getByText("Payment type: Non-Standard Magistrates'")).toBeVisible();
+        });
+
+        await test.step('Create linked Assigned Counsel payment', async () => {
+            await page.getByRole('link', { name: 'Payment requests', exact: true }).click();
+            await page.getByRole('link', { name: 'Create payment request' }).click();
+            const claimTypePage = new ClaimTypePage(page);
+            await claimTypePage.selectClaimType("Assigned counsel");
+
+            //Select linked claim
+            const linkedClaimPage = new LinkedClaimPage(page);
+            await linkedClaimPage.selectLinkedClaim(laaReference);
+            expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+            await page.getByRole('button', { name: 'Select' }).click();
+
+            //Create payment
+            expect(page.getByRole('heading', { name: 'Claim details' })).toBeVisible();
+            const claimDetailsPage = new ClaimDetailsPage(page);
+            await claimDetailsPage.fillClaimDetails("Assigned counsel", true);
+
+            //Fill in costs
+            expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
+            const claimCostsPage = new AcClaimCostsPage(page);
+            await claimCostsPage.fillCosts();
+            expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+            await claimCostsPage.fillCosts();
+
+            //Submit payment
+            expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+            await page.getByRole('button', { name: 'Submit payment request' }).click();
+
+            //Confirmation page
+            expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
         });
     });
 });

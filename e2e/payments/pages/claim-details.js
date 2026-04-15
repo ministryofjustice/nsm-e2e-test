@@ -65,6 +65,14 @@ export default class ClaimDetailsPage {
                 await this.page.getByLabel('Counsel name').click();
                 await this.page.getByLabel('Counsel name').fill(paymentData.acClaimDetails.counselName);
             }
+            else if(claimType === 'Assigned counsel' && linkedClaim){
+                await this.page.getByLabel('Date claim assessed').click();
+                await this.page.getByLabel('Date claim assessed').fill(paymentData.acClaimDetails.dateAssessed);   
+                await this.page.getByLabel('Counsel office account number').click();
+                await this.page.getByLabel('Counsel office account number').fill(paymentData.acClaimDetails.counselNumber);
+                await this.page.getByLabel('Counsel name').click();
+                await this.page.getByLabel('Counsel name').fill(paymentData.acClaimDetails.counselName);
+            }
             
             await this.page.getByRole('button', { name: 'Continue' }).click();
         } catch (error) {
