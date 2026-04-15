@@ -94,8 +94,11 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
             expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
             await claimCostsPage.fillCosts();
 
-            //Submit payment
+            //Check NSM claim is linked 
             expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+            expect(page.getByText(laaReference)).toBeVisible();
+
+            //Submit payment
             await page.getByRole('button', { name: 'Submit payment request' }).click();
 
             //Confirmation page
