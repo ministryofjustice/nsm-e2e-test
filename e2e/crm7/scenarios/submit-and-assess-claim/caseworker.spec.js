@@ -1,5 +1,5 @@
 import { test, expect } from '../../../fixtures/global-setup';
-import { AllClaimsPage } from '../../pages/caseworker/all-claims';
+import { AllClaimsPage, SearchClaimsPage } from '../../pages/caseworker';
 import {
     authenticateAsCaseworker,
     nsmData,
@@ -41,10 +41,30 @@ test.describe('CRM7 - As a Caseworker', () => {
             await page.waitForURL('**/make_decision');
             await page.getByLabel('Grant', { exact: true }).check();
             await page.getByRole('button', { name: 'Submit decision' }).click();
-            await page.waitForURL('**/closed');
-            await page.getByRole('cell', { name: laaReference }).getByRole('link').click();
+            await page.waitForURL('**/decision');
+            await page.getByRole('link', { name: 'Return to the application' }).click();
             await page.waitForURL('**/claim_details');
             await expect(page.locator('#main-content')).toContainText('Granted');
         });
+
+        await test.step('Create payment from claim', async () => {
+            //Search for claim
+            const searchClaimsPage = new SearchClaimsPage(page);
+            await searchClaimsPage.goto();
+            await expect(page.getByRole('heading', { name: 'Search for a claim' })).toBeVisible();
+            await page.getByLabel('Enter any combination of client or firm name, UFN or LAA reference').click();
+            await page.getByLabel('Enter any combination of client or firm name, UFN or LAA reference').fill(laaReference);
+            await page.getByRole('button', { name: 'Search' }).click();
+            await page.getByRole('link', { name: laaReference }).click();
+            // await expect(page.getByRole('heading', { name: laaReference })).toBeVisible();
+
+            //Create payment
+            await page.getByRole('link', { name: 'Create payment request' }).click();
+            await page.waitForURL('**/check_your_answers?submission=true');
+            await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+            await page.getByRole('button', { name: 'Submit payment request' }).click();
+            await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+        });
     });
 });
+
