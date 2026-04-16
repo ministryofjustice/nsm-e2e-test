@@ -131,6 +131,7 @@ services:
       DEV_AUTH_ENABLED: "true"
       GOVUK_NOTIFY_API_KEY: 12345
       RUN_SIDEKIQ_IN_TEST_MODE: "true"
+      PAYMENTS: "true"
     depends_on:
       - nscc-redis
       - nscc-db-services
