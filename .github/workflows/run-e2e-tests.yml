@@ -89,8 +89,10 @@ jobs:
         shell: bash
         working-directory: e2e-tests
         run: docker compose run laa-crime-forms-end-to-end-tests
-      - uses: actions/upload-artifact@v4
+
+      - name: Upload test results
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: test-results
           path: test-results/
