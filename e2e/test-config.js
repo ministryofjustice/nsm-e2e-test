@@ -40,6 +40,7 @@ exports.testConfig = {
         //Scenario : NSM Payments
         scenarioConfig('nsm-and-linked-ac', 'payments').payments,
         scenarioConfig('nsm-linked-amendment', 'payments').payments,
+        scenarioConfig('nsm-amendment-from-scratch', 'payments').payments,
         // Scenario : NSM Submit and assess a claim
         scenarioConfig('submit-and-assess-claim-with-payment', 'crm7').provider,
         scenarioConfig('submit-and-assess-claim-with-payment', 'crm7').caseworker,
