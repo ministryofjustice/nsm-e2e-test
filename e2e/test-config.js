@@ -35,6 +35,7 @@ exports.testConfig = {
 
         scenarioConfig('assigned-counsel', 'payments').payments,
         scenarioConfig('assigned-counsel-appeal', 'payments').payments,
+        scenarioConfig('assigned-counsel-amendment', 'payments').payments,
 
         //Scenario : NSM Payment with linked Assigned Counsel Payment
         scenarioConfig('nsm-and-linked-ac', 'payments').payments,
