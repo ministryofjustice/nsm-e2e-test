@@ -37,11 +37,12 @@ exports.testConfig = {
         scenarioConfig('assigned-counsel-appeal', 'payments').payments,
         scenarioConfig('assigned-counsel-amendment', 'payments').payments,
 
-        //Scenario : NSM Payment with linked Assigned Counsel Payment
+        //Scenario : NSM Payments
         scenarioConfig('nsm-and-linked-ac', 'payments').payments,
+        scenarioConfig('nsm-linked-amendment', 'payments').payments,
         // Scenario : NSM Submit and assess a claim
-        scenarioConfig('submit-and-assess-claim', 'crm7').provider,
-        scenarioConfig('submit-and-assess-claim', 'crm7').caseworker,
+        scenarioConfig('submit-and-assess-claim-with-payment', 'crm7').provider,
+        scenarioConfig('submit-and-assess-claim-with-payment', 'crm7').caseworker,
         // Scenario : NSM Submit a claim with Youth Court fee claimed
         scenarioConfig('submit-a-claim-with-youth-court-fee', 'crm7').provider,
         scenarioConfig('submit-a-claim-with-youth-court-fee', 'crm7').caseworker,
