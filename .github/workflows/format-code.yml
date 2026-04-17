@@ -4,11 +4,14 @@ on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
 
+permissions:
+  contents: read
+
 jobs:
   format-code:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
       - uses: ministryofjustice/github-actions/code-formatter@e08cbcac12ec9c09d867ab2b803d4ea1a87300ad # v18.2.4
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
