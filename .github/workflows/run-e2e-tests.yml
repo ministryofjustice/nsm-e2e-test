@@ -113,6 +113,12 @@ jobs:
             e2e-tests/test-results
             e2e-tests/playwright-report
 
+      - name: Output container logs on failure
+        if: steps.run_e2e.outputs.exit_code != '0'
+        shell: bash
+        working-directory: e2e-tests
+        run: docker compose logs
+
       - name: Fail if end-to-end tests failed
         if: steps.run_e2e.outputs.exit_code != '0'
         shell: bash
