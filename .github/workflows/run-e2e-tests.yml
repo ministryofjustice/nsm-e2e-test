@@ -86,12 +86,36 @@ jobs:
           docker compose run start_applications
 
       - name: Run end-to-end tests
+        id: run_e2e
         shell: bash
         working-directory: e2e-tests
-        run: docker compose run laa-crime-forms-end-to-end-tests
+        run: |
+          set +e
+          docker compose run --name laa-crime-forms-e2e-run laa-crime-forms-end-to-end-tests
+          EXIT_CODE=$?
+          echo "exit_code=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+          exit 0
 
-      - name: Output container logs on failure
-        if: failure()
+      - name: Copy Playwright outputs from container
+        if: steps.run_e2e.outputs.exit_code != '0'
         shell: bash
         working-directory: e2e-tests
-        run: docker compose logs
+        run: |
+          docker cp laa-crime-forms-e2e-run:/app/test-results ./ || true
+
+      - name: Upload test artifacts
+        if: steps.run_e2e.outputs.exit_code != '0'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          if-no-files-found: warn
+          path: |
+            e2e-tests/test-results
+            e2e-tests/playwright-report
+
+      - name: Fail if end-to-end tests failed
+        if: steps.run_e2e.outputs.exit_code != '0'
+        shell: bash
+        run: |
+          echo "End-to-end tests failed with exit code ${{ steps.run_e2e.outputs.exit_code }}"
+          exit 1
