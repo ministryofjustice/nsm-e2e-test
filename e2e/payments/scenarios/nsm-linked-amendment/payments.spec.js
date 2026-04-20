@@ -62,28 +62,28 @@ test.describe('Non-Standard Magistrates original payment with amendment - As a C
             //Select linked claim
             const linkedClaimPage = new LinkedClaimPage(page);
             await linkedClaimPage.selectLinkedClaim(laaReference);
-            expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+            await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
             await page.getByRole('button', { name: 'Select' }).click();
 
             //Create payment
-            expect(page.getByLabel('Date claim amended')).toBeVisible();
+            await expect(page.getByLabel('Date claim amended')).toBeVisible();
             await page.getByLabel('Date claim amended').fill(paymentData.nsmClaimDetails.dateAssessed);
             await page.getByRole('button', { name: 'Continue' }).click();
 
             //Fill in costs
-            expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
             const claimCostsPage = new NsmClaimCostsPage(page);
             await claimCostsPage.fillCosts();
 
             //Check NSM claim is linked 
-            expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
-            expect(page.getByText(laaReference)).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+            await expect(page.getByText(laaReference)).toBeVisible();
 
             //Submit payment
             await page.getByRole('button', { name: 'Submit payment request' }).click();
 
             //Confirmation page
-            expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
         });
     });
 });

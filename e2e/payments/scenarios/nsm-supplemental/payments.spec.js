@@ -62,31 +62,31 @@ test.describe('Non-Standard Magistrates original payment with supplemental payme
             //Select linked claim
             const linkedClaimPage = new LinkedClaimPage(page);
             await linkedClaimPage.selectLinkedClaim(laaReference);
-            expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+            await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
             await page.getByRole('button', { name: 'Select' }).click();
 
             //Create payment
-            expect(page.getByLabel('Date supplemental claim assessed')).toBeVisible();
+            await expect(page.getByLabel('Date supplemental claim assessed')).toBeVisible();
             await page.getByLabel('Date supplemental claim assessed').fill(paymentData.nsmClaimDetails.dateAssessed);
             await page.getByRole('button', { name: 'Continue' }).click();
 
             //Fill in costs
             const costsPage = new NsmClaimCostsPage(page);
-            expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
             await costsPage.fillCosts();
-            expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
             await costsPage.fillCosts();
 
 
             //Check NSM claim is linked 
-            expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
-            expect(page.getByText(laaReference)).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+            await expect(page.getByText(laaReference)).toBeVisible();
 
             //Submit payment
             await page.getByRole('button', { name: 'Submit payment request' }).click();
 
             //Confirmation page
-            expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
         });
     });
 });

@@ -44,7 +44,7 @@ test.describe('Non-Standard Magistrates amendment from scratch - As a Caseworker
 
         await test.step('Fill in costs', async () => {
             const allowedCostsPage = new NsmClaimCostsPage(page);
-            expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
             await allowedCostsPage.fillCosts();
         });
 

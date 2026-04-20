@@ -54,25 +54,25 @@ test.describe('Assigned Counsel Payment with Appeal - As a Caseworker', () => {
         });
 
         await test.step('Set appeal details', async () => {
-            expect(page.getByLabel('Date appeal assessed')).toBeVisible();
+            await expect(page.getByLabel('Date appeal assessed')).toBeVisible();
             await page.getByLabel('Date appeal assessed').fill(paymentData.acClaimDetails.dateAssessed);
             await page.getByRole('button', { name: 'Continue' }).click();
            
             const appealCostsPage = new AcClaimCostsPage(page);
-            expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
             await appealCostsPage.fillCosts();
         });
 
         await test.step('Submit and view appeal', async () => {
-            expect(page.getByText("Not linked to a non-standard magistrates' claim")).toBeVisible();
-            expect(page.getByText(laaReference)).toBeVisible();
+            await expect(page.getByText("Not linked to a non-standard magistrates' claim")).toBeVisible();
+            await expect(page.getByText(laaReference)).toBeVisible();
             await page.getByRole('button', { name: 'Submit payment request' }).click();
-            expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
             
             //See payment in homepage (TODO: This should be the button on the bottom of the page but this is currently being fixed)
             await page.getByRole('link', {name: 'Payment requests'}).click();
             await page.getByRole('link', { name: laaReference }).first().click();
-            expect(page.getByText('Payment type: Assigned counsel - appeal')).toBeVisible();
+            await expect(page.getByText('Payment type: Assigned counsel - appeal')).toBeVisible();
         });
     });
 });
