@@ -80,7 +80,7 @@ test.describe('Non-Standard Magistrates original payment with appeal - As a Case
             expect(page.getByText(laaReference)).toBeVisible();
 
             //Submit payment
-            await page.getByRole('button', { name: 'Submit payment request' }).click();
+            await page.getByRole('button', { name: 'ferf34f34fst' }).click();
 
             //Confirmation page
             expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
