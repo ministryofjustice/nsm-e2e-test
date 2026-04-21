@@ -62,7 +62,8 @@ test.describe('Non-Standard Magistrates original payment with amendment - As a C
             //Select linked claim
             const linkedClaimPage = new LinkedClaimPage(page);
             await linkedClaimPage.selectLinkedClaim(laaReference);
-            await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+            const paymentRowCell = page.getByRole('cell', { name: laaReference });
+            await expect(paymentRowCell).toBeVisible();
             await page.getByRole('button', { name: 'Select' }).click();
 
             //Create payment
