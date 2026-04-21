@@ -11,6 +11,7 @@ import {
     AcClaimCostsPage,
     LinkedClaimPage 
 } from '../../pages';
+import { time } from 'node:console';
 
 test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Caseworker', () => {
     test('Creating a non-standard magistrates payment from scratch', async ({paymentsFixture}) => {
@@ -63,11 +64,10 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
         await test.step('View payment', async () => {
             //See payment in homepage (TODO: This should be the button on the bottom of the page but this is currently being fixed)
             await page.getByRole('link', {name: 'Payment requests'}).click();
-            const paymentRowCell = page.getByRole('cell', { name: laaReference });
-            await expect(paymentRowCell).toBeVisible();
-            await paymentRowCell.click();
+            await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+            await page.getByRole('cell', { name: laaReference }).click();
 
-            await expect(page.getByRole('heading', { name: laaReference })).toBeVisible();
+            await expect(page.getByRole('heading', { name: laaReference })).toBeVisible({ timeout: 3000 });
             await expect(page.getByText("Payment type: Non-Standard Magistrates'")).toBeVisible();
         });
 
@@ -80,8 +80,7 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
             //Select linked claim
             const linkedClaimPage = new LinkedClaimPage(page);
             await linkedClaimPage.selectLinkedClaim(laaReference);
-            const paymentRowCell = page.getByRole('cell', { name: laaReference });
-            await expect(paymentRowCell).toBeVisible();
+            await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
             await page.getByRole('button', { name: 'Select' }).click();
 
             //Create payment

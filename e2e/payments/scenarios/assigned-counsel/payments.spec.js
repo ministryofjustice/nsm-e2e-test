@@ -72,7 +72,7 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
             await expect(paymentRowCell).toBeVisible({ timeout: 3000 });
             await paymentRowCell.click();
 
-            await expect(page.getByRole('heading', { name: laaReference })).toBeVisible();
+            await expect(page.getByRole('heading', { name: laaReference })).toBeVisible({ timeout: 3000 });
             await expect(page.getByText('Payment type: Assigned counsel')).toBeVisible();
         });
     });
