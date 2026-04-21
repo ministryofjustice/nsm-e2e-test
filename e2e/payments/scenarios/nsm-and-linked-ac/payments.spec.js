@@ -80,7 +80,7 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
             //Select linked claim
             const linkedClaimPage = new LinkedClaimPage(page);
             await linkedClaimPage.selectLinkedClaim(laaReference);
-            await expect(page.getByRole('link', { name: laaReference })).toBeVisible();
+            await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
             await page.getByRole('button', { name: 'Select' }).click();
 
             //Create payment
