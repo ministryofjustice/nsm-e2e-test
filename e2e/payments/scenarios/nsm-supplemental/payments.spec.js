@@ -62,8 +62,7 @@ test.describe('Non-Standard Magistrates original payment with supplemental payme
             //Select linked claim
             const linkedClaimPage = new LinkedClaimPage(page);
             await linkedClaimPage.selectLinkedClaim(laaReference);
-            const paymentRowCell = page.getByRole('cell', { name: laaReference });
-            await expect(paymentRowCell).toBeVisible();
+            await expect(page.getByRole('link', { name: laaReference })).toBeVisible();
             await page.getByRole('button', { name: 'Select' }).click();
 
             //Create payment

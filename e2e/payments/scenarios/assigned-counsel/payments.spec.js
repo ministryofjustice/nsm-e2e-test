@@ -68,9 +68,9 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
         await test.step('View payment', async () => {
             //See payment in homepage (TODO: This should be the button on the bottom of the page but this is currently being fixed)
             await page.getByRole('link', {name: 'Payment requests'}).click();
-            const paymentRowCell = page.getByRole('cell', { name: laaReference });
-            await expect(paymentRowCell).toBeVisible({ timeout: 3000 });
-            await paymentRowCell.click();
+            const paymentRowLink = page.getByRole('link', { name: laaReference });
+            await expect(paymentRowLink).toBeVisible({ timeout: 3000 });
+            await paymentRowLink.click();
 
             await expect(page.getByRole('heading', { name: laaReference })).toBeVisible({ timeout: 3000 });
             await expect(page.getByText('Payment type: Assigned counsel')).toBeVisible();
