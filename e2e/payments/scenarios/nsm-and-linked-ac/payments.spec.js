@@ -62,7 +62,6 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
         await storeLAAReference(page, laaReference, scenarioName);
 
         await test.step('View payment', async () => {
-            //See payment in homepage (TODO: This should be the button on the bottom of the page but this is currently being fixed)
             await page.getByRole('link', {name: 'Payment requests'}).click();
             await expect(page.getByRole('link', { name: laaReference })).toBeVisible();
             await page.getByRole('link', { name: laaReference }).click();

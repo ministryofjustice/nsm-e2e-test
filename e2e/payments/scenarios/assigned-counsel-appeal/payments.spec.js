@@ -40,7 +40,6 @@ test.describe('Assigned Counsel Payment with Appeal - As a Caseworker', () => {
         await storeLAAReference(page, laaReference, scenarioName);
 
         await test.step('Start creating an Assigned Counsel - appeal', async () => {
-            //See payment in homepage (TODO: This should be the button on the bottom of the page but this is currently being fixed)
             await page.getByRole('link', {name: 'Payment requests'}).click();
             await page.getByRole('link', { name: 'Create payment request' }).click();
             const claimTypePage = new ClaimTypePage(page);
@@ -69,7 +68,6 @@ test.describe('Assigned Counsel Payment with Appeal - As a Caseworker', () => {
             await page.getByRole('button', { name: 'Submit payment request' }).click();
             await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
             
-            //See payment in homepage (TODO: This should be the button on the bottom of the page but this is currently being fixed)
             await page.getByRole('link', {name: 'Payment requests'}).click();
             await page.getByRole('link', { name: laaReference }).first().click();
             await expect(page.getByText('Payment type: Assigned counsel - appeal')).toBeVisible();

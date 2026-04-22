@@ -66,7 +66,6 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
         await storeLAAReference(page, laaReference, scenarioName);
 
         await test.step('View payment', async () => {
-            //See payment in homepage (TODO: This should be the button on the bottom of the page but this is currently being fixed)
             await page.getByRole('link', {name: 'Payment requests'}).click();
             const paymentRowLink = page.getByRole('link', { name: laaReference });
             await expect(paymentRowLink).toBeVisible({ timeout: 3000 });
