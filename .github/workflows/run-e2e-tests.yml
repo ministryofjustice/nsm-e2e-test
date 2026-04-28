@@ -93,7 +93,7 @@ jobs:
           docker compose run --name laa-crime-forms-e2e-run laa-crime-forms-end-to-end-tests
 
       - name: Copy Playwright outputs from container
-        id: copy_playwright
+        id: copy_playwright_outputs
         if: ${{ failure() }}
         shell: bash
         working-directory: e2e-tests
@@ -101,7 +101,7 @@ jobs:
           docker cp laa-crime-forms-e2e-run:/app/test-results ./
 
       - name: Upload test artifacts
-        if: ${{ steps.copy_playwright.outcome == 'success' }}
+        if: ${{ failure() && steps.copy_playwright_outputs.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-artifacts
@@ -111,7 +111,7 @@ jobs:
             e2e-tests/playwright-report
 
       - name: Output container logs on failure
-        if: ${{ steps.copy_playwright.outcome == 'success' }}
+        if: ${{ failure() && steps.copy_playwright_outputs.outcome == 'success' }}
         shell: bash
         working-directory: e2e-tests
         run: docker compose logs
