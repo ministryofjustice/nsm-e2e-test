@@ -67,7 +67,7 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
 
         await test.step('View payment', async () => {
             await page.getByRole('link', {name: 'Payment requests'}).click();
-            const paymentRowLink = page.getByRole('link', { name: laaReference });
+            const paymentRowLink = page.getByRole('link', { name: "bla bla bla" });
             await expect(paymentRowLink).toBeVisible({ timeout: 3000 });
             await paymentRowLink.click();
 
