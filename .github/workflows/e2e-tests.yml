@@ -9,6 +9,5 @@ on:
 jobs:
   run-e2e-tests:
     name: Call E2E Tests
-    uses: ministryofjustice/nsm-e2e-test/.github/workflows/run-e2e-tests.yml@96e33117fb5af6ef95693e192dbd0ff70a80faa0
-      id-token: write
+    uses: ministryofjustice/nsm-e2e-test/.github/workflows/run-e2e-tests.yml@c47e0c72aca5bd7da78dffdfde9fc1b1b5c1d12c
       contents: read
