@@ -101,14 +101,12 @@ jobs:
 
       - name: Copy Playwright outputs from container
         id: copy_playwright_outputs
-        if: ${{ steps.output_logs.outcome == 'success' }}
         shell: bash
         working-directory: e2e-tests
         run: |
           docker cp laa-crime-forms-e2e-run:/app/test-results ./
 
       - name: Upload test artifacts
-        if: ${{ steps.copy_playwright_outputs.outcome == 'success' }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-artifacts
