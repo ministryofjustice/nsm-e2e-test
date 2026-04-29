@@ -12,9 +12,6 @@
 export const selectRadioButton = async (page, name, value) => {
     if (!page) throw new Error('Page is required');
     if (!name) throw new Error('Group name is required');
-    if (!['Yes', 'No'].includes(value)) {
-        throw new Error('Value must be either "Yes" or "No"');
-    }
 
     try {
         await page

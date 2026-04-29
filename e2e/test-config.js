@@ -13,6 +13,12 @@ const scenarioConfig = (scenarioName, applicationType) => ({
         testMatch: `**/${applicationType}/scenarios/${scenarioName}/caseworker.spec.js`,
         use: { ...devices['Desktop Chrome'] },
         dependencies: [`provider-${scenarioName}`]
+    }, 
+    payments: {
+        name: `payments-${scenarioName}`,
+        testMatch: `**/${applicationType}/scenarios/${scenarioName}/payments.spec.js`,
+        use: { ...devices['Desktop Chrome'] }, 
+        dependencies: ['setup']
     }
 });
 
@@ -25,9 +31,21 @@ exports.testConfig = {
             name: 'setup',
             testMatch: /.*\.setup\.js/
         },
+        // Scenario : Assigned Counsel Payments
+
+        scenarioConfig('assigned-counsel', 'payments').payments,
+        scenarioConfig('assigned-counsel-appeal', 'payments').payments,
+        scenarioConfig('assigned-counsel-amendment', 'payments').payments,
+
+        //Scenario : NSM Payments
+        scenarioConfig('nsm-and-linked-ac', 'payments').payments,
+        scenarioConfig('nsm-linked-amendment', 'payments').payments,
+        scenarioConfig('nsm-amendment-from-scratch', 'payments').payments,
+        scenarioConfig('nsm-appeal', 'payments').payments,
+        scenarioConfig('nsm-supplemental', 'payments').payments,
         // Scenario : NSM Submit and assess a claim
-        scenarioConfig('submit-and-assess-claim', 'crm7').provider,
-        scenarioConfig('submit-and-assess-claim', 'crm7').caseworker,
+        scenarioConfig('submit-and-assess-claim-with-payment', 'crm7').provider,
+        scenarioConfig('submit-and-assess-claim-with-payment', 'crm7').caseworker,
         // Scenario : NSM Submit a claim with Youth Court fee claimed
         scenarioConfig('submit-a-claim-with-youth-court-fee', 'crm7').provider,
         scenarioConfig('submit-a-claim-with-youth-court-fee', 'crm7').caseworker,

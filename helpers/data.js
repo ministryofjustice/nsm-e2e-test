@@ -104,3 +104,37 @@ export const priorAuthorityData = {
         }
     }
 };
+
+export const paymentData = {
+    nsmClaimDetails: {
+        dateAssessed: '1/1/2020',
+        ufn: '120223/001',
+        stageReached: 'PROG', 
+        defendantFirstName: 'Bruce',
+        defendantLastName: 'Wayne',
+        noOfDefendants: '1',
+        noOfAttendances: '1',
+        hearingOutcome: 'CP19',
+        matterType: '10 - Drug Offences', 
+        court: 'BROMSGROVE & REDDITCH PSD', 
+        youthCourt: 'Yes', 
+        dateCompleted: '1/1/2020'
+    }, 
+    acClaimDetails: {
+        dateAssessed: '1/1/2020',
+        ufn: '120223/001',
+        defendantLastName: 'Wayne',
+        counselNumber: '1A123C', 
+        counselName: 'The Counsel'
+    }, 
+    acCosts: {
+        netCounselFees: '100.00', 
+        vatCounselFees: '20.00'
+    },
+    nsmCosts: {
+        profitCosts: '1000.00', 
+        disbursementCosts: '204.00', 
+        travelCosts: '3000.00', 
+        waitingCosts: '500.00',
+    }
+};

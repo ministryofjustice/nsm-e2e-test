@@ -24,7 +24,8 @@ export {
 // Test data
 export {
     nsmData,
-    priorAuthorityData
+    priorAuthorityData, 
+    paymentData
 } from './data';
 
 // Utils
