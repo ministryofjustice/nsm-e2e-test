@@ -15,6 +15,29 @@ export const storeLAAReference = async (page, laaReference, scenarioName, storag
     }
 };
 
+export const extractLAAReference = (text, marker) => {
+    if (!text || !marker) {
+        throw new Error('Text and reference marker are required');
+    }
+
+    const markerIndex = text.indexOf(marker);
+    if (markerIndex === -1) {
+        throw new Error(`Could not find LAA reference marker: ${marker}`);
+    }
+
+    const reference = text.slice(markerIndex + marker.length).trim().split(/\s+/)[0];
+    if (!reference) {
+        throw new Error(`Could not find LAA reference after marker: ${marker}`);
+    }
+
+    return reference;
+};
+
+export const getLAAReferenceFromPage = async (page, marker) => {
+    const pageText = await page.getByRole('main').textContent();
+    return extractLAAReference(pageText, marker);
+};
+
 export const getLAAReference = async (page, scenarioName, storagePath = `./e2e/storage/${scenarioName}-provider-state.json`) => {
     try {
         await page.context().storageState({ path: storagePath });

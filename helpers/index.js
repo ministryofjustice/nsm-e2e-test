@@ -17,6 +17,8 @@ export {
 // Storage helpers
 export {
     storeLAAReference,
+    extractLAAReference,
+    getLAAReferenceFromPage,
     getLAAReference,
     getScenarioName
 } from './storage';

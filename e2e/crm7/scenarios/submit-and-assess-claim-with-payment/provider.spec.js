@@ -17,6 +17,7 @@ import {
 import {
     nsmData,
     authenticateAsProvider,
+    getLAAReferenceFromPage,
     storeLAAReference
 } from '../../../../helpers';
 
@@ -191,9 +192,7 @@ test.describe('CRM7 - As a Provider', () => {
 
             // Set LAA reference for future use
             let laaReference;
-            const panelLocator = await page.locator('.govuk-panel__body');
-            const panelText = await panelLocator.textContent();
-            laaReference = panelText.split('Your LAA reference number')[1].trim();
+            laaReference = await getLAAReferenceFromPage(page, 'Your LAA reference number');
             // Store LAA reference using scenario name from fixture
             await storeLAAReference(page, laaReference, scenarioName);
         });
