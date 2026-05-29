@@ -53,25 +53,13 @@ export default class ClaimDetailsPage {
                 await this.page.getByLabel('Date work completed').fill(paymentData.nsmClaimDetails.dateCompleted);
                 await selectRadioButton(this.page, 'Is this court a youth court', 'Yes'); //Doesn't work when this step is not last for some reason 
             }
-            else if(claimType === 'Assigned counsel' && !linkedClaim){
+            else if(claimType === 'Assigned counsel'){
                 await this.page.getByLabel('Date claim assessed').click();
                 await this.page.getByLabel('Date claim assessed').fill(paymentData.acClaimDetails.dateAssessed);
                 await this.page.getByLabel('Unique file number').click();
                 await this.page.getByLabel('Unique file number').fill(paymentData.acClaimDetails.ufn);
                 await this.page.getByLabel('Defendant last name').click();
                 await this.page.getByLabel('Defendant last name').fill(paymentData.acClaimDetails.defendantLastName);
-                await this.page.getByLabel('Counsel office account number').click();
-                await this.page.getByLabel('Counsel office account number').fill(paymentData.acClaimDetails.counselNumber);
-                await this.page.getByLabel('Counsel name').click();
-                await this.page.getByLabel('Counsel name').fill(paymentData.acClaimDetails.counselName);
-            }
-            else if(claimType === 'Assigned counsel' && linkedClaim){
-                await this.page.getByLabel('Date claim assessed').click();
-                await this.page.getByLabel('Date claim assessed').fill(paymentData.acClaimDetails.dateAssessed);   
-                await this.page.getByLabel('Counsel office account number').click();
-                await this.page.getByLabel('Counsel office account number').fill(paymentData.acClaimDetails.counselNumber);
-                await this.page.getByLabel('Counsel name').click();
-                await this.page.getByLabel('Counsel name').fill(paymentData.acClaimDetails.counselName);
             }
             
             await this.page.getByRole('button', { name: 'Continue' }).click();
