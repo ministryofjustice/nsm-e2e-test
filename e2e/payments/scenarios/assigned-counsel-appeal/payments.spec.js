@@ -4,7 +4,7 @@ import {
     storeLAAReference, 
     paymentData
 } from '../../../../helpers';
-import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, ClaimDetailsPage, AcClaimCostsPage } from '../../pages';
+import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, ClaimDetailsPage, AcClaimCostsPage, CounselCodePage } from '../../pages';
 
 test.describe('Assigned Counsel Payment with Appeal - As a Caseworker', () => {
     test('Creating an assigned counsel payment with an appeal attached', async ({paymentsFixture}) => {
@@ -22,6 +22,8 @@ test.describe('Assigned Counsel Payment with Appeal - As a Caseworker', () => {
         await linkedClaimPage.selectLinkedClaim();
         const solicitorCodePage = new SolicitorCodePage(page);
         await solicitorCodePage.selectSolicitorCode();
+        const counselCodePage = new CounselCodePage(page);
+        await counselCodePage.selectCounselCode();
         
         const claimDetailsPage = new ClaimDetailsPage(page);
         await claimDetailsPage.fillClaimDetails('Assigned counsel', false);

@@ -3,7 +3,7 @@ import {
     authenticateAsCaseworker,
     storeLAAReference
 } from '../../../../helpers';
-import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, ClaimDetailsPage, AcClaimCostsPage } from '../../pages';
+import { ClaimTypePage, LinkedClaimPage, SolicitorCodePage, CounselCodePage, ClaimDetailsPage, AcClaimCostsPage } from '../../pages';
 
 test.describe('Assigned Counsel Payment - As a Caseworker', () => {
     test('Creating an assigned counsel payment from scratch', async ({paymentsFixture}) => {
@@ -31,6 +31,11 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
         await test.step('Select solicitor', async () => {
             const solicitorCodePage = new SolicitorCodePage(page);
             await solicitorCodePage.selectSolicitorCode();
+        });
+
+        await test.step('Select assigned counsel', async () => {
+            const counselCodePage = new CounselCodePage(page);
+            await counselCodePage.selectCounselCode();
         });
         
         await test.step('Fill in claim details', async () => {

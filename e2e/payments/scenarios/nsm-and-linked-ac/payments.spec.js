@@ -1,7 +1,8 @@
 import { test, expect } from '../../../fixtures/global-setup';
 import {
     authenticateAsCaseworker,
-    storeLAAReference
+    storeLAAReference,
+    paymentData
 } from '../../../../helpers';
 import { 
     ClaimTypePage, 
@@ -9,9 +10,9 @@ import {
     ClaimDetailsPage,
     NsmClaimCostsPage,
     AcClaimCostsPage,
-    LinkedClaimPage 
+    LinkedClaimPage, 
+    CounselCodePage
 } from '../../pages';
-import { time } from 'node:console';
 
 test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Caseworker', () => {
     test('Creating a non-standard magistrates payment from scratch', async ({paymentsFixture}) => {
@@ -83,9 +84,11 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
             await page.getByRole('button', { name: 'Select' }).click();
 
             //Create payment
-            await expect(page.getByRole('heading', { name: 'Claim details' })).toBeVisible();
-            const claimDetailsPage = new ClaimDetailsPage(page);
-            await claimDetailsPage.fillClaimDetails("Assigned counsel", true);
+            const counselCodePage = new CounselCodePage(page);
+            await counselCodePage.selectCounselCode();
+            await expect(page.getByText('Date claim assessed')).toBeVisible();
+            await page.getByLabel('Date claim assessed').fill(paymentData.nsmClaimDetails.dateAssessed);
+            await page.getByRole('button', { name: 'Continue' }).click();
 
             //Fill in costs
             await expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
