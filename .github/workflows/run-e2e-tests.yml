@@ -11,7 +11,7 @@ on:
         type: string
       assess-sha:
         description: 'SHA hash of the container image to use for laa-assess-crime-forms'
-        default: 'b8f43bddc049fcbf2a644d3356bb1902fb4c2ad8'
+        default: 'branch-7b7c47fac89fcaeb0be1868d93082943cbbc44a2'
         required: false
         type: string
       appstore-sha:
