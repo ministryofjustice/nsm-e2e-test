@@ -1,6 +1,7 @@
 import { test, expect } from '../../../fixtures/global-setup';
 import {
     authenticateAsCaseworker,
+    getLAAReferenceFromPage,
     storeLAAReference, 
     paymentData
 } from '../../../../helpers';
@@ -48,9 +49,7 @@ test.describe('Non-Standard Magistrates original payment with supplemental payme
 
         //Store LAA reference for future use
         let laaReference;
-        const panelLocator = await page.locator('.govuk-panel__body');
-        const panelText = await panelLocator.textContent();
-        laaReference = panelText.split('Reference:')[1].trim();
+        laaReference = await getLAAReferenceFromPage(page, 'Reference:');
         await storeLAAReference(page, laaReference, scenarioName);
 
         await test.step('Create linked NSM supplemental payment', async () => {
