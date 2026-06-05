@@ -107,6 +107,8 @@ export const priorAuthorityData = {
 
 export const paymentData = {
     nsmClaimDetails: {
+        originalSubmissionMonth: '1',
+        originalSubmissionYear: '2020',
         dateAssessed: '1/1/2020',
         ufn: '120223/001',
         stageReached: 'PROG', 
