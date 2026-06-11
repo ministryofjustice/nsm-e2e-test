@@ -11,12 +11,12 @@ on:
         type: string
       assess-image-name:
         description: 'Name of the container image to use for laa-assess-crime-forms'
-        default: 'branch-3706d4d73d21b6378c8a2b17d7fd07fdfdad3b3e'
+        default: 'latest'
         required: false
         type: string
       appstore-image-name:
         description: 'Name of the container image to use for laa-crime-application-store'
-        default: 'branch-650d7c7480ff9adc609870fd618e83fa47b5cdb5'
+        default: 'latest'
         required: false
         type: string
 
