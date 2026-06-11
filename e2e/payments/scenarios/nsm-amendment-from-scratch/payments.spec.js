@@ -39,7 +39,7 @@ test.describe('Non-Standard Magistrates amendment from scratch - As a Caseworker
 
         await test.step('Fill in claim details', async () => {
             const claimDetailsPage = new ClaimDetailsPage(page);
-            await claimDetailsPage.fillClaimDetails("Non-Standard Magistrates'", false);
+            await claimDetailsPage.fillClaimDetails("Non-Standard Magistrates'", false, true);
         });
 
         await test.step('Fill in costs', async () => {

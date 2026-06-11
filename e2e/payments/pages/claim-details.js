@@ -20,7 +20,7 @@ export default class ClaimDetailsPage {
      * @example
      * await fillClaimDetails('Assigned counsel');
      */
-    async fillClaimDetails(claimType, linkedClaim) {
+    async fillClaimDetails(claimType, linkedClaim, fillOriginalSubmissionDate = false) {
         if (!claimType) {
             throw new Error('Claim type is required');
         }
@@ -32,6 +32,12 @@ export default class ClaimDetailsPage {
             if(claimType === "Non-Standard Magistrates'" && !linkedClaim){
                 await this.page.getByLabel('Date claim assessed').click();
                 await this.page.getByLabel('Date claim assessed').fill(paymentData.nsmClaimDetails.dateAssessed);
+                if(fillOriginalSubmissionDate){
+                    await this.page.locator('#payments_steps_nsm_claim_detail_form_original_submission_date_2i').click();
+                    await this.page.locator('#payments_steps_nsm_claim_detail_form_original_submission_date_2i').fill(paymentData.nsmClaimDetails.originalSubmissionMonth);
+                    await this.page.locator('#payments_steps_nsm_claim_detail_form_original_submission_date_1i').click();
+                    await this.page.locator('#payments_steps_nsm_claim_detail_form_original_submission_date_1i').fill(paymentData.nsmClaimDetails.originalSubmissionYear);
+                }
                 await this.page.getByLabel('Unique file number').click();
                 await this.page.getByLabel('Unique file number').fill(paymentData.nsmClaimDetails.ufn);
                 await selectRadioButton(this.page, 'Stage reached', paymentData.nsmClaimDetails.stageReached);
