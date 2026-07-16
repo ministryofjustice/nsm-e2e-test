@@ -15,7 +15,7 @@ test.describe('Assigned Counsel Payment - As a Caseworker', () => {
         await test.step('Select payment type', async () => {
             //Select payment type
             await page.getByRole('link', { name: 'Request a payment' }).click();
-            await expect(page.getByRole('heading', { name: 'Request a payment' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Payment request' })).toBeVisible();
             await page.getByRole('link', { name: 'Create payment request' }).click();
             
             const claimTypePage = new ClaimTypePage(page);

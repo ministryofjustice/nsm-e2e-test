@@ -23,7 +23,7 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
         
         await test.step('Select payment type', async () => {
             await page.getByRole('link', { name: 'Request a payment' }).click();
-            await expect(page.getByRole('heading', { name: 'Request a payment' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Payment requests' })).toBeVisible();
             await page.getByRole('link', { name: 'Create payment request' }).click();
             
             const claimTypePage = new ClaimTypePage(page);
