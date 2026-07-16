@@ -13,7 +13,7 @@ test.describe('Assigned Counsel Payment with Amendment - As a Caseworker', () =>
         await authenticateAsCaseworker(page);
 
         //Create initial Assigned Counsel payment which will be linked to the appeal
-        await page.getByRole('link', { name: 'Payments' }).click();
+        await page.getByRole('link', { name: 'Request a payment' }).click();
         await page.getByRole('link', { name: 'Create payment request' }).click();
         
         const claimTypePage = new ClaimTypePage(page);

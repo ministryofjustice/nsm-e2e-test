@@ -20,7 +20,7 @@ test.describe('Non-Standard Magistrates original payment with appeal - As a Case
         const claimType = "Non-Standard Magistrates'";
         
         await test.step('Select payment type', async () => {
-            await page.getByRole('link', { name: 'Payments' }).click();
+            await page.getByRole('link', { name: 'Request a payment' }).click();
             await page.getByRole('link', { name: 'Create payment request' }).click();
             
             const claimTypePage = new ClaimTypePage(page);
