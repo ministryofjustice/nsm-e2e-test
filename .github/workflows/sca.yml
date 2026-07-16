@@ -32,4 +32,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           renovate: "false"
           # npm has retired the NodeAuditAnalyzer NPM Audit API
-          disable-yarn-audit: "true"
+          disable-node-audit: "true"
