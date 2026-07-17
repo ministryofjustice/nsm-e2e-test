@@ -9,7 +9,7 @@ on:
 jobs:
   run-e2e-tests:
     name: Call E2E Tests
-    uses: ministryofjustice/nsm-e2e-test/.github/workflows/run-e2e-tests.yml@main
+    uses: ministryofjustice/nsm-e2e-test/.github/workflows/run-e2e-tests.yml@99daa8c28deff8101be0fb6e1a88c62fbc5cd9ff
     secrets: inherit
     permissions:
       id-token: write
