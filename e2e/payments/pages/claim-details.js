@@ -29,7 +29,7 @@ export default class ClaimDetailsPage {
         }
 
         try {
-            if(claimType === "Non-Standard Magistrates'" && !linkedClaim){
+            if(claimType === "Non-standard magistrates" && !linkedClaim){
                 await this.page.getByLabel('Date claim assessed').click();
                 await this.page.getByLabel('Date claim assessed').fill(paymentData.nsmClaimDetails.dateAssessed);
                 if(fillOriginalSubmissionDate){

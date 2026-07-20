@@ -16,7 +16,7 @@ test.describe('Non-Standard Magistrates amendment from scratch - As a Caseworker
     test('Creating a non-standard magistrates payment from scratch', async ({paymentsFixture}) => {
         const {page, scenarioName} = paymentsFixture;
         await authenticateAsCaseworker(page);
-        const claimType = "Non-Standard Magistrates' - amendment";
+        const claimType = "Non-standard magistrates - amendment";
         
         await test.step('Select payment type', async () => {
             await page.getByRole('link', { name: 'Request a payment' }).click();
@@ -39,7 +39,7 @@ test.describe('Non-Standard Magistrates amendment from scratch - As a Caseworker
 
         await test.step('Fill in claim details', async () => {
             const claimDetailsPage = new ClaimDetailsPage(page);
-            await claimDetailsPage.fillClaimDetails("Non-Standard Magistrates'", false, true);
+            await claimDetailsPage.fillClaimDetails("Non-standard magistrates", false, true);
         });
 
         await test.step('Fill in costs', async () => {

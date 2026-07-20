@@ -17,7 +17,7 @@ test.describe('Non-Standard Magistrates original payment with supplemental payme
     test('Creating a non-standard magistrates payment from scratch', async ({paymentsFixture}) => {
         const {page, scenarioName} = paymentsFixture;
         await authenticateAsCaseworker(page);
-        const claimType = "Non-Standard Magistrates'";
+        const claimType = "Non-standard magistrates";
         
         await test.step('Select payment type', async () => {
             await page.getByRole('link', { name: 'Request a payment' }).click();
@@ -56,7 +56,7 @@ test.describe('Non-Standard Magistrates original payment with supplemental payme
             await page.getByRole('link', { name: 'Payment requests', exact: true }).click();
             await page.getByRole('link', { name: 'Create payment request' }).click();
             const claimTypePage = new ClaimTypePage(page);
-            await claimTypePage.selectClaimType("Non-Standard Magistrates' - supplemental");
+            await claimTypePage.selectClaimType("Non-standard magistrates - supplemental");
 
             //Select linked claim
             const linkedClaimPage = new LinkedClaimPage(page);

@@ -19,7 +19,7 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
     test('Creating a non-standard magistrates payment from scratch', async ({paymentsFixture}) => {
         const {page, scenarioName} = paymentsFixture;
         await authenticateAsCaseworker(page);
-        const claimType = "Non-Standard Magistrates'";
+        const claimType = "Non-standard magistrates";
         
         await test.step('Select payment type', async () => {
             await page.getByRole('link', { name: 'Request a payment' }).click();
@@ -67,7 +67,7 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
             await page.getByRole('link', { name: laaReference }).click();
 
             await expect(page.getByRole('heading', { name: laaReference })).toBeVisible({ timeout: 3000 });
-            await expect(page.getByText("Payment type: Non-Standard Magistrates'")).toBeVisible();
+            await expect(page.getByText("Payment type: Non-standard magistrates")).toBeVisible();
         });
 
         await test.step('Create linked Assigned Counsel payment', async () => {

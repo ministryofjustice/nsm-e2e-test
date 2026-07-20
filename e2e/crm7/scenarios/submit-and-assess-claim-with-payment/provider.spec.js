@@ -115,7 +115,7 @@ test.describe('CRM7 - As a Provider', () => {
             // Case Disposal
             const caseDisposal = new CaseDisposalPage(page);
             await caseDisposal.selectCaseDisposal();
-            await expect(page.getByRole('heading', { name: "Why are you claiming a non-standard magistrates' court payment?" })).toBeVisible();
+            await expect(page.getByRole('heading', { name: "Why are you claiming a non-standard magistrates court payment?" })).toBeVisible();
         });
 
         await test.step('Filling up Claim Reason', async () => {
