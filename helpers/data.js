@@ -1,7 +1,7 @@
 export const nsmData = {
     uniqueFile: '120223/001',
     claimType: {
-        nsm: 'Non-standard magistrates court payment',
+        nsm: 'Non-standard magistrates\' court payment',
         boi: 'Breach of injunction',
     },
     officeInUndesignatedArea: 'No',
