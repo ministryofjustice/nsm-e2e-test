@@ -11,7 +11,7 @@ on:
         type: string
       assess-image-name:
         description: 'Name of the container image to use for laa-assess-crime-forms'
-        default: 'branch-d97865c9f0c61902232e9eb38560595cd65b304f'
+        default: 'latest'
         required: false
         type: string
       appstore-image-name:
