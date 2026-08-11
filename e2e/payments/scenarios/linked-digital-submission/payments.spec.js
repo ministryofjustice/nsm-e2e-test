@@ -1,8 +1,8 @@
-import { readFile } from 'fs/promises';
 import { test, expect } from '../../../fixtures/global-setup';
 import {
     authenticateAsCaseworker,
     getLAAReferenceFromPage,
+    getLAAReference,
     paymentData
 } from '../../../../helpers';
 import {
@@ -12,26 +12,10 @@ import {
     AcClaimCostsPage
 } from '../../pages';
 
-const crm7StoragePath = './e2e/storage/submit-and-assess-claim-with-payment-provider-state.json';
-
-const getLinkedClaimReference = async () => {
-    const storageStateRaw = await readFile(crm7StoragePath, 'utf8');
-    const storageState = JSON.parse(storageStateRaw);
-    const laaReference = storageState.origins
-        ?.flatMap((origin) => origin.localStorage || [])
-        ?.find((item) => item.name === 'laaReference')
-        ?.value;
-    if (!laaReference) {
-        throw new Error(`LAA reference not found in ${crm7StoragePath}`);
-    }
-
-    return laaReference;
-};
-
 test.describe('Assigned Counsel linked to digital submission - As a Caseworker', () => {
     test('Creating a payment request linked to an existing CRM7 claim', async ({ paymentsFixture }) => {
         const { page } = paymentsFixture;
-        const linkedClaimReference = await getLinkedClaimReference();
+        const linkedClaimReference = await getLAAReference(page, 'submit-and-assess-claim-with-payment');
 
         await authenticateAsCaseworker(page);
 
