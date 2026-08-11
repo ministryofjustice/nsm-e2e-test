@@ -13,7 +13,7 @@ test.describe('Assigned Counsel Payment with Appeal - As a Caseworker', () => {
         await authenticateAsCaseworker(page);
 
         //Create initial Assigned Counsel payment which will be linked to the appeal
-        await page.getByRole('link', { name: 'Payments' }).click();
+        await page.getByRole('link', { name: 'Request a payment' }).click();
         await page.getByRole('link', { name: 'Create payment request' }).click();
         
         const claimTypePage = new ClaimTypePage(page);
@@ -64,7 +64,7 @@ test.describe('Assigned Counsel Payment with Appeal - As a Caseworker', () => {
         });
 
         await test.step('Submit and view appeal', async () => {
-            await expect(page.getByText("Not linked to a non-standard magistrates' claim")).toBeVisible();
+            await expect(page.getByText("Not linked to a non-standard magistrates claim")).toBeVisible();
             await expect(page.getByText(laaReference)).toBeVisible();
             await page.getByRole('button', { name: 'Submit payment request' }).click();
             await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();

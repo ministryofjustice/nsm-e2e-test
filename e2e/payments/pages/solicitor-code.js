@@ -26,7 +26,7 @@ export default class SolicitorCodePage {
         }
 
         try {
-           await this.page.getByLabel("What is the solicitor's firm account number?").fill(code.toString());
+           await this.page.locator('#payments-steps-office-code-search-form-solicitor-office-code-field').fill(code.toString());
            await this.page.getByRole('button', { name: 'Continue' }).click();
            await selectRadioButton(this.page, 'Is this the right account?', 'Yes');
            await this.page.getByRole('button', { name: 'Continue' }).click();

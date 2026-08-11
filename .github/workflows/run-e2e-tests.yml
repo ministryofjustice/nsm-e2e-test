@@ -20,7 +20,6 @@ on:
         required: false
         type: string
 
-
 jobs:
   run-e2e-tests:
     name: "Run E2E Tests"
