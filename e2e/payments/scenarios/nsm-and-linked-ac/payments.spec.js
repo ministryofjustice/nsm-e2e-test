@@ -105,6 +105,14 @@ test.describe('Non-Standard Magistrates payment with linked AC Payment - As a Ca
 
             //Confirmation page
             await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+
+            const linkedPaymentReference = await getLAAReferenceFromPage(page, 'Reference:');
+            await page.getByRole('link', { name: 'Payment requests' }).click();
+            await page.getByRole('link', { name: linkedPaymentReference }).first().click();
+            await expect(page.getByRole('heading', { name: linkedPaymentReference })).toBeVisible();
+            await expect(page.getByText('Payment type: Assigned counsel')).toBeVisible();
+            await page.getByRole('link', { name: 'Claim details' }).click();
+            await expect(page.getByText(laaReference)).toBeVisible();
         });
     });
 });

@@ -46,6 +46,14 @@ exports.testConfig = {
         // Scenario : NSM Submit and assess a claim
         scenarioConfig('submit-and-assess-claim-with-payment', 'crm7').provider,
         scenarioConfig('submit-and-assess-claim-with-payment', 'crm7').caseworker,
+        {
+            ...scenarioConfig('linked-digital-submission', 'payments').payments,
+            dependencies: ['caseworker-submit-and-assess-claim-with-payment']
+        },
+        {
+            ...scenarioConfig('linked-digital-submission-supplemental', 'payments').payments,
+            dependencies: ['caseworker-submit-and-assess-claim-with-payment']
+        },
         // Scenario : NSM Submit a claim with Youth Court fee claimed
         scenarioConfig('submit-a-claim-with-youth-court-fee', 'crm7').provider,
         scenarioConfig('submit-a-claim-with-youth-court-fee', 'crm7').caseworker,

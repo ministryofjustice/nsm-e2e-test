@@ -86,6 +86,17 @@ test.describe('Non-Standard Magistrates original payment with supplemental payme
 
             //Confirmation page
             await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+
+            const linkedPaymentReference = await getLAAReferenceFromPage(page, 'Reference:');
+            await page.getByRole('link', { name: 'Payment requests' }).click();
+            await page.getByRole('link', { name: linkedPaymentReference }).first().click();
+
+            await expect(page.getByRole('heading', { name: linkedPaymentReference })).toBeVisible();
+            await expect(page.getByText('Payment type: Non-standard magistrates - supplemental')).toBeVisible();
+            await page.getByRole('link', { name: 'Claim details' }).click();
+            await expect(page.getByRole('rowheader', { name: 'Month original claim assessed', exact: true })).toBeVisible();
+            await expect(page.getByRole('rowheader', { name: 'Unique file number', exact: true })).toBeVisible();
+            await expect(page.getByText(paymentData.nsmClaimDetails.ufn)).toBeVisible();
         });
     });
 });

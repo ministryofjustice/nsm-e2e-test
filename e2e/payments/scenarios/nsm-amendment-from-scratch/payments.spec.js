@@ -1,7 +1,7 @@
 import { test, expect } from '../../../fixtures/global-setup';
 import {
     authenticateAsCaseworker,
-    storeLAAReference, 
+    getLAAReferenceFromPage,
     paymentData
 } from '../../../../helpers';
 import { 
@@ -14,7 +14,7 @@ import {
 
 test.describe('Non-Standard Magistrates amendment from scratch - As a Caseworker', () => {
     test('Creating a non-standard magistrates payment from scratch', async ({paymentsFixture}) => {
-        const {page, scenarioName} = paymentsFixture;
+        const {page} = paymentsFixture;
         await authenticateAsCaseworker(page);
         const claimType = "Non-standard magistrates - amendment";
         
@@ -44,7 +44,7 @@ test.describe('Non-Standard Magistrates amendment from scratch - As a Caseworker
 
         await test.step('Fill in costs', async () => {
             const allowedCostsPage = new NsmClaimCostsPage(page);
-            await expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+            await expect(page.getByRole('heading', { name: 'Costs to be paid' })).toBeVisible();
             await allowedCostsPage.fillCosts();
         });
 
@@ -52,6 +52,12 @@ test.describe('Non-Standard Magistrates amendment from scratch - As a Caseworker
             await expect(page.getByText(claimType)).toBeVisible();
             await page.getByRole('button', { name: 'Submit payment request' }).click();
             await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+
+            const paymentReference = await getLAAReferenceFromPage(page, 'Reference:');
+            await page.getByRole('link', { name: 'Payment requests' }).click();
+            await page.getByRole('link', { name: paymentReference }).first().click();
+            await expect(page.getByRole('heading', { name: paymentReference })).toBeVisible();
+            await expect(page.getByText('Payment type: Non-standard magistrates - amendment')).toBeVisible();
         });
 
     });

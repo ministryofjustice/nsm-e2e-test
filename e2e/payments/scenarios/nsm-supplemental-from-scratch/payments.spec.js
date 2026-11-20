@@ -1,0 +1,107 @@
+import { test, expect } from '../../../fixtures/global-setup';
+import {
+    authenticateAsCaseworker,
+    getLAAReferenceFromPage,
+    storeLAAReference, 
+    paymentData
+} from '../../../../helpers';
+import { 
+    ClaimTypePage, 
+    SolicitorCodePage,
+    ClaimDetailsPage,
+    NsmClaimCostsPage,
+    LinkedClaimPage 
+} from '../../pages';
+
+test.describe('Non-Standard Magistrates supplemental payment from scratch - As a Caseworker', () => {
+    test('Creating a non-standard magistrates supplemental payment from scratch', async ({paymentsFixture}) => {
+        const {page, scenarioName} = paymentsFixture;
+        await authenticateAsCaseworker(page);
+        const claimType = "Non-standard magistrates - supplemental";
+        
+        await test.step('Select payment type', async () => {
+            await page.getByRole('link', { name: 'Request a payment' }).click();
+            await page.getByRole('link', { name: 'Create payment request' }).click();
+            
+            const claimTypePage = new ClaimTypePage(page);
+            await claimTypePage.selectClaimType(claimType);    
+        });
+
+        await test.step('Select solicitor', async () => {
+            const solicitorCodePage = new SolicitorCodePage(page);
+            await solicitorCodePage.selectSolicitorCode();
+        });
+
+        await test.step('Fill in claim details', async () => {
+            const claimDetailsPage = new ClaimDetailsPage(page);
+            await claimDetailsPage.fillClaimDetails(claimType, false);
+        });
+
+        await test.step('Fill in claimed costs', async () => {
+            const claimCostsPage = new NsmClaimCostsPage(page);
+            await claimCostsPage.fillCosts();
+        });
+
+        await test.step('Fill in costs to be paid', async () => {
+            const costsToBePaidPage = new NsmClaimCostsPage(page);
+            await expect(page.getByRole('heading', { name: 'Costs to be paid' })).toBeVisible();
+            await costsToBePaidPage.fillCosts();
+        });
+
+        await test.step('Submit and confirm payment', async () => {
+            await page.getByRole('button', { name: 'Submit payment request' }).click();
+        });
+
+        //Store LAA reference for future use
+        let laaReference;
+        laaReference = await getLAAReferenceFromPage(page, 'Reference:');
+        await storeLAAReference(page, laaReference, scenarioName);
+
+        await test.step('Create linked NSM supplemental payment', async () => {
+            await page.getByRole('link', { name: 'Payment requests', exact: true }).click();
+            await page.getByRole('link', { name: 'Create payment request' }).click();
+            const claimTypePage = new ClaimTypePage(page);
+            await claimTypePage.selectClaimType("Non-standard magistrates - supplemental");
+
+            //Select linked claim
+            const linkedClaimPage = new LinkedClaimPage(page);
+            await linkedClaimPage.selectLinkedClaim(laaReference);
+            await expect(page.getByRole('cell', { name: laaReference })).toBeVisible();
+            await page.getByRole('button', { name: 'Select' }).click();
+
+            //Create payment
+            await expect(page.getByLabel('Date supplemental claim assessed')).toBeVisible();
+            await page.getByLabel('Date supplemental claim assessed').fill(paymentData.nsmClaimDetails.dateAssessed);
+            await page.getByRole('button', { name: 'Continue' }).click();
+
+            //Fill in costs
+            const costsPage = new NsmClaimCostsPage(page);
+            await expect(page.getByRole('heading', { name: 'Claimed costs' })).toBeVisible();
+            await costsPage.fillCosts();
+            await expect(page.getByRole('heading', { name: 'Allowed costs' })).toBeVisible();
+            await costsPage.fillCosts();
+
+
+            //Check NSM claim is linked 
+            await expect(page.getByRole('heading', { name: 'Check your answers' })).toBeVisible();
+            await expect(page.getByText(laaReference)).toBeVisible();
+
+            //Submit payment
+            await page.getByRole('button', { name: 'Submit payment request' }).click();
+
+            //Confirmation page
+            await expect(page.getByRole('heading', { name: 'Payment request complete' })).toBeVisible();
+
+            const linkedPaymentReference = await getLAAReferenceFromPage(page, 'Reference:');
+            await page.getByRole('link', { name: 'Payment requests' }).click();
+            await page.getByRole('link', { name: linkedPaymentReference }).first().click();
+
+            await expect(page.getByRole('heading', { name: linkedPaymentReference })).toBeVisible();
+            await expect(page.getByText('Payment type: Non-standard magistrates - supplemental')).toBeVisible();
+            await page.getByRole('link', { name: 'Claim details' }).click();
+            await expect(page.getByRole('rowheader', { name: 'Month original claim assessed', exact: true })).toBeVisible();
+            await expect(page.getByRole('rowheader', { name: 'Unique file number', exact: true })).toBeVisible();
+            await expect(page.getByText(paymentData.nsmClaimDetails.ufn)).toBeVisible();
+        });
+    });
+});

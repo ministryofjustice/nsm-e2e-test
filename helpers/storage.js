@@ -1,3 +1,5 @@
+import { readFile } from 'fs/promises';
+
 export const storeLAAReference = async (page, laaReference, scenarioName, storagePath = `./e2e/storage/${scenarioName}-provider-state.json`) => {
     if (!page || !laaReference || !scenarioName) {
         throw new Error('Page, LAA reference, and scenario name are required');
@@ -40,8 +42,20 @@ export const getLAAReferenceFromPage = async (page, marker) => {
 
 export const getLAAReference = async (page, scenarioName, storagePath = `./e2e/storage/${scenarioName}-provider-state.json`) => {
     try {
-        await page.context().storageState({ path: storagePath });
-        return await page.evaluate(() => localStorage.getItem('laaReference'));
+        const storageStateRaw = await readFile(storagePath, 'utf8');
+        const storageState = JSON.parse(storageStateRaw);
+        const localStorageEntries = storageState.origins?.flatMap(
+            ({ localStorage = [] }) => localStorage
+        ) || [];
+        const laaReference = localStorageEntries.find(
+            ({ name }) => name === 'laaReference'
+        )?.value;
+
+        if (!laaReference) {
+            throw new Error(`LAA reference not found in ${storagePath}`);
+        }
+
+        return laaReference;
     } catch (error) {
         console.error(`Failed to get LAA reference for scenario ${scenarioName}:`, error);
         throw error;
