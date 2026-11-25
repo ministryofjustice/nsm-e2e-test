@@ -5,18 +5,18 @@ on:
   workflow_call:
     inputs:
       submit-image-name:
-        description: 'Name of the container image to use for laa-submit-crime-forms'
-        default: 'latest'
+        description: "Name of the container image to use for laa-submit-crime-forms"
+        default: "latest"
         required: false
         type: string
       assess-image-name:
-        description: 'Name of the container image to use for laa-assess-crime-forms'
-        default: 'latest'
+        description: "Name of the container image to use for laa-assess-crime-forms"
+        default: "latest"
         required: false
         type: string
       appstore-image-name:
-        description: 'Name of the container image to use for laa-crime-application-store'
-        default: 'latest'
+        description: "Name of the container image to use for laa-crime-application-store"
+        default: "latest"
         required: false
         type: string
 
@@ -30,13 +30,35 @@ jobs:
     env:
       NSCC_PROVIDER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:${{ inputs.submit-image-name }}
       NSCC_APPSTORE_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:${{ inputs.appstore-image-name }}
-      NSCC_CASEWORKER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-image-name }}      
+      NSCC_CASEWORKER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-image-name }}
+      E2E_CHECKOUT_AUTH: ${{ secrets.NSM_E2E_CHECKOUT_APP_CLIENT_ID != '' && secrets.NSM_E2E_CHECKOUT_APP_PRIVATE_KEY != '' && 'app' || 'default' }}
     steps:
+      - name: Create E2E checkout token for trusted callers
+        id: e2e-checkout-token
+        if: >-
+          env.E2E_CHECKOUT_AUTH == 'app' &&
+          (github.repository == 'ministryofjustice/laa-submit-crime-forms' ||
+           github.repository == 'ministryofjustice/laa-assess-crime-forms' ||
+           github.repository == 'ministryofjustice/laa-crime-application-store') &&
+          github.event_name != 'pull_request_target' &&
+          github.actor != 'dependabot[bot]' &&
+          (github.event_name != 'pull_request' ||
+           github.event.pull_request.head.repo.full_name == github.repository)
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ secrets.NSM_E2E_CHECKOUT_APP_CLIENT_ID }}
+          private-key: ${{ secrets.NSM_E2E_CHECKOUT_APP_PRIVATE_KEY }}
+          owner: ministryofjustice
+          repositories: nsm-e2e-test
+          permission-contents: read
+
       - name: Checkout E2E Test Repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
         with:
           repository: ministryofjustice/nsm-e2e-test
           path: e2e-tests
+          token: ${{ steps.e2e-checkout-token.outputs.token || github.token }}
+          persist-credentials: false
 
       # laa-submit-crime-forms
       - name: Configure AWS credentials for laa-submit-crime-forms
@@ -113,4 +135,3 @@ jobs:
           path: |
             e2e-tests/test-results
             e2e-tests/playwright-report
-

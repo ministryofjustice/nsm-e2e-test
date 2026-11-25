@@ -111,6 +111,12 @@ The purpose of the end-to-end tests is to identify breaking changes in the LAA c
 - [Suggested workflow for integration breakages](docs/orb/integration.md#suggested-workflow-for-integration-breakages)
 - [Publishing the end-to-end test orb](docs/orb/publishing.md)
 
+## Shared GitHub Actions workflow
+
+Submit, Assess and Store call `run-e2e-tests.yml` with `secrets: inherit`. Before moving this repo to Internal, use an approved GitHub App installed only on `ministryofjustice/nsm-e2e-test` with `Contents: read`. Make the Actions secrets `NSM_E2E_CHECKOUT_APP_CLIENT_ID` and `NSM_E2E_CHECKOUT_APP_PRIVATE_KEY` available only to those three caller repositories. Do not use a personal access token or an App key with wider access.
+
+Test the App checkout from trusted runs in all three callers while this repo is still Public. After switching to Internal, enable organisation access under **Settings → Actions → General → Access**, then check the three caller runs and this repo's own E2E run again. Runs in this repo use their own `GITHUB_TOKEN`. Cross-repo fork and Dependabot PRs do not get the App token and cannot check out the Internal suite; use a trusted follow-up run. Confirm Dependency Review and SCA still run after the switch.
+
 ## [CRM 4 Scenarios](https://docs.google.com/spreadsheets/d/1i97rgTQsUfZflPTJE_PPHfZizo8yW-u7ZGZfBvdHwt4/edit#gid=534567382)
 
 ## Licence
