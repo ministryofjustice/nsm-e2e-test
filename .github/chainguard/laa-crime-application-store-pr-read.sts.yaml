@@ -1,0 +1,14 @@
+issuer: https://token.actions.githubusercontent.com
+subject: 'repo:ministryofjustice/laa-crime-application-store:pull_request'
+
+claim_pattern:
+  repository_id: '674233032'
+  repository_owner_id: '2203574'
+  event_name: 'pull_request'
+  base_ref: 'main'
+  ref: 'refs/pull/[0-9]+/merge'
+  workflow_ref: 'ministryofjustice/laa-crime-application-store/\.github/workflows/build-and-test-pr\.yml@refs/pull/[0-9]+/merge'
+  job_workflow_ref: 'ministryofjustice/nsm-e2e-test/\.github/workflows/run-e2e-tests\.yml@refs/heads/main'
+
+permissions:
+  contents: read

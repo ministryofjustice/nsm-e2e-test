@@ -31,26 +31,39 @@ jobs:
       NSCC_PROVIDER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.SUBMIT_DEV_ECR_REPOSITORY }}:${{ inputs.submit-image-name }}
       NSCC_APPSTORE_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.APP_STORE_DEV_ECR_REPOSITORY }}:${{ inputs.appstore-image-name }}
       NSCC_CASEWORKER_IMAGE: ${{ secrets.ECR_REGISTRY_URL }}/${{ vars.ASSESS_DEV_ECR_REPOSITORY }}:${{ inputs.assess-image-name }}
-      E2E_CHECKOUT_AUTH: ${{ secrets.NSM_E2E_CHECKOUT_APP_CLIENT_ID != '' && secrets.NSM_E2E_CHECKOUT_APP_PRIVATE_KEY != '' && 'app' || 'default' }}
     steps:
-      - name: Create E2E checkout token for trusted callers
+      - name: Obtain read-only E2E checkout token
         id: e2e-checkout-token
         if: >-
-          env.E2E_CHECKOUT_AUTH == 'app' &&
+          github.event_name == 'pull_request' &&
+          github.base_ref == 'main' &&
+          github.workflow_ref == format('{0}/.github/workflows/build-and-test-pr.yml@{1}', github.repository, github.ref) &&
+          github.event.pull_request.head.repo.id == github.event.repository.id &&
+          github.event.pull_request.head.repo.full_name == github.repository &&
+          github.actor != 'dependabot[bot]' &&
           (github.repository == 'ministryofjustice/laa-submit-crime-forms' ||
            github.repository == 'ministryofjustice/laa-assess-crime-forms' ||
-           github.repository == 'ministryofjustice/laa-crime-application-store') &&
-          github.event_name != 'pull_request_target' &&
-          github.actor != 'dependabot[bot]' &&
-          (github.event_name != 'pull_request' ||
-           github.event.pull_request.head.repo.full_name == github.repository)
-        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+           github.repository == 'ministryofjustice/laa-crime-application-store')
+        uses: octo-sts/action@f603d3be9d8dd9871a265776e625a27b00effe05 # v1.1.1
         with:
-          client-id: ${{ secrets.NSM_E2E_CHECKOUT_APP_CLIENT_ID }}
-          private-key: ${{ secrets.NSM_E2E_CHECKOUT_APP_PRIVATE_KEY }}
-          owner: ministryofjustice
-          repositories: nsm-e2e-test
-          permission-contents: read
+          scope: ministryofjustice/nsm-e2e-test
+          identity: ${{ github.event.repository.name }}-pr-read
+
+      - name: Verify E2E checkout token scope
+        if: steps.e2e-checkout-token.outcome == 'success'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ steps.e2e-checkout-token.outputs.token }}
+        run: |
+          if [[ -z "$GH_TOKEN" ]]; then
+            echo "::error::Octo STS did not return an E2E checkout token"
+            exit 1
+          fi
+          if ! scope_matches=$(gh api installation/repositories --jq '.total_count == 1 and .repositories[0].full_name == "ministryofjustice/nsm-e2e-test"') ||
+             [[ "$scope_matches" != "true" ]]; then
+            echo "::error::Octo STS token is not verified as scoped to nsm-e2e-test"
+            exit 1
+          fi
 
       - name: Checkout E2E Test Repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3
